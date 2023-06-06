@@ -1,0 +1,14 @@
+.link-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.link {
+    margin: 5px;
+}
