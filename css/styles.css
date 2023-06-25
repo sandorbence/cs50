@@ -4,9 +4,23 @@
 }
 
 .main-container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.search-form {
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.search-bar {
+    width: 30%;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 20px;
 }
 
 .link {
