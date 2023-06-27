@@ -1,60 +1,16 @@
-.link-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.main-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 100px;
-  align-items: center;
-}
-
-.form-container {
-  padding: 20px;
-}
-
-.search-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.search-bar {
+body {
   font-size: 14px;
   font-family: arial, sans-serif;
-  border-radius: 24px;
-  border: 1px solid #dfe1e5;
-  box-shadow: none;
-  margin: 0 8px;
-  width: 584px;
-  height: 46px;
-  padding: 0 13px 0 13px;
 }
 
-.logo-text {
-  color: #4285f4;
-  font-size: 16px;
-  position: absolute;
-  left: 215px;
-  bottom: 0;
-}
-
-.image-container {
-  position: relative;
-}
-
-.search-bar:hover {
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-  border-color: rgba(223, 225, 229, 0);
+.advanced-search-bar {
+  width: 50%;
 }
 
 .link {
   margin: 5px;
   text-decoration: none;
   font-size: 13px;
-  font-family: arial, sans-serif;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -62,8 +18,9 @@
   text-decoration: underline;
 }
 
-.logo {
-  height: 92px;
+.search-row {
+  display: flex;
+  width: 100%;
 }
 
 .submit-btn {
@@ -71,8 +28,6 @@
   border: 1px solid #f8f9fa;
   border-radius: 4px;
   color: #3c4043;
-  font-size: 14px;
-  font-family: arial, sans-serif;
   margin: 11px 4px;
   padding: 0 16px;
   line-height: 27px;
@@ -85,4 +40,68 @@
   border: 1px solid #dadce0;
   color: #202124;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+#advanced-search-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#advanced-submit-btn {
+}
+
+#form-container {
+  padding: 20px;
+}
+
+#image-container {
+  position: relative;
+}
+
+#link-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#logo {
+  height: 92px;
+}
+
+#logo-text {
+  color: #4285f4;
+  font-size: 16px;
+  position: absolute;
+  left: 215px;
+  bottom: 0;
+}
+
+#main-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  align-items: center;
+}
+
+#search-bar {
+  border-radius: 24px;
+  border: 1px solid #dfe1e5;
+  box-shadow: none;
+  margin: 0 8px;
+  width: 584px;
+  height: 46px;
+  padding: 0 13px 0 13px;
+}
+
+#search-bar:hover {
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-color: rgba(223, 225, 229, 0);
+}
+
+#search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

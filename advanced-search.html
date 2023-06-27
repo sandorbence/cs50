@@ -6,24 +6,35 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <div class="link-container">
+    <div id="link-container">
       <a class="link" href="index.html">Google search</a>
     </div>
-    <div class="main-container">
-      <img class="logo" src="resources/googlelogo.png" alt="google_logo" />
-      <div class="form-container">
-        <form
-          class="search-form"
-          action="https://www.google.com/advanced_search"
-        >
-          <input class="search-bar" type="text" name="q" />
-          <input
-            class="submit-btn"
-            type="submit"
-            value="Google advanced search"
-          />
-        </form>
+    <form
+      id="advanced-search-form"
+      action="https://www.google.com/advanced_search"
+    >
+      <span>The results should contain</span>
+      <div class="search-row">
+        <label for="all-words">All these words</label>
+        <input class="advanced-search-bar" type="text" name="all-words" />
       </div>
-    </div>
+      <div class="search-row">
+        <label for="exact-word">Exact word</label>
+        <input class="advanced-search-bar" type="text" name="exact-word" />
+      </div>
+      <div class="search-row">
+        <label for="any-words">Any of these words</label>
+        <input class="advanced-search-bar" type="text" name="any-words" />
+      </div>
+      <div class="search-row">
+        <label for="none-words">None of these words</label>
+        <input class="advanced-search-bar" type="text" name="none-words" />
+      </div>
+      <input
+        id="advanced-submit-btn"
+        type="submit"
+        value="Google advanced search"
+      />
+    </form>
   </body>
 </html>
