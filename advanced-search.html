@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Advanced search</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <div id="link-container">
-      <a class="link" href="index.html">Google search</a>
-    </div>
-    <form
-      id="advanced-search-form"
-      action="https://www.google.com/advanced_search"
-    >
-      <span>The results should contain</span>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Advanced search</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div id="link-container">
+    <a class="link" href="index.html">Google search</a>
+  </div>
+  <div id="title">
+    <label>Advanced search</label>
+  </div>
+  <div id="border"></div>
+  <div id="advanced-search-container">
+    <form id="advanced-search-form" action="https://www.google.com/advanced_search">
+      <div class="advanced-search-description" id="advanced-search-label">
+        <span>Find pages with...</span>
+      </div>
       <div class="search-row">
-        <label for="all-words">All these words</label>
+        <div class="advanced-search-description">
+          <label for="all-words">all these words:</label>
+        </div>
         <input class="advanced-search-bar" type="text" name="all-words" />
       </div>
       <div class="search-row">
-        <label for="exact-word">Exact word</label>
+        <div class="advanced-search-description">
+          <label for="exact-word">this exact word or phrase:</label>
+        </div>
         <input class="advanced-search-bar" type="text" name="exact-word" />
       </div>
       <div class="search-row">
-        <label for="any-words">Any of these words</label>
+        <div class="advanced-search-description">
+          <label for="any-words">any of these words:</label>
+        </div>
         <input class="advanced-search-bar" type="text" name="any-words" />
       </div>
       <div class="search-row">
-        <label for="none-words">None of these words</label>
+        <div class="advanced-search-description">
+          <label for="none-words">none of these words:</label>
+        </div>
         <input class="advanced-search-bar" type="text" name="none-words" />
       </div>
-      <input
-        id="advanced-submit-btn"
-        type="submit"
-        value="Google advanced search"
-      />
+      <input id="advanced-submit-btn" type="submit" value="Google advanced search" />
     </form>
-  </body>
+  </div>
+</body>
+
 </html>
