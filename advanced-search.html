@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Advanced search</title>
-</head>
-<body>
-    <form action="https://www.google.com/advanced_search">
-        <input type="text" name="q">
-        <input type="submit" value="Google advanced search">
-    </form>
-    <a href="index.html">Google search</a>
-</body>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="link-container">
+      <a class="link" href="index.html">Google search</a>
+    </div>
+    <div class="main-container">
+      <img class="logo" src="resources/googlelogo.png" alt="google_logo" />
+      <div class="form-container">
+        <form
+          class="search-form"
+          action="https://www.google.com/advanced_search"
+        >
+          <input class="search-bar" type="text" name="q" />
+          <input
+            class="submit-btn"
+            type="submit"
+            value="Google advanced search"
+          />
+        </form>
+      </div>
+    </div>
+  </body>
 </html>
