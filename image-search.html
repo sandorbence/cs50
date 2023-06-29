@@ -1,63 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Image search</title>
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
 
-  <body>
-    <div id="main-container">
-      <div class="header">
-        <div class="link-container">
-          <a class="link" href="index.html">Google search</a>
-        </div>
-      </div>
-      <div id="top-container">
-        <div id="logo-container">
-          <img id="logo" src="resources/googlelogo.png" alt="google_logo" />
-          <span id="logo-text">images</span>
-        </div>
-      </div>
-      <div id="bottom-container">
-        <form action="https://www.google.com/search">
-          <div id="input-container">
-            <div id="bar-container">
-              <div id="search-logo-container">
-                <div>
-                  <span>
-                    <svg
-                      focusable="false"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewbox="0 0 24 24"
-                    >
-                      <path
-                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                      ></path>
-                    </svg>
-                  </span>
-                </div>
-              </div>
-              <input id="search-bar" type="text" name="q" />
-              <button>
-                <div id="search-logo-container">
-                  <span>
-                    <svg
-                      focusable="false"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewbox="0 0 24 24"
-                    >
-                      <path
-                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                      ></path>
-                    </svg>
-                  </span>
-                </div>
-              </button>
-            </div>
-          </div>
-        </form>
+<head>
+  <meta charset="utf-8" />
+  <title>Image search</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div id="main-container">
+    <div class="header">
+      <div class="link-container">
+        <a class="link" href="index.html">Google search</a>
       </div>
     </div>
-  </body>
+    <div id="top-container">
+      <div id="logo-container">
+        <img id="logo" src="resources/googlelogo.png" alt="google_logo" />
+        <span id="logo-text">images</span>
+      </div>
+    </div>
+    <div id="bottom-container">
+      <form action="https://www.google.com/search">
+        <div id="input-container">
+          <div id="bar-container">
+            <div id="search-logo-container">
+              <div>
+                <span>
+                  <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+                    <path
+                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                    </path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+            <input id="search-bar" type="text" name="q" />
+            <button id="svg-button" type="submit">
+              <div id="svg-button-container">
+                <span>
+                  <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+                    <path
+                      d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                    </path>
+                  </svg>
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+        <input type="hidden" name="tbm" value="isch">
+      </form>
+    </div>
+  </div>
+</body>
+
 </html>

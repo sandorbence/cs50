@@ -255,6 +255,35 @@ body {
   fill: currentColor;
 }
 
+#svg-button {
+  margin-top: -5px;
+  flex: 0 0 auto;
+  height: 44px;
+  width: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#svg-button-container {
+  height: 24px;
+  width: 24px;
+  color: #4285f4;
+  margin: auto;
+}
+
+#svg-button-container span {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+#svg-button-container svg {
+  fill: currentColor;
+}
+
+
 #title {
   color: #d93025;
   font-size: 20px;
