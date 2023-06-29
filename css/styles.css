@@ -79,6 +79,7 @@ body {
   height: 36px;
   cursor: pointer;
   min-width: 54px;
+  font-size: 14px;
 }
 
 .submit-btn:hover {
@@ -163,6 +164,12 @@ body {
 #bottom-container {
   padding: 20px;
   max-height: 160px;
+  text-align: center;
+}
+
+#button-container {
+  height: 70px;
+  padding-top: 18px;
 }
 
 #image-container {
@@ -211,7 +218,7 @@ body {
 }
 
 #search-bar {
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   line-height: 22px;
   overflow-x: hidden;
   background-color: transparent;
@@ -231,7 +238,7 @@ body {
   margin-top: -5px;
 }
 
-#search-logo-container > span {
+#search-logo-container span {
   color: #9aa0a6;
   margin-top: 3px;
   height: 20px;
