@@ -1,7 +1,12 @@
 body {
   font-size: 14px;
+  height: 100%;
+  min-width: 400px;
   font-family: arial, sans-serif;
+  margin: 0;
 }
+
+/* CLASS SELECTORS*/
 
 .advanced-search-bar {
   border-radius: 1px;
@@ -14,35 +19,52 @@ body {
 }
 
 .advanced-search-bar:focus {
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .3);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   border: 1px solid #4d90fe;
   outline: none;
 }
 
 .advanced-search-description {
-  display: inline-block;
+  display: flex;
   min-width: 167px;
   width: 16%;
   height: 42px;
   color: #222;
   font-size: 13px;
   line-height: 16px;
-  vertical-align: middle;
+  align-items: center;
+}
+
+.header {
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 6px;
+  height: 48px;
 }
 
 .link {
-  margin: 5px;
   text-decoration: none;
   font-size: 13px;
   color: rgba(0, 0, 0, 0.87);
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 24px;
 }
 
 .link:hover {
   text-decoration: underline;
 }
 
+.link-container {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+
 .search-row {
   display: flex;
+  align-items: center;
   width: 100%;
 }
 
@@ -65,6 +87,18 @@ body {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+/* ID SELECTORS */
+
+#advanced-header {
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+}
+
+#advanced-search-btn-container {
+  width: 50%;
+}
+
 #advanced-search-container {
   max-width: 1140px;
   min-width: 200px;
@@ -84,30 +118,82 @@ body {
   min-height: 42px;
   font-weight: 500;
   color: #333;
-  vertical-align: middle;
+  align-items: baseline;
 }
 
-#advanced-submit-btn {}
+#advanced-submit-btn {
+  min-width: 120px;
+  background-color: #4d90fe;
+  box-shadow: none;
+  border: 1px solid #3079ed;
+  color: #fff;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  outline: 0;
+  height: 30px;
+  margin: 10px 0;
+  float: right;
+  margin-right: -17.6px;
+}
+
+#bar-container {
+  display: flex;
+  min-height: 41px;
+  background: #fff;
+  border: 1px solid #dfe1e5;
+  box-shadow: none;
+  border-radius: 24px;
+  margin: 0 auto;
+  width: auto;
+  max-width: 584px;
+  padding: 5px 8px 0 14px;
+}
+
+#bar-container:hover {
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-color: rgba(223, 225, 229, 0);
+}
 
 #border {
   border-bottom: 1px solid #ebebeb;
 }
 
-#form-container {
+#bottom-container {
   padding: 20px;
+  max-height: 160px;
 }
 
 #image-container {
   position: relative;
 }
 
-#link-container {
-  display: flex;
-  justify-content: flex-end;
+#input-container {
+  margin: 0 auto;
+  padding-top: 6px;
+  width: auto;
+  max-width: 584px;
+  position: relative;
 }
 
 #logo {
-  height: 92px;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+}
+
+#logo-container {
+  position: relative;
+  max-height: 92px;
+  margin-top: auto;
+  height: 100%;
+}
+
+#logo-link {
+  height: 24px;
+  width: 74px;
+  vertical-align: middle;
 }
 
 #logo-text {
@@ -121,36 +207,59 @@ body {
 #main-container {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
-  align-items: center;
+  height: 100vh;
 }
 
 #search-bar {
-  border-radius: 24px;
-  border: 1px solid #dfe1e5;
-  box-shadow: none;
-  margin: 0 8px;
-  width: 584px;
-  height: 46px;
-  padding: 0 13px 0 13px;
+  margin-bottom: 8px;
+  line-height: 22px;
+  overflow-x: hidden;
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.87);
+  word-wrap: break-word;
+  border: none;
+  flex: 100%;
+  font-size: 16px;
+  outline: none;
 }
 
-#search-bar:hover {
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-  border-color: rgba(223, 225, 229, 0);
-}
-
-#search-form {
+#search-logo-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: column;
+  padding-right: 13px;
+  height: 46px;
+  margin-top: -5px;
+}
+
+#search-logo-container > span {
+  color: #9aa0a6;
+  margin-top: 3px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  display: inline-block;
+  position: relative;
+}
+
+#search-logo-container svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+  fill: currentColor;
 }
 
 #title {
   color: #d93025;
   font-size: 20px;
-  margin: 25px 30px 25px 40px;
+  margin: 25px 35px 25px 45px;
   padding: 0;
   vertical-align: baseline;
+}
+
+#top-container {
+  display: flex;
+  min-height: 92px;
+  max-height: 290px;
+  height: calc(100% - 560px);
+  justify-content: center;
 }
