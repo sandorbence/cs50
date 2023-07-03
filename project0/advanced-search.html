@@ -7,26 +7,25 @@
   </head>
 
   <body>
-    <div id="advanced-header" class="link-container">
-      <a href="index.html">
-        <img
-          id="logo-link"
-          src="googlelogo.png"
-          alt="google_logo"
-          title="Go to Google homepage"
-        />
-      </a>
-      <a class="link" href="index.html">Google search</a>
+    <div class="header" id="advanced-header">
+      <div>
+        <a href="index.html">
+          <img
+            src="resources/googlelogo.png"
+            alt="google_logo"
+            title="Go to Google homepage" />
+        </a>
+      </div>
+      <div>
+        <a href="index.html">Google search</a>
+      </div>
     </div>
     <div id="title">
       <label>Advanced search</label>
     </div>
     <div id="border"></div>
     <div id="advanced-search-container">
-      <form
-        id="advanced-search-form"
-        action="https://www.google.com/search"
-      >
+      <form action="https://www.google.com/search">
         <div class="advanced-search-description" id="advanced-search-label">
           <span>Find pages with...</span>
         </div>
@@ -34,34 +33,32 @@
           <div class="advanced-search-description">
             <label for="as_q">all these words:</label>
           </div>
-          <input class="advanced-search-bar" type="text" name="as_q" />
+          <input type="text" name="as_q" />
         </div>
         <div class="search-row">
           <div class="advanced-search-description">
             <label for="as_epq">this exact word or phrase:</label>
           </div>
-          <input class="advanced-search-bar" type="text" name="as_epq" />
+          <input type="text" name="as_epq" />
         </div>
         <div class="search-row">
           <div class="advanced-search-description">
             <label for="as_oq">any of these words:</label>
           </div>
-          <input class="advanced-search-bar" type="text" name="as_oq" />
+          <input type="text" name="as_oq" />
         </div>
         <div class="search-row">
           <div class="advanced-search-description">
             <label for="as_eq">none of these words:</label>
           </div>
-          <input class="advanced-search-bar" type="text" name="as_eq" />
+          <input type="text" name="as_eq" />
         </div>
         <div class="search-row">
           <div class="advanced-search-description"></div>
           <div id="advanced-search-btn-container">
             <input
-              id="advanced-submit-btn"
               type="submit"
-              value="Advanced search"
-            />
+              value="Advanced search" />
           </div>
         </div>
       </form>
