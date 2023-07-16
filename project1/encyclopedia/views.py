@@ -25,7 +25,7 @@ def new_entry(request):
             util.save_entry(
                 form.cleaned_data["title"],
                 form.cleaned_data["text"])
-            return redirect('entry', title=form.cleaned_data["title"])
+            return redirect("entry", title=form.cleaned_data["title"])
     return render(request, "encyclopedia/new-entry.html", {
         "form": NewEntryForm()
     })
@@ -43,3 +43,19 @@ def entry(request, title):
         "title": title.capitalize(),
         "entry": entry_converted
     })
+
+
+def search(request):
+    if request.method == "POST":
+        query = request.POST.get("q")
+        entries = util.list_entries()
+        matches = []
+        for entry in entries:
+            if query.lower() == entry.lower():
+                return redirect("entry", title=query)
+            if query.lower() in entry.lower():
+                matches.append(entry)
+        return render(request, "encyclopedia/search.html", {
+            "query": query,
+            "matches": matches
+        })
