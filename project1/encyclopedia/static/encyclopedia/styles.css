@@ -1,6 +1,18 @@
 body {
-    margin: 0;
     background-color: white;
+    margin: 0;
+}
+
+button {
+    border-radius: 4px;
+    font-family: arial, sans-serif;
+    font-size: 16px;
+    height: 30px;
+    padding: 0 3px;
+}
+
+button:hover {
+    background-color:#C5DFF8;
 }
 
 code {
@@ -22,9 +34,9 @@ textarea {
 }
 
 .search {
-    width: 100%;
     font-size: 15px;
     line-height: 15px;
+    width: 100%;
 }
 
 .sidebar {
@@ -35,4 +47,30 @@ textarea {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+#edit {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+#edit img {
+    margin: 0 3px 3px 0;
+    width: 20px;
+}
+
+#entry {
+    display: flex;
+}
+
+#entry form {
+    display: flex;
+}
+
+#save-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }

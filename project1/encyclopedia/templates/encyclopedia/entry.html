@@ -1,18 +1,22 @@
 {% extends "encyclopedia/layout.html" %}
 
+{% load static %}
+
 {% block title %}
 {{title}}
 {% endblock %}
 
 {% block body %}
-<div>
-    <form action="{% url 'edit' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" value="{{ title }}" name="title">
-        <input type="submit" value="Edit page">
-    </form>
-</div>
-<div>
-    {{entry |safe}}
+<div id="entry">
+    <div>
+        {{entry |safe}}
+    </div>
+    <div id="edit">
+        <form action="{% url 'edit' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" value="{{ title }}" name="title">
+            <button type="submit"><img src="{% static 'images/edit_logo.png' %}">Edit page</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
