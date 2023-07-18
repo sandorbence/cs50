@@ -5,11 +5,13 @@ from . import util
 
 from markdown2 import Markdown
 
+from random import Random
 
-class NewEntryForm(forms.Form):
-    title = forms.CharField(label="Title of entry")
+class EntryForm(forms.Form):
+    title = forms.CharField(label="Title of wiki page",  widget=forms.TextInput(attrs={"placeholder": "Title of entry"}))
     text = forms.CharField(label="", widget=forms.Textarea(
         attrs={"placeholder": "Begin typing your wiki entry"}))
+    method = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 
 def index(request):
@@ -18,17 +20,21 @@ def index(request):
     })
 
 
-def new_entry(request):
+def save_entry(request):
     if request.method == "POST":
-        form = NewEntryForm(request.POST)
+        form = EntryForm(request.POST)
         if form.is_valid():
-            util.save_entry(
-                form.cleaned_data["title"],
-                form.cleaned_data["text"])
-            return redirect("entry", title=form.cleaned_data["title"])
-    return render(request, "encyclopedia/new-entry.html", {
-        "form": NewEntryForm()
-    })
+            title = form.cleaned_data["title"]
+            text = form.cleaned_data["text"]
+            if form.cleaned_data["method"] == "edit":
+                # Without encode() saving adds extra blank lines 
+                util.save_entry(title, text.encode())
+                return redirect("entry", title=title)
+            elif title.lower() not in (entry.lower() for entry in util.list_entries()):
+                util.save_entry(title, text.encode())
+                return redirect("entry", title=title)
+            else:
+                raise Exception("Wiki page with that title already exists.")
 
 
 def entry(request, title):
@@ -59,3 +65,23 @@ def search(request):
             "query": query,
             "matches": matches
         })
+    
+
+def edit_entry(request):
+    if request.method == "POST":
+        form = EntryForm({"title": request.POST.get("title"), "text": util.get_entry(request.POST.get("title")), "method": "edit"})
+        return render(request, "encyclopedia/edit-entry.html", {
+            "form": form,
+            "pageTitle": "Edit Page"
+        })
+    return render(request, "encyclopedia/edit-entry.html", {
+        "form": EntryForm(),
+        "pageTitle": "New Page"
+    })
+
+
+def random_page(request):
+    rand = Random()
+    entries = util.list_entries()
+    title = entries[int(rand.random()*len(entries))]
+    return redirect("entry", title=title)
