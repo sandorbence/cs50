@@ -10,6 +10,8 @@
 <form action="{% url 'save' %}" method="post">
     {% csrf_token %}
     {{ form }}
-    <button id="save-button" type="submit">Save entry</button>
+    <button id="save-button" type="submit"><img
+            src="{% static 'images/save_logo.png' %}" alt="save_logo.png">Save
+        entry</button>
 </form>
 {% endblock %}

@@ -12,7 +12,12 @@ button {
 }
 
 button:hover {
-    background-color:#C5DFF8;
+    background-color: #C5DFF8;
+}
+
+button img {
+    margin: 0 3px 3px 0;
+    width: 20px;
 }
 
 code {
@@ -53,20 +58,26 @@ textarea {
     display: flex;
     flex: 1;
     justify-content: flex-end;
+    min-width: 150px;
     padding: 10px;
 }
 
-#edit img {
-    margin: 0 3px 3px 0;
-    width: 20px;
-}
-
-#entry {
+#entry-container {
     display: flex;
 }
 
-#entry form {
+#entry.container form {
     display: flex;
+}
+
+#pnf-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pnf-container img {
+    height: 75vh;
 }
 
 #save-button {
