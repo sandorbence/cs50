@@ -10,6 +10,8 @@ class Listing(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=120)
     price = models.IntegerField()
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="listings")
     pub_date = models.DateTimeField("date published")
     photo = models.ImageField(upload_to="listing-images", blank=True)
 

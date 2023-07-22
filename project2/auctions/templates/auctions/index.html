@@ -7,7 +7,9 @@
         {% for listing in listings %}
         <a href="{% url 'listing' listing_id=listing.id %}">
             <div id="listing-container">
-                <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+                <div>
+                    <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+                </div>
                 <li>
                     <div>
                         <h4>{{ listing.title }}</h4>

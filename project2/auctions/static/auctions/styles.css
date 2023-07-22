@@ -32,3 +32,14 @@ ul {
 #listing-container:hover {
     border-color: #2B2730;
 }
+
+#listing-container>div {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    width: 35%;
+}
+
+#listing-container>li>div {
+    flex: 1;
+}

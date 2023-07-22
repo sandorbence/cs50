@@ -4,5 +4,6 @@
 <h2>{{ listing.title }}</h2>
 <p>{{ listing.description }}</p>
 <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+<h5>Uploaded by: {{ listing.user }}</h5>
 <div>This item was listed at: {{ listing.pub_date }}</div>
 {% endblock %}
