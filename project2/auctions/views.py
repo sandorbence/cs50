@@ -3,11 +3,31 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django import forms
+
+from datetime import datetime
 
 from .models import User, Listing
 
 
+class ListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = "__all__"
+
+
 def index(request):
+    if request.method == "POST":
+        form = ListingForm(request.POST, request.FILES)
+        form.user = request.user
+        form.pub_date = datetime.now()
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+            return render(request, "auctions/new-listing.html", {
+                "form": form
+            })
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.all()
     })
@@ -73,4 +93,15 @@ def listing(request, listing_id):
 
 
 def new_listing(request):
-    return render(request, "auctions/new-listing.html")
+    form = ListingForm(
+        initial={"user": request.user, "pub_date": datetime.now()})
+    return render(request, "auctions/new-listing.html", {
+        "form": form
+    })
+
+
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, "auctions/user-profile.html", {
+        "user": user
+    })

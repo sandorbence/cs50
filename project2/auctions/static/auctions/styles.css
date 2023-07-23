@@ -12,19 +12,11 @@ ul>a:hover {
     text-decoration: none;
 }
 
-img {
-    height: 40vh;
-    margin-right: 20px;
-}
-
-ul {
-    list-style: none;
-}
-
 #listing-container {
     border: 1px solid #B2B2B2;
     border-radius: 5px;
     display: flex;
+    height: 40vh;
     margin: 10px;
     padding: 5px;
 }
@@ -34,12 +26,20 @@ ul {
 }
 
 #listing-container>div {
-    background-color: white;
     display: flex;
     justify-content: center;
-    width: 35%;
+    margin-right: 10px;
+    width: 30%;
+}
+
+#listing-container li {
+    list-style: none;
 }
 
 #listing-container>li>div {
     flex: 1;
+}
+
+#listing-container img {
+    width: 100%;
 }

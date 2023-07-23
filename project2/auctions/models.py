@@ -9,7 +9,7 @@ class User(AbstractUser):
 class Listing(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=120)
-    price = models.IntegerField()
+    price = models.FloatField()
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
     pub_date = models.DateTimeField("date published")
@@ -23,7 +23,7 @@ class Bid(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="bids")
     date = models.DateTimeField("date of bid")
-    value = models.IntegerField()
+    value = models.FloatField()
 
 
 class Comment(models.Model):
