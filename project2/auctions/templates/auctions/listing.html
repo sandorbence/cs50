@@ -8,7 +8,7 @@
 <div>
     <h5>Details</h5>
     <ul>
-        <li>Uploaded by: <a href="{% url 'user' username=listing.user.username %}">{{ listing.user }}</a></li>
+        <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">{{ listing.user }}</a></li>
         <li>Listed at: {{ listing.pub_date }}</li>
     </ul>
 </div>

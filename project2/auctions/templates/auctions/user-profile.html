@@ -2,4 +2,9 @@
 
 {% block body %}
 <h2>User {{ user.username }}</h2>
+<ul>
+    {% for listing in user.listings.all %}
+    <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+    {% endfor %}
+</ul>
 {% endblock %}

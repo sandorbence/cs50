@@ -24,6 +24,8 @@ class Bid(models.Model):
         User, on_delete=models.CASCADE, related_name="bids")
     date = models.DateTimeField("date of bid")
     value = models.FloatField()
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="bids", blank=True, null=True)
 
 
 class Comment(models.Model):
@@ -31,3 +33,5 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, related_name="comments")
     date = models.DateTimeField("date of comment")
     text = models.CharField(max_length=120)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="comments", blank=True, null=True)
