@@ -24,7 +24,7 @@
             {{ comment_form.user.as_hidden }}
             {{ comment_form.listing.as_hidden }}
             <input type="hidden" name="type" value="comment">
-            <button type="submit" class="btn btn-primary">Leave a comment</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <div>
@@ -32,6 +32,7 @@
         <ul>
             <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
                     {{ listing.user }}</a></li>
+            <li>Starting price: ${{ listing.price }}</li>
             <li>Listed at: {{ listing.pub_date }}</li>
         </ul>
     </div>

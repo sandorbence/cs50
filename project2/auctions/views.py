@@ -16,15 +16,23 @@ class ListingForm(forms.ModelForm):
         model = Listing
         fields = "__all__"
 
+
 class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = "__all__"
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields["text"].widget.attrs.update({
+            "placeholder": "Leave a comment..."
+        })
 
 
 def index(request):
@@ -62,9 +70,9 @@ def login_view(request):
             })
     else:
         if request.GET.get("next"):
-                return render(request, "auctions/login.html", {
-                    "next": request.GET.get("next")
-                })
+            return render(request, "auctions/login.html", {
+                "next": request.GET.get("next")
+            })
         return render(request, "auctions/login.html")
 
 
@@ -119,13 +127,16 @@ def listing(request, listing_id):
                     print(form.errors)
                     raise Exception("Something went wrong writing a comment.")
     listing = Listing.objects.get(pk=listing_id)
-    bid_form = BidForm(initial={"user": request.user, "date":datetime.now(), "listing":listing})
-    comment_form = CommentForm(initial={"user": request.user, "date":datetime.now(), "listing":listing})
+    bid_form = BidForm(
+        initial={"user": request.user, "date": datetime.now(), "listing": listing})
+    comment_form = CommentForm(
+        initial={"user": request.user, "date": datetime.now(), "listing": listing})
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "form": bid_form,
         "comment_form": comment_form
     })
+
 
 @login_required
 def new_listing(request):
