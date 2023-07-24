@@ -3,15 +3,6 @@ body {
     background-color: #FAF3F0;
 }
 
-ul>a {
-    color: black;
-}
-
-ul>a:hover {
-    color: #2B2730;
-    text-decoration: none;
-}
-
 #listing-container {
     border: 1px solid #B2B2B2;
     border-radius: 5px;
@@ -36,10 +27,31 @@ ul>a:hover {
     list-style: none;
 }
 
-#listing-container>li>div {
-    flex: 1;
+#listing-container a {
+    display: inherit;
 }
 
 #listing-container img {
     width: 100%;
+}
+
+#listing-details {
+    display: flex;
+}
+
+#listing-details a {
+    color: black;
+}
+
+#listing-details ul a {
+    color:#94ADD7;
+}
+
+#listing-details a:hover {
+    color: #7C73C0;
+    text-decoration: none;
+}
+
+#listing-details>div {
+    margin-right:40px;
 }

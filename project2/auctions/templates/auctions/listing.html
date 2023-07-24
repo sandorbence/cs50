@@ -1,15 +1,39 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2>{{ listing.title }}</h2>
-<img style="width: 50%;" src="{{ listing.photo.url }}" alt="{{ listing.title }}">
-<p>{{ listing.description }}</p>
-<h3>${{ listing.price }}</h3>
 <div>
-    <h5>Details</h5>
-    <ul>
-        <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">{{ listing.user }}</a></li>
-        <li>Listed at: {{ listing.pub_date }}</li>
-    </ul>
+    <div>
+        <h2>{{ listing.title }}</h2>
+        <img style="height: 300px;" src="{{ listing.photo.url }}"
+            alt="{{ listing.title }}">
+        <p>{{ listing.description }}</p>
+        <h3>${{ listing.price }}</h3>
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            {{ form.value }}
+            {{ form.date.as_hidden }}
+            {{ form.user.as_hidden }}
+            {{ form.listing.as_hidden }}
+            <input type="hidden" name="type" value="bid">
+            <button class="btn btn-primary" type="submit">Place a bid</button>
+        </form>
+        <form action="{% url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            {{ comment_form.text }}
+            {{ comment_form.date.as_hidden }}
+            {{ comment_form.user.as_hidden }}
+            {{ comment_form.listing.as_hidden }}
+            <input type="hidden" name="type" value="comment">
+            <button type="submit" class="btn btn-primary">Leave a comment</button>
+        </form>
+    </div>
+    <div>
+        <h5>Details</h5>
+        <ul>
+            <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
+                    {{ listing.user }}</a></li>
+            <li>Listed at: {{ listing.pub_date }}</li>
+        </ul>
+    </div>
 </div>
 {% endblock %}
