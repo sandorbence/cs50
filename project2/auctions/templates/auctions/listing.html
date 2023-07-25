@@ -4,8 +4,7 @@
 <div>
     <div>
         <h2>{{ listing.title }}</h2>
-        <img style="height: 300px;" src="{{ listing.photo.url }}"
-            alt="{{ listing.title }}">
+        <img style="height: 300px;" src="{{ listing.photo.url }}" alt="{{ listing.title }}">
         <p>{{ listing.description }}</p>
         <h3>${{ listing.price }}</h3>
         <form action="{% url 'listing' listing.id %}" method="post">
@@ -17,6 +16,27 @@
             <input type="hidden" name="type" value="bid">
             <button class="btn btn-primary" type="submit">Place a bid</button>
         </form>
+    </div>
+    <div>
+        <h5>Comments on this listing:</h5>
+        {% if listing.comments.all.exists %}
+        <ul>
+            {% for comment in listing.comments.all %}
+            <li>
+                <div>
+                    <div>
+                        {{ comment.text }}
+                    </div>
+                    <div>
+                        <a href="{% url 'user' comment.user.username %}">{{ comment.user }}</a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div>No comments yet.</div>
+        {% endif %}
         <form action="{% url 'listing' listing.id %}" method="post">
             {% csrf_token %}
             {{ comment_form.text }}
@@ -27,14 +47,14 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <div>
-        <h5>Details</h5>
-        <ul>
-            <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
-                    {{ listing.user }}</a></li>
-            <li>Starting price: ${{ listing.price }}</li>
-            <li>Listed at: {{ listing.pub_date }}</li>
-        </ul>
-    </div>
+</div>
+<div>
+    <h5>Details</h5>
+    <ul>
+        <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
+                {{ listing.user }}</a></li>
+        <li>Starting price: ${{ listing.price }}</li>
+        <li>Listed at: {{ listing.pub_date }}</li>
+    </ul>
 </div>
 {% endblock %}
