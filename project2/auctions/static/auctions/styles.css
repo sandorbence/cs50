@@ -1,6 +1,24 @@
 body {
-    padding: 10px;
+    padding: 20px;
     background-color: #FAF3F0;
+}
+
+#bid-form {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 20px;
+    width: 400px;
+}
+
+#bid-form input {
+    margin: 5px;
+    width: 250px;
+}
+
+#bid-form button {
+    margin: 5px;
+    width: 250px;
 }
 
 #listing-container {
@@ -44,7 +62,7 @@ body {
 }
 
 #listing-details ul a {
-    color:#94ADD7;
+    color: #94ADD7;
 }
 
 #listing-details a:hover {
@@ -53,5 +71,15 @@ body {
 }
 
 #listing-details>div {
-    margin-right:40px;
+    margin-right: 40px;
+}
+
+#listing-main {
+    margin: 10px;
+}
+
+#listing-top {
+    display: flex;
+    justify-content: space-between;
+    height: 400px;
 }

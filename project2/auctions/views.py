@@ -22,6 +22,12 @@ class BidForm(forms.ModelForm):
         model = Bid
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super(BidForm, self).__init__(*args, **kwargs)
+        self.fields["value"].widget.attrs.update({
+            "placeholder": "How much is this worth for you?"
+        })
+
 
 class CommentForm(forms.ModelForm):
     class Meta:

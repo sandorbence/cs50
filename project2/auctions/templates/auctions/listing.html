@@ -1,21 +1,47 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<div>
+<div id="listing-main">
+    <div id="listing-top">
+        <div>
+            <h2>{{ listing.title }}</h2>
+            <img style="height: 300px;" src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+        </div>
+        <div>
+            <div id="bid-form">
+                {% if listing.bids.all.exists %}
+                <h3>Highest bid:
+                    {{ listing.bids.all|dictsortreversed:"value"|first }}</h3>
+                {% else %}
+                <div>
+                    <h3>Be the first to bid!</h3>
+                    <h5>Starting price: ${{ listing.price }}</h5>
+                </div>
+                {% endif %}
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.value }}
+                    {{ form.date.as_hidden }}
+                    {{ form.user.as_hidden }}
+                    {{ form.listing.as_hidden }}
+                    <input type="hidden" name="type" value="bid">
+                    <button class="btn btn-primary" type="submit">Place a bid</button>
+                </form>
+            </div>
+            <div>
+                <h5>Details</h5>
+                <ul>
+                    <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
+                            {{ listing.user }}</a></li>
+                    <li>Starting price: ${{ listing.price }}</li>
+                    <li>Listed at: {{ listing.pub_date }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div>
-        <h2>{{ listing.title }}</h2>
-        <img style="height: 300px;" src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+        <h5>Item description</h5>
         <p>{{ listing.description }}</p>
-        <h3>${{ listing.price }}</h3>
-        <form action="{% url 'listing' listing.id %}" method="post">
-            {% csrf_token %}
-            {{ form.value }}
-            {{ form.date.as_hidden }}
-            {{ form.user.as_hidden }}
-            {{ form.listing.as_hidden }}
-            <input type="hidden" name="type" value="bid">
-            <button class="btn btn-primary" type="submit">Place a bid</button>
-        </form>
     </div>
     <div>
         <h5>Comments on this listing:</h5>
@@ -47,14 +73,5 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-</div>
-<div>
-    <h5>Details</h5>
-    <ul>
-        <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
-                {{ listing.user }}</a></li>
-        <li>Starting price: ${{ listing.price }}</li>
-        <li>Listed at: {{ listing.pub_date }}</li>
-    </ul>
 </div>
 {% endblock %}
