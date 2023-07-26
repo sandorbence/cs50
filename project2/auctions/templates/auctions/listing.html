@@ -2,76 +2,82 @@
 
 {% block body %}
 <div id="listing-main">
-    <div id="listing-top">
+    <div>
         <div>
-            <h2>{{ listing.title }}</h2>
-            <img style="height: 300px;" src="{{ listing.photo.url }}" alt="{{ listing.title }}">
-        </div>
-        <div>
-            <div id="bid-form">
-                {% if listing.bids.all.exists %}
-                <h3>Highest bid:
-                    {{ listing.bids.all|dictsortreversed:"value"|first }}</h3>
-                {% else %}
+            <div id="listing-top">
                 <div>
-                    <h3>Be the first to bid!</h3>
-                    <h5>Starting price: ${{ listing.price }}</h5>
+                    <h2>{{ listing.title }}</h2>
+                    <img src="{{ listing.photo.url }}"
+                        alt="{{ listing.title }}">
                 </div>
+                <div id="detail-container">
+                    <div id="bid-form">
+                        <div>
+                            {% if listing.bids.all.exists %}
+                            <h4>Highest bid: {{ listing.bids.all|dictsortreversed:"value"|first }}</h4>
+                            {% else %}
+                            <h3>Be the first to bid!</h3>
+                            {% endif %}
+                            <form action="{% url 'listing' listing.id %}"
+                                method="post">
+                                {% csrf_token %}
+                                {{ form.value }}
+                                {{ form.date.as_hidden }}
+                                {{ form.user.as_hidden }}
+                                {{ form.listing.as_hidden }}
+                                <input type="hidden" name="type" value="bid">
+                                <button class="btn btn-primary" type="submit">Place a bid</button>
+                            </form>
+                        </div>
+                        <div>
+                            <h4>Minimum price: ${{ listing.price }}</h4>
+                            <button class="btn btn-primary" type="submit">Buy now!</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Item details</h3>
+                        <ul>
+                            <li>Uploaded by: <a
+                                    href="{% url 'user' listing.user.username %}">
+                                    {{ listing.user }}</a></li>
+                            <li>Starting price: ${{ listing.price }}</li>
+                            <li>Listed at: {{ listing.pub_date }}</li>
+                        </ul>
+                        <h3>Item description</h3>
+                        <p>{{ listing.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <h5>Comments on this listing:</h5>
+                {% if listing.comments.all.exists %}
+                <ul>
+                    {% for comment in listing.comments.all %}
+                    <li>
+                        <div>
+                            <div>
+                                {{ comment.text }}
+                            </div>
+                            <div style="text-align: right;">
+                                <a href="{% url 'user' comment.user.username %}">-{{ comment.user }}</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                <div>No comments yet.</div>
                 {% endif %}
                 <form action="{% url 'listing' listing.id %}" method="post">
                     {% csrf_token %}
-                    {{ form.value }}
-                    {{ form.date.as_hidden }}
-                    {{ form.user.as_hidden }}
-                    {{ form.listing.as_hidden }}
-                    <input type="hidden" name="type" value="bid">
-                    <button class="btn btn-primary" type="submit">Place a bid</button>
+                    {{ comment_form.text }}
+                    {{ comment_form.date.as_hidden }}
+                    {{ comment_form.user.as_hidden }}
+                    {{ comment_form.listing.as_hidden }}
+                    <input type="hidden" name="type" value="comment">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-            <div>
-                <h5>Details</h5>
-                <ul>
-                    <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
-                            {{ listing.user }}</a></li>
-                    <li>Starting price: ${{ listing.price }}</li>
-                    <li>Listed at: {{ listing.pub_date }}</li>
-                </ul>
-            </div>
         </div>
-    </div>
-    <div>
-        <h5>Item description</h5>
-        <p>{{ listing.description }}</p>
-    </div>
-    <div>
-        <h5>Comments on this listing:</h5>
-        {% if listing.comments.all.exists %}
-        <ul>
-            {% for comment in listing.comments.all %}
-            <li>
-                <div>
-                    <div>
-                        {{ comment.text }}
-                    </div>
-                    <div>
-                        <a href="{% url 'user' comment.user.username %}">{{ comment.user }}</a>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <div>No comments yet.</div>
-        {% endif %}
-        <form action="{% url 'listing' listing.id %}" method="post">
-            {% csrf_token %}
-            {{ comment_form.text }}
-            {{ comment_form.date.as_hidden }}
-            {{ comment_form.user.as_hidden }}
-            {{ comment_form.listing.as_hidden }}
-            <input type="hidden" name="type" value="comment">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
     </div>
 </div>
 {% endblock %}

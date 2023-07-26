@@ -5,10 +5,17 @@ body {
 
 #bid-form {
     display: flex;
-    flex-direction: column;
     font-size: 14px;
-    line-height: 20px;
-    width: 400px;
+    line-height: 25px;
+    margin: 0 !important;
+    text-align: center;
+    width: 100%;
+}
+
+#bid-form div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #bid-form input {
@@ -19,6 +26,15 @@ body {
 #bid-form button {
     margin: 5px;
     width: 250px;
+}
+
+#detail-container {
+    margin-right: 20px;
+    width: 600px;
+}
+
+#detail-container>div {
+    margin: 20px 0 0 50px;
 }
 
 #listing-container {
@@ -75,11 +91,26 @@ body {
 }
 
 #listing-main {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+
+#listing-main>div {
+    display: inline-block;
     margin: 10px;
+}
+
+#listing-main>div>div {
+    display: flex;
+    flex-direction: column;
 }
 
 #listing-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+}
+
+#listing-top img {
     height: 400px;
 }
