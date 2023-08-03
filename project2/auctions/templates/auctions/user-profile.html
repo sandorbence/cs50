@@ -2,9 +2,28 @@
 
 {% block body %}
 <h2>User {{ user.username }}</h2>
+{% if visiting == user %}
+<h3>My active listings</h3>
+{% else %}
+<h3>Active items listed by user</h3>
+{% endif %}
 <ul>
-    {% for listing in user.listings.all %}
+    {% for listing in active_listings %}
     <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
     {% endfor %}
 </ul>
+{% if visiting == user %}
+<h3>My closed listings</h3>
+<ul>
+{% for listing in closed_listings %}
+<li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+</ul>
+{% endfor %}
+{% endif %}
+<h3>My won auctions</h3>
+<ul>
+{% for listing in won_listings %}
+<li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+</ul>
+{% endfor %}
 {% endblock %}

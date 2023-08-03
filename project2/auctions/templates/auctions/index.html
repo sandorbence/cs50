@@ -1,5 +1,7 @@
 {% extends "auctions/layout.html" %}
 
+{% load static %}
+
 {% block body %}
 <h2>Active Listings</h2>
 <div id="main-container">
@@ -8,7 +10,11 @@
         <div id="listing-container">
             <div>
                 <a href="{% url 'listing' listing_id=listing.id %}">
+                    {% if listing.photo %}
                     <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+                    {% else %}
+                    <img src="{% static 'images/image.png' %}" alt="{{ listing.title }}">
+                    {% endif %}
                 </a>
             </div>
             <li>

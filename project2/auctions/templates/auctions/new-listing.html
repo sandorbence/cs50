@@ -1,12 +1,84 @@
 {% extends "auctions/layout.html" %}
 
+{% load static %}
+
 {% block body %}
-<form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.title.label }}: {{ form.title }}
-    {{ form.description.label }}: {{ form.description }}
-    {{ form.price.label }}: {{ form.price }}
-    {{ form.photo.label }}: {{ form.photo }}
-    <button type="submit" class="btn btn-dark">Add new listing</button>
-</form>
+<div>
+    <h1>Create a new listing</h1>
+</div>
+<div id="new-listing-container">
+    <div>
+        <img id="image-preview" src="{% static 'images/image.png' %}">
+    </div>
+    <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+        <div>
+            {% csrf_token %}
+            {{ form.user.as_hidden }}
+            {{ form.pub_date.as_hidden }}
+            <div id="new-description">
+                <div id="new-title">
+                    Title of listing:
+                    <div>
+                        {{ form.title }}
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        Item description:
+                    </div>
+                    {{ form.description }}
+                </div>
+            </div>
+            <div id="new-category">
+                <div>
+                    Category:
+                    <div>
+                        {{ form.category }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="new-photo-container">
+            <div id="bids-container">
+                <div>
+                    Minimum price: {{ form.price }}
+                </div>
+                <div>
+                    Bid step: {{ form.bid_step }}
+                </div>
+            </div>
+            <div id="empty-space">
+            </div>
+            <div id="buttons-container">
+                <div id="upload-container">
+                    Upload an image:
+                    <div>
+                        {{ form.photo }}
+                    </div>
+                </div>
+                <div id="add-button">
+                    <button type="submit" class="btn btn-dark">Add new listing</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById("image-preview");
+                imagePreview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById("listing-image").addEventListener("change", function () {
+        readURL(this);
+    });
+</script>
 {% endblock %}

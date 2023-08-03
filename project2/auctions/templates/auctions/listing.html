@@ -1,83 +1,180 @@
 {% extends "auctions/layout.html" %}
 
+{% load static %}
+
 {% block body %}
+{% if message %}
+<div class="alert" id="message">
+    <h5>{{ message }}</h5>
+</div>
+{% endif %}
 <div id="listing-main">
     <div>
         <div>
             <div id="listing-top">
                 <div>
-                    <h2>{{ listing.title }}</h2>
-                    <img src="{{ listing.photo.url }}"
-                        alt="{{ listing.title }}">
+                    <div id="description-container">
+                        <h3>{{ listing.title }}</h3>
+                        <form action="{% url 'listing' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="watchlist">
+                            {% if listing in watchlist.listings.all %}
+                            <input type="hidden" id="watchlist">
+                            {% endif %}
+                            {% if listing.active %}
+                            <div>
+                                <button class="btn btn-secondary" type="submit" id="btn-watchlist">
+                                    {% if listing in watchlist.listings.all %}
+                                    Watching!
+                                    {% else %}
+                                    Add to watchlist
+                                    {% endif %}
+                                </button>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                    {% if listing.photo %}
+                    <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
+                    {% else %}
+                    <img src="{% static 'images/image.png' %}" alt="{{ listing.title }}">
+                    {% endif %}
                 </div>
                 <div id="detail-container">
+                    {% if listing.active %}
                     <div id="bid-form">
+                        {% if listing.user != user %}
                         <div>
                             {% if listing.bids.all.exists %}
-                            <h4>Highest bid: {{ listing.bids.all|dictsortreversed:"value"|first }}</h4>
+                            <h4>Highest bid: ${{ highest_bid }}</h4>
                             {% else %}
                             <h3>Be the first to bid!</h3>
                             {% endif %}
-                            <form action="{% url 'listing' listing.id %}"
-                                method="post">
+                            <form action="{% url 'listing' listing.id %}" method="post">
                                 {% csrf_token %}
-                                {{ form.value }}
-                                {{ form.date.as_hidden }}
-                                {{ form.user.as_hidden }}
-                                {{ form.listing.as_hidden }}
+                                {{ bid_form.value }}
+                                {{ bid_form.date.as_hidden }}
+                                {{ bid_form.user.as_hidden }}
+                                {{ bid_form.listing.as_hidden }}
                                 <input type="hidden" name="type" value="bid">
                                 <button class="btn btn-primary" type="submit">Place a bid</button>
                             </form>
                         </div>
-                        <div>
-                            <h4>Minimum price: ${{ listing.price }}</h4>
-                            <button class="btn btn-primary" type="submit">Buy now!</button>
+                        {% else %}
+                        <div id="placeholder">
+                            {% if listing.bids.all.exists %}
+                            <h4>Highest bid: ${{ highest_bid }}</h4>
+                            {% else %}
+                            <h3>No bids yet.</h3>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        <div id="buy-form">
+                            <h4>Price: ${{ listing.price }}</h4>
+                            {% if listing.user != user %}
+                            {% if not highest_bid or listing.price > highest_bid %}
+                            <form action="{% url 'close' listing.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="buy">
+                                <button class="btn btn-primary" type="submit">Buy now!</button>
+                            </form>
+                            {% endif %}
+                            {% endif %}
+                            {% if listing.user == user %}
+                            <div>
+                                <form action="{% url 'close' listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-secondary" type="submit">Close auction</button>
+                                </form>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
+                    {% endif %}
                     <div>
                         <h3>Item details</h3>
                         <ul>
-                            <li>Uploaded by: <a
-                                    href="{% url 'user' listing.user.username %}">
+                            <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
                                     {{ listing.user }}</a></li>
-                            <li>Starting price: ${{ listing.price }}</li>
                             <li>Listed at: {{ listing.pub_date }}</li>
+                            <li>Category:
+                                {% if listing.category %}
+                                <a href="{% url 'category' listing.category.title %}">{{ listing.category }}</a>
+                                {% else %}
+                                None
+                                {% endif %}
+                            </li>
                         </ul>
                         <h3>Item description</h3>
                         <p>{{ listing.description }}</p>
+                        {% if not listing.active %}
+                        <h3>The auction for this item has closed.</h3>
+                        {% if user == listing.winner and user != listing.user %}
+                        <h2>You have won the auction!</h2>
+                        {% endif %}
+                        {% endif %}
+                        {% if not listing.active and user == listing.user and listing.winner == user %}
+                        <form action="{% url 'close' listing.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-secondary" type="submit">Reopen auction</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            <div style="display: flex; flex-direction: column;">
-                <h5>Comments on this listing:</h5>
+            <div id="listing-bottom">
+                <h3>Comments</h3>
                 {% if listing.comments.all.exists %}
                 <ul>
                     {% for comment in listing.comments.all %}
                     <li>
                         <div>
                             <div>
-                                {{ comment.text }}
+                                <a href="{% url 'user' comment.user.username %}">{{ comment.user }}</a>
                             </div>
-                            <div style="text-align: right;">
-                                <a href="{% url 'user' comment.user.username %}">-{{ comment.user }}</a>
+                            <div class="comment">
+                                {{ comment.text }}
                             </div>
                         </div>
                     </li>
                     {% endfor %}
-                {% else %}
-                <div>No comments yet.</div>
-                {% endif %}
-                <form action="{% url 'listing' listing.id %}" method="post">
-                    {% csrf_token %}
-                    {{ comment_form.text }}
-                    {{ comment_form.date.as_hidden }}
-                    {{ comment_form.user.as_hidden }}
-                    {{ comment_form.listing.as_hidden }}
-                    <input type="hidden" name="type" value="comment">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                    {% else %}
+                    <div>No comments yet.</div>
+                    {% endif %}
+                    {% if listing.active %}
+                    <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        {{ comment_form.text }}
+                        {{ comment_form.date.as_hidden }}
+                        {{ comment_form.user.as_hidden }}
+                        {{ comment_form.listing.as_hidden }}
+                        <input type="hidden" name="type" value="comment">
+                        <button type="submit" class="btn btn-secondary">Submit</button>
+                    </form>
+                    {% endif %}
             </div>
         </div>
     </div>
 </div>
+<script>
+    if (document.getElementById("watchlist")) {
+        button = document.getElementById("btn-watchlist");
+        button.classList.add("watching");
+        button.addEventListener("mouseover", () => {
+            button.classList.remove("btn-secondary")
+            button.innerHTML = "Remove from watchlist"
+        })
+        button.addEventListener("mouseleave", () => {
+            button.innerHTML = "Watching!"
+        })
+    }
+
+    if (document.getElementById("message")) {
+        setTimeout(() => {
+            document.getElementById("message").remove();
+        }, 3000);
+    }
+
+
+</script>
 {% endblock %}
