@@ -1,29 +1,42 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}
+User {{ user.username }}
+{% endblock %}
+
 {% block body %}
-<h2>User {{ user.username }}</h2>
+<h1>User {{ user.username }}</h1>
 {% if visiting == user %}
 <h3>My active listings</h3>
 {% else %}
 <h3>Active items listed by user</h3>
 {% endif %}
-<ul>
+{% if not active_listings %}
+Currently no active listings.
+{% endif %}
+<ul class="list">
     {% for listing in active_listings %}
     <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
     {% endfor %}
 </ul>
 {% if visiting == user %}
 <h3>My closed listings</h3>
-<ul>
-{% for listing in closed_listings %}
-<li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
-</ul>
-{% endfor %}
+{% if not closed_listings %}
+No closed listings yet.
 {% endif %}
-<h3>My won auctions</h3>
-<ul>
-{% for listing in won_listings %}
-<li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+<ul class="list">
+    {% for listing in closed_listings %}
+    <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+    {% endfor %}
 </ul>
-{% endfor %}
+<h3>My won auctions</h3>
+{% if not won_listings%}
+You have not won an auction yet.
+{% endif %}
+<ul class="list">
+    {% for listing in won_listings %}
+    <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

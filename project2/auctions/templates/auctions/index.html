@@ -4,57 +4,58 @@
 
 {% block body %}
 <h2>Active Listings</h2>
-<div id="main-container">
+<div>
     <ul>
         {% for listing in listings %}
-        <div id="listing-container">
-            <div>
+        <div class="listing-container">
+            <div class="div-index">
                 <a href="{% url 'listing' listing_id=listing.id %}">
                     {% if listing.photo %}
                     <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
                     {% else %}
-                    <img src="{% static 'images/image.png' %}" alt="{{ listing.title }}">
+                    <img src="{% static 'images/image.png' %}"
+                        alt="{{ listing.title }}">
                     {% endif %}
                 </a>
             </div>
             <li>
-                <div id="listing-details">
-                    <div>
-                        <h4>
-                            <a href="{% url 'listing' listing_id=listing.id %}">
+                <div class="listing-details">
+                    <div class="div-index listing-left">
+                        <h3>
+                            <a
+                                href="{% url 'listing' listing_id=listing.id %}">
                                 {{ listing.title }}
                             </a>
-                        </h4>
-                        <h5>Highest bid:</h5>
-                        {% if listing.bids.all.exists %}
-                        {{ listing.bids.all|dictsortreversed:"value"|first }}
-                        {% else %}
-                        <div>Currently there are no bids.</div>
+                        </h3>
                         <div>
-                            Starting price: ${{ listing.price }}
+                            {{ listing.description }}
                         </div>
-                        {% endif %}
                     </div>
-                    <div>
-                        <h5>Comments on this listing:</h5>
-                        {% if listing.comments.all.exists %}
-                        <ul>
-                            {% for comment in listing.comments.all %}
-                            <li>
-                                <div>
-                                    <div>
-                                        {{ comment.text }}
-                                    </div>
-                                    <div>
-                                        <a href="{% url 'user' comment.user.username %}">{{ comment.user }}</a>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                        {% else %}
-                        <div>No comments yet.</div>
-                        {% endif %}
+                    <div class="div-index listing-right">
+                        <div>
+                            <h3>Highest bid:
+                                {% if listing.bids.all %}
+                                {{ listing.bids.all|dictsortreversed:"value"|first }}
+                            </h3>
+                            {% else %}
+                            <h5>Currently there are no bids.</h5>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% if listing.bids.all %}
+                            {% with highest_bid=listing.bids.all|dictsortreversed:"value"|first %}
+                            {% if listing.price > highest_bid.value %}
+                            <h3>
+                                Price: ${{ listing.price }}
+                            </h3>
+                            {% endif %}
+                            {% endwith %}
+                            {% else %}
+                            <h3>
+                                Price: ${{ listing.price }}
+                            </h3>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </li>

@@ -67,7 +67,6 @@ def index(request):
         if form.is_valid():
             form.save()
         else:
-            print(form.errors)
             return render(request, "auctions/new-listing.html", {
                 "form": form
             })
@@ -155,21 +154,22 @@ def listing(request, listing_id):
                 form = BidForm(request.POST)
                 form.date = datetime.now()
                 if form.is_valid():
-                    highest_bid = listing.bids.all().order_by("-value").first().value
-                    bid_step = listing.bid_step
-                    validate = form.clean_bid(highest_bid, bid_step)
-                    if validate != form.cleaned_data["value"]:
-                        if validate == "bid":
-                            message = "Bid must be higher than existing highest bid."
-                        else:
-                            message = "Bid step not reached. The minimum bid must be $" + \
-                                str(bid_step) + " higher."
-                        return render(request, "auctions/listing.html", {
-                            "listing": listing,
-                            "bid_form": form,
-                            "comment_form": CommentForm(),
-                            "message": message
-                        })
+                    if listing.bids.all().exists():
+                        highest_bid = listing.bids.all().order_by("-value").first().value
+                        bid_step = listing.bid_step
+                        validate = form.clean_bid(highest_bid, bid_step)
+                        if validate != form.cleaned_data["value"]:
+                            if validate == "bid":
+                                message = "Bid must be higher than existing highest bid."
+                            else:
+                                message = "Bid step not reached. The minimum bid must be $" + \
+                                    str(bid_step) + " higher."
+                            return render(request, "auctions/listing.html", {
+                                "listing": listing,
+                                "bid_form": form,
+                                "comment_form": CommentForm(),
+                                "message": message
+                            })
                     form.save()
                 else:
                     raise Exception("Your bid was invalid.")
@@ -250,7 +250,8 @@ def user_profile(request, username):
 def category(request, title):
     category = Category.objects.get(title=title)
     return render(request, "auctions/category.html", {
-        "category": category
+        "category": category,
+        "listings": category.listings.filter(active=True).all()
     })
 
 

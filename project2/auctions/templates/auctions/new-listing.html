@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+Create new listing
+{% endblock %}
+
 {% block body %}
 <div>
     <h1>Create a new listing</h1>
@@ -15,6 +19,7 @@
             {% csrf_token %}
             {{ form.user.as_hidden }}
             {{ form.pub_date.as_hidden }}
+            {{ form.active.as_hidden }}
             <div id="new-description">
                 <div id="new-title">
                     Title of listing:
@@ -41,7 +46,7 @@
         <div id="new-photo-container">
             <div id="bids-container">
                 <div>
-                    Minimum price: {{ form.price }}
+                    Price: {{ form.price }}
                 </div>
                 <div>
                     Bid step: {{ form.bid_step }}
