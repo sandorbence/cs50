@@ -10,7 +10,9 @@ Watchlist
 {% if watchlist.listings.all %}
 <ul class="list">
     {% for listing in watchlist.listings.all %}
+    {% if listing.active %}
     <li><a href="{% url 'listing' listing.id %}">{{ listing }}</a></li>
+    {% endif %}
     {% endfor %}
 </ul>
 {% else %}
