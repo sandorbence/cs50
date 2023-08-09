@@ -73,7 +73,7 @@ def search(request):
         })
     
 # View for handling content editing/adding
-def edit_entry(request):
+def edit_entry(request, title):
     # If the function was called from an entry page,
     # prefill with the already existing data
     if request.method == "POST":
