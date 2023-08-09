@@ -15,7 +15,8 @@
                 <div>
                     <div id="description-container">
                         <h3>{{ listing.title }}</h3>
-                        <form action="{% url 'listing' listing.id %}" method="post">
+                        <form action="{% url 'listing' listing.id %}"
+                            method="post">
                             {% csrf_token %}
                             <input type="hidden" name="type" value="watchlist">
                             {% if listing in watchlist.listings.all %}
@@ -23,7 +24,8 @@
                             {% endif %}
                             {% if listing.active %}
                             <div>
-                                <button class="btn btn-secondary" type="submit" id="btn-watchlist">
+                                <button class="btn btn-secondary" type="submit"
+                                    id="btn-watchlist">
                                     {% if listing in watchlist.listings.all %}
                                     Watching!
                                     {% else %}
@@ -37,27 +39,31 @@
                     {% if listing.photo %}
                     <img src="{{ listing.photo.url }}" alt="{{ listing.title }}">
                     {% else %}
-                    <img src="{% static 'images/image.png' %}" alt="{{ listing.title }}">
+                    <img src="{% static 'images/image.png' %}"
+                        alt="{{ listing.title }}">
                     {% endif %}
                 </div>
                 <div id="detail-container">
                     {% if listing.active %}
                     <div id="bid-form">
                         {% if listing.user != user %}
+                        <div id="dollar">$</div>
                         <div>
                             {% if listing.bids.all.exists %}
                             <h4>Highest bid: ${{ highest_bid }}</h4>
                             {% else %}
                             <h3>Be the first to bid!</h3>
                             {% endif %}
-                            <form action="{% url 'listing' listing.id %}" method="post">
+                            <form action="{% url 'listing' listing.id %}"
+                                method="post">
                                 {% csrf_token %}
                                 {{ bid_form.value }}
                                 {{ bid_form.date.as_hidden }}
                                 {{ bid_form.user.as_hidden }}
                                 {{ bid_form.listing.as_hidden }}
                                 <input type="hidden" name="type" value="bid">
-                                <button class="btn btn-primary" type="submit">Place a bid</button>
+                                <button class="btn btn-primary" type="submit">Place
+                                    a bid</button>
                             </form>
                         </div>
                         {% else %}
@@ -73,18 +79,22 @@
                             <h4>Price: ${{ listing.price }}</h4>
                             {% if listing.user != user %}
                             {% if not highest_bid or listing.price > highest_bid %}
-                            <form action="{% url 'close' listing.id %}" method="post">
+                            <form action="{% url 'close' listing.id %}"
+                                method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="buy">
-                                <button class="btn btn-primary" type="submit">Buy now!</button>
+                                <button class="btn btn-primary" type="submit">Buy
+                                    now!</button>
                             </form>
                             {% endif %}
                             {% endif %}
                             {% if listing.user == user %}
                             <div>
-                                <form action="{% url 'close' listing.id %}" method="post">
+                                <form action="{% url 'close' listing.id %}"
+                                    method="post">
                                     {% csrf_token %}
-                                    <button class="btn btn-secondary" type="submit">Close auction</button>
+                                    <button class="btn btn-secondary"
+                                        type="submit">Close auction</button>
                                 </form>
                             </div>
                             {% endif %}
@@ -94,12 +104,14 @@
                     <div>
                         <h3>Item details</h3>
                         <ul>
-                            <li>Uploaded by: <a href="{% url 'user' listing.user.username %}">
+                            <li>Uploaded by: <a
+                                    href="{% url 'user' listing.user.username %}">
                                     {{ listing.user }}</a></li>
                             <li>Listed at: {{ listing.pub_date }}</li>
                             <li>Category:
                                 {% if listing.category %}
-                                <a href="{% url 'category' listing.category.title %}">{{ listing.category }}</a>
+                                <a href="{% url 'category' listing.category.title %}">
+                                    {{ listing.category }}</a>
                                 {% else %}
                                 None
                                 {% endif %}
@@ -114,9 +126,11 @@
                         {% endif %}
                         {% endif %}
                         {% if not listing.active and user == listing.user and listing.winner == user %}
-                        <form action="{% url 'close' listing.id %}" method="post">
+                        <form action="{% url 'close' listing.id %}"
+                            method="post">
                             {% csrf_token %}
-                            <button class="btn btn-secondary" type="submit">Reopen auction</button>
+                            <button class="btn btn-secondary" type="submit">Reopen
+                                auction</button>
                         </form>
                         {% endif %}
                     </div>
@@ -130,7 +144,8 @@
                     <li>
                         <div>
                             <div>
-                                <a href="{% url 'user' comment.user.username %}">{{ comment.user }}</a>
+                                <a href="{% url 'user' comment.user.username %}">
+                                    {{comment.user }}</a>
                             </div>
                             <div class="comment">
                                 {{ comment.text }}
@@ -152,9 +167,9 @@
                         <button type="submit" class="btn btn-secondary">Submit</button>
                     </form>
                     {% endif %}
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script src="{% static 'scripts/listing.js' %}"></script>
-{% endblock %}
+    <script src="{% static 'scripts/listing.js' %}"></script>
+    {% endblock %}

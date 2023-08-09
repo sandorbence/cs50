@@ -42,19 +42,9 @@
                             {% endif %}
                         </div>
                         <div>
-                            {% if listing.bids.all %}
-                            {% with highest_bid=listing.bids.all|dictsortreversed:"value"|first %}
-                            {% if listing.price > highest_bid.value %}
                             <h3>
                                 Price: ${{ listing.price }}
                             </h3>
-                            {% endif %}
-                            {% endwith %}
-                            {% else %}
-                            <h3>
-                                Price: ${{ listing.price }}
-                            </h3>
-                            {% endif %}
                         </div>
                     </div>
                 </div>

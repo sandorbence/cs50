@@ -15,6 +15,7 @@ h1 {
 input {
   border: none;
   border-radius: 5px;
+  color: #1D5D9B;
   background-color: #FBEEAC;
 }
 
@@ -25,7 +26,8 @@ input[type=file] {
 
 input[type=number] {
   height: 30px;
-  padding-left: 5px;
+  padding-bottom: 3px;
+  padding-left: 17px;
   width: 100px;
 }
 
@@ -166,6 +168,7 @@ textarea {
   font-size: 14px;
   line-height: 25px;
   margin: 0 !important;
+  position: relative;
   text-align: center;
   width: 100%;
 }
@@ -177,7 +180,10 @@ textarea {
 }
 
 #bid-form input {
+  font-size: 14px;
+  height: 40px;
   margin: 5px;
+  padding-left: 20px;
   width: 250px;
 }
 
@@ -193,6 +199,17 @@ textarea {
 
 #bids-container > div {
   width: 50%;
+}
+
+#bids-container > div > div {
+  display: inline-block;
+  position: relative;
+}
+
+#bids-container > div > div > div {
+  position: absolute;
+  right: 85px;
+  top: 2px;
 }
 
 #btn-watchlist {
@@ -224,6 +241,12 @@ textarea {
 
 #detail-container > div {
   margin: 20px 0 0 50px;
+}
+
+#dollar {
+  left: 55px;
+  position: absolute;
+  top: 48px;
 }
 
 #empty-space {

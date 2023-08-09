@@ -11,6 +11,7 @@ function readURL(input) {
     }
 }
 
+// Add preview of selected image upon selecting
 document.getElementById("listing-image").addEventListener("change", function () {
     readURL(this);
 });

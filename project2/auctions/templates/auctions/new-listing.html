@@ -12,7 +12,8 @@ Create new listing
 </div>
 <div id="new-listing-container">
     <div>
-        <img id="image-preview" src="{% static 'images/image.png' %}">
+        <img id="image-preview" src="{% static 'images/image.png' %}"
+            alt="preview">
     </div>
     <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
         <div>
@@ -46,10 +47,20 @@ Create new listing
         <div id="new-photo-container">
             <div id="bids-container">
                 <div>
-                    Price: {{ form.price }}
+                    <div>
+                        <div>
+                            $
+                        </div>
+                        Price: {{ form.price }}
+                    </div>
                 </div>
                 <div>
-                    Bid step: {{ form.bid_step }}
+                    <div>
+                        <div>
+                            $
+                        </div>
+                        Bid step: {{ form.bid_step }}
+                    </div>
                 </div>
             </div>
             <div id="empty-space">
@@ -62,7 +73,8 @@ Create new listing
                     </div>
                 </div>
                 <div id="add-button">
-                    <button type="submit" class="btn btn-secondary">Add new listing</button>
+                    <button type="submit" class="btn btn-secondary">Add new
+                        listing</button>
                 </div>
             </div>
         </div>
