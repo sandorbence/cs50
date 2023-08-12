@@ -1,3 +1,11 @@
 textarea {
     min-height: 400px;
 }
+
+.email {
+    border: 1px solid;
+}
+
+.read {
+    background-color: lightgray;
+}
