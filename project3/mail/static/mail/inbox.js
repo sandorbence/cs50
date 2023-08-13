@@ -1,3 +1,5 @@
+const DJANGO_STATIC_URL = '/static/';
+
 document.addEventListener('DOMContentLoaded', function () {
 
   // Use buttons to toggle between views
@@ -13,17 +15,28 @@ document.addEventListener('DOMContentLoaded', function () {
   load_mailbox('inbox');
 });
 
-function compose_email() {
+function compose_email(email) {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#single_email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
+  let recipients = '';
+  let subject = '';
+  let body = '';
+
+  // If user wants to reply
+  if (email) {
+    recipients = email.sender;
+    subject = 'Re: ' + email.subject;
+    body = 'On ' + email.timestamp + ' ' + email.sender + ' wrote: ' + email.body + '\n\n';
+  }
+
+  // Fill out composition fields
+  document.querySelector('#compose-recipients').value = recipients;
+  document.querySelector('#compose-subject').value = subject;
+  document.querySelector('#compose-body').value = body;
 }
 
 function load_mailbox(mailbox) {
@@ -41,9 +54,7 @@ function load_mailbox(mailbox) {
     .then(response => response.json())
     .then(emails => {
       console.log(emails);
-
       emails.forEach(email => {
-        console.log(email.body);
         create_mail_element(email);
       });
     });
@@ -62,10 +73,26 @@ function load_email(email) {
   container.innerHTML = '';
 
   // Create email element
-  container.append(create_element('sender', email.sender));
-  container.append(create_element('subject', email.subject));
-  container.append(create_element('body', email.body));
-  container.append(create_element('timestamp', email.timestamp));
+  container.append(create_element('sender', email.sender, container));
+  container.append(create_element('subject', email.subject, container));
+  container.append(create_element('body', email.body, container));
+  container.append(create_element('timestamp', email.timestamp, container));
+
+  // Create archive button
+  container.append(create_archive_button(email.id, email.archived));
+
+  // Create reply button
+  let button = document.createElement('button');
+  button.innerHTML = 'Reply';
+  button.classList.add('btn', 'btn-secondary');
+
+  // Add event listener to reply button
+  button.addEventListener('click', () => {
+    compose_email(email);
+  });
+
+  // Add reply button to container
+  container.append(button);
 }
 
 function send_email() {
@@ -94,32 +121,77 @@ function send_email() {
 }
 
 function create_mail_element(email) {
-  let element = document.createElement('div');
-  element.classList.add('email');
-  if (email.read) element.classList.add('read');
+  const email_row = document.createElement('div');
+  email_row.classList.add('email');
 
-  // Create each part of email element
-  element.append(create_element('sender', email.sender));
-  element.append(create_element('subject', email.subject));
-  element.append(create_element('timestamp', email.timestamp));
+  let src = DJANGO_STATIC_URL + 'images/unread.png';
+
+  // If email is read change icon and add background color
+  if (email.read) {
+    email_row.classList.add('read');
+    src = DJANGO_STATIC_URL + 'images/read.png';
+  }
+
+  let image = document.createElement('img');
+  image.src = src;
+
+  // Add icon before each email's content
+  const icon = document.createElement('div');
+  icon.classList.add('icon');
+  icon.append(image);
+
+  // Add event listener to icon to change read/unread
+  icon.addEventListener('click', () => {
+    mark_email_as_read(email.id, !email.read);
+  });
+
+  email_row.append(icon);
+
+  const contents = create_element('contents', '');
+
+  // Create each part of email content
+  contents.append(create_element('sender', email.sender));
+  contents.append(create_element('subject', email.subject));
+  contents.append(create_element('timestamp', email.timestamp));
 
   // Add event listener to email element
-  element.addEventListener('click', () => {
+  contents.addEventListener('click', () => {
+    mark_email_as_read(email.id, true);
     get_email(email.id);
   });
 
-  // Add element to main container
-  document.querySelector('#emails-view').append(element);
+  // Add contents to email row
+  email_row.append(contents);
+
+  // Add row to main container
+  document.querySelector('#emails-view').append(email_row);
 }
 
-function create_element(type, text) {
+function create_element(type, content) {
 
   // Create separate div for each part of email
   let element = document.createElement('div');
-  element.innerHTML = text;
+  element.innerHTML = content;
   element.classList.add(type);
 
   return element;
+}
+
+function create_archive_button(id, archived) {
+
+  // Create button
+  let button = document.createElement('button');
+  if (archived) button.innerHTML = 'Unarchive';
+  else button.innerHTML = 'Archive';
+  button.classList.add('btn', 'btn-primary');
+
+  // Add event listener
+  button.addEventListener('click', () => {
+    // Change current state
+    mark_email_as_archived(id, !archived);
+  });
+
+  return button;
 }
 
 function get_email(id) {
@@ -127,7 +199,30 @@ function get_email(id) {
     .then(response => response.json())
     .then(email => {
       console.log(email);
-
       load_email(email);
+    });
+}
+
+function mark_email_as_read(id, read) {
+  fetch('/emails/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({
+      read: read
+    })
+  })
+    .then(() => {
+      load_mailbox('inbox');
+    })
+}
+
+function mark_email_as_archived(id, archived) {
+  fetch('/emails/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({
+      archived: archived
+    })
+  })
+    .then(() => {
+      load_mailbox('inbox');
     });
 }

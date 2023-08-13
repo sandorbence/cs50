@@ -2,10 +2,49 @@ textarea {
     min-height: 400px;
 }
 
+.contents {
+    display: flex;
+    flex: 1;
+    padding: 10px;
+}
+
+.contents:hover {
+    cursor: pointer;
+}
+
 .email {
+    align-items: center;
+    background-color: white;
     border: 1px solid;
+    border-radius: 5px;
+    display: flex;
+    margin: 5px;
+}
+
+.icon {
+    margin: 5px 10px;
+}
+
+.icon:hover {
+    cursor: pointer;
 }
 
 .read {
-    background-color: lightgray;
+    background-color: #D8D9DA;
+}
+
+.timestamp {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.sender {
+    flex: 2;
+    font-size: 1.2rem;
+}
+
+.subject {
+    flex: 2;
+    font-size: 1rem;
 }
