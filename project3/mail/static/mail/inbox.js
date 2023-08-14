@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', ()=> compose_email());
 
   // Add event listener to form for submit
   document.querySelector('#compose-form').onsubmit = () => send_email();
@@ -28,9 +28,23 @@ function compose_email(email) {
 
   // If user wants to reply
   if (email) {
+    console.log(email)
     recipients = email.sender;
-    subject = 'Re: ' + email.subject;
-    body = 'On ' + email.timestamp + ' ' + email.sender + ' wrote: ' + email.body + '\n\n';
+    if (email.subject.substring(0, 4) != 'Re: ') {
+      subject = 'Re: ' + email.subject;
+      body = 'On ' + email.timestamp + ' ' + email.sender + ' wrote:\n' + email.body + '\n\n';
+    }
+    else {
+      subject = email.subject;
+
+      let replies = email.body.split('\n\n');
+
+      // New body consists of all previous replies along with the last reply + timestamp
+      for (let i = 0; i < replies.length - 1; i++) {
+        body += replies[i] + '\n\n';
+      }
+      body += 'On ' + email.timestamp + ' ' + email.sender + ' wrote:\n' + replies[replies.length - 1] + '\n\n';
+    }
   }
 
   // Fill out composition fields
@@ -53,14 +67,13 @@ function load_mailbox(mailbox) {
   fetch('/emails/' + mailbox)
     .then(response => response.json())
     .then(emails => {
-      console.log(emails);
       emails.forEach(email => {
         create_mail_element(email);
       });
     });
 }
 
-function load_email(email) {
+function load_email(email, from) {
 
   // Hide mailbox and compose
   document.querySelector("#emails-view").style.display = 'none';
@@ -78,8 +91,8 @@ function load_email(email) {
   container.append(create_element('body', email.body, container));
   container.append(create_element('timestamp', email.timestamp, container));
 
-  // Create archive button
-  container.append(create_archive_button(email.id, email.archived));
+  // Create archive button only if email is in inbox or archived
+  if (from !== 'sent') container.append(create_archive_button(email.id, email.archived));
 
   // Create reply button
   let button = document.createElement('button');
@@ -112,8 +125,7 @@ function send_email() {
     })
   })
     .then(response => response.json())
-    .then(result => {
-      console.log(result);
+    .then(() => {
       load_mailbox('sent');
     });
 
@@ -142,7 +154,7 @@ function create_mail_element(email) {
 
   // Add event listener to icon to change read/unread
   icon.addEventListener('click', () => {
-    mark_email_as_read(email.id, !email.read);
+    mark_email_as_read(email.id, !email.read, true);
   });
 
   email_row.append(icon);
@@ -198,21 +210,22 @@ function get_email(id) {
   fetch('/emails/' + id)
     .then(response => response.json())
     .then(email => {
-      console.log(email);
-      load_email(email);
+      let from = document.querySelector('h3').innerHTML.toLowerCase();
+      load_email(email, from);
     });
 }
 
-function mark_email_as_read(id, read) {
+function mark_email_as_read(id, read, from_icon) {
   fetch('/emails/' + id, {
     method: 'PUT',
     body: JSON.stringify({
       read: read
     })
-  })
-    .then(() => {
-      load_mailbox('inbox');
-    })
+  }).then(() => {
+    if (from_icon) {
+      load_mailbox(document.querySelector('h3').innerHTML.toLowerCase());
+    }
+  });
 }
 
 function mark_email_as_archived(id, archived) {

@@ -3,6 +3,7 @@ textarea {
 }
 
 .contents {
+    align-items: center;
     display: flex;
     flex: 1;
     padding: 10px;
@@ -13,11 +14,11 @@ textarea {
 }
 
 .email {
-    align-items: center;
     background-color: white;
     border: 1px solid;
     border-radius: 5px;
     display: flex;
+    font-weight: bold;
     margin: 5px;
 }
 
@@ -31,6 +32,7 @@ textarea {
 
 .read {
     background-color: #D8D9DA;
+    font-weight: normal;
 }
 
 .timestamp {
