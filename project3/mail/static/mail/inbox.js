@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', ()=> compose_email());
+  document.querySelector('#compose').addEventListener('click', () => compose_email());
 
   // Add event listener to form for submit
   document.querySelector('#compose-form').onsubmit = () => send_email();
@@ -28,7 +28,6 @@ function compose_email(email) {
 
   // If user wants to reply
   if (email) {
-    console.log(email)
     recipients = email.sender;
     if (email.subject.substring(0, 4) != 'Re: ') {
       subject = 'Re: ' + email.subject;
@@ -86,10 +85,15 @@ function load_email(email, from) {
   container.innerHTML = '';
 
   // Create email element
-  container.append(create_element('sender', email.sender, container));
-  container.append(create_element('subject', email.subject, container));
-  container.append(create_element('body', email.body, container));
-  container.append(create_element('timestamp', email.timestamp, container));
+  container.append(create_element('email-info', `<strong>From:</strong> ` + email.sender));
+  container.append(create_element('email-info', `<strong>To:</strong> ` + email.recipients))
+  container.append(create_element('email-info', `<strong>Subject:</strong> ` + email.subject));
+  container.append(create_element('email-info', `<strong>Date:</strong> ` + email.timestamp));
+
+  // Add horizontal break between email information and body
+  container.append(document.createElement('hr'));
+
+  container.append(create_element('body', email.body));
 
   // Create archive button only if email is in inbox or archived
   if (from !== 'sent') container.append(create_archive_button(email.id, email.archived));
@@ -195,7 +199,7 @@ function create_archive_button(id, archived) {
   let button = document.createElement('button');
   if (archived) button.innerHTML = 'Unarchive';
   else button.innerHTML = 'Archive';
-  button.classList.add('btn', 'btn-primary');
+  button.classList.add('btn', 'btn-primary', 'archive');
 
   // Add event listener
   button.addEventListener('click', () => {

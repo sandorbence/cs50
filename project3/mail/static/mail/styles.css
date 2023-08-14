@@ -2,6 +2,18 @@ textarea {
     min-height: 400px;
 }
 
+.archive {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.body {
+    height: 40vh;
+    margin-top: 10px;
+    padding: 20px;
+}
+
 .contents {
     align-items: center;
     display: flex;
@@ -49,4 +61,8 @@ textarea {
 .subject {
     flex: 2;
     font-size: 1rem;
+}
+
+#single_email-view {
+    position: relative;
 }
