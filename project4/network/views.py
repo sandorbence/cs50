@@ -1,14 +1,19 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.order_by("-date").all()
+    return render(request, "network/index.html", {
+        'posts': posts
+    })
 
 
 def login_view(request):
@@ -61,3 +66,43 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+@csrf_exempt
+@login_required
+def user(request, user_id):
+
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)
+
+    if request.method == "GET":
+        return JsonResponse(user.serialize())
+
+
+@csrf_exempt
+@login_required
+def post(request, post_id):
+
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
+
+
+@csrf_exempt
+@login_required
+def posts(request, filter):
+
+    match filter:
+        case "all":
+            posts = Post.objects.all()
+        case "following":
+            posts = Post.objects.filter(user__in=[user for user in request.user.following.all()])
+
+    posts = posts.order_by("-date").all()
+    return JsonResponse([post.serialize() for post in posts], safe=False)
