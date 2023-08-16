@@ -83,26 +83,26 @@ def user(request, user_id):
 
 @csrf_exempt
 @login_required
-def post(request, post_id):
-
-    try:
-        post = Post.objects.get(pk=post_id)
-    except Post.DoesNotExist:
-        return JsonResponse({"error": "Post not found"}, status=404)
-
-    if request.method == "GET":
-        return JsonResponse(post.serialize())
-
-
-@csrf_exempt
-@login_required
 def posts(request, filter):
 
     match filter:
         case "all":
             posts = Post.objects.all()
         case "following":
-            posts = Post.objects.filter(user__in=[user for user in request.user.following.all()])
+            posts = Post.objects.filter(
+                user__in=[user for user in request.user.following.all()])
 
     posts = posts.order_by("-date").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
+
+
+@login_required
+def user_profile(request, username):
+    return render(request, "network/profile.html", {
+        "user": User.objects.get(username=username)
+    })
+
+
+@login_required
+def following(request):
+    return render(request, "network/following.html")
