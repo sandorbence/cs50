@@ -3,11 +3,6 @@
 {% load static %}
 
 {% block body %}
-    <ul>
-        {% for post in posts %}
-        <li>{{ post.text }}</li>
-        {% endfor %}
-    </ul>
     <div id="posts-container"></div>
     <script src="{% static 'scripts/index.js' %}"></script>
 {% endblock %}
