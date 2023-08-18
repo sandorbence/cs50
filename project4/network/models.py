@@ -3,13 +3,22 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers = models.ManyToManyField("self", symmetrical=False, related_name="following")
+    followers = models.ManyToManyField(
+        "self", symmetrical=False, related_name="following")
 
     def serialize(self):
         return {
             "id": self.pk,
             "username": self.username,
             "email": self.email,
+            "posts": [
+                {
+                    "id": post.id,
+                    "user": post.user.username,
+                    "text": post.text,
+                    "date": post.date
+                }
+                for post in self.posts.order_by("-date").all()],
             "followers": [follower.username for follower in self.followers.all()],
             "following": [followed.username for followed in self.following.all()]
         }

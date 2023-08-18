@@ -75,7 +75,7 @@ def user(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
-        return JsonResponse({"error": "User not found"}, status=404)
+        return JsonResponse({"error": "User not found."}, status=404)
 
     if request.method == "GET":
         return JsonResponse(user.serialize())

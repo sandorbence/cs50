@@ -1,0 +1,8 @@
+.post-container {
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+#user-id {
+    display: none;
+}

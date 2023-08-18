@@ -1,0 +1,15 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<div id="user-id">{{ user.id }}</div>
+{% if request.user == user %} 
+<h1>My Profile</h1>
+{% else %}
+<h1>User {{user.username}}</h1>
+{% endif %}
+<div id="posts-container"></div>
+<script src="{% static 'scripts/utils.js' %}"></script>
+<script src="{% static 'scripts/user.js' %}"></script>
+{% endblock %}
