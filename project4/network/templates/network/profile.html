@@ -9,6 +9,19 @@
 {% else %}
 <h1>User {{user.username}}</h1>
 {% endif %}
+<h2>Followers</h2>
+<div id="follower-count">
+{{ user.followers.count }}
+</div>
+<h2>Following</h2>
+{{ user.following.count }}
+{% if user != request.user %}
+{% if followed %}
+<button id="follow" class="btn btn-primary" type="submit">Unfollow</button>
+{% else %}
+<button id="follow" class="btn btn-primary" type="submit">Follow</button>
+{% endif %}
+{% endif %}
 <div id="posts-container"></div>
 <script src="{% static 'scripts/utils.js' %}"></script>
 <script src="{% static 'scripts/user.js' %}"></script>

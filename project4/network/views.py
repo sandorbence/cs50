@@ -82,6 +82,19 @@ def user(request, user_id):
     if request.method == "GET":
         return JsonResponse(user.serialize())
 
+    if request.method == "PUT":
+        followed = json.loads(request.body).get("follow")
+        if followed:
+            user.followers.add(request.user)
+        else:
+            if user.followers.filter(username=request.user.username).exists():
+                user.followers.remove(request.user)
+            else:
+                return JsonResponse({"error": "You are not following this user."}, status=400)
+
+        user.save()
+        return HttpResponse(status=204)
+
 
 @csrf_exempt
 @login_required
@@ -121,7 +134,8 @@ def posts(request, filter):
 @login_required
 def user_profile(request, username):
     return render(request, "network/profile.html", {
-        "user": User.objects.get(username=username)
+        "user": User.objects.get(username=username),
+        "followed": request.user.following.filter(username=username).exists()
     })
 
 

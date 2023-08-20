@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    load_posts()
+    loadPosts();
 
     const form = document.getElementById('new-post');
-    form.onsubmit = () => create_new_post();
+    form.onsubmit = () => createNewPost();
 
 });
 
-function load_posts() {
+function loadPosts() {
     const container = document.getElementById('posts-container');
     // Clear container before populating it
     container.innerHTML = '';
@@ -19,11 +19,11 @@ function load_posts() {
     fetch('/posts/all')
         .then(response => response.json())
         .then(posts => {
-            posts.forEach(post => create_post(post, container));
+            posts.forEach(post => createPost(post, container));
         });
 }
 
-function create_new_post() {
+function createNewPost() {
     let text = document.getElementById('new-post-text').value;
 
     fetch('/posts', {
@@ -33,7 +33,7 @@ function create_new_post() {
         })
     })
         .then(response => response.json())
-        .then(() => load_posts())
+        .then(() => loadPosts())
 
     return false;
 }
