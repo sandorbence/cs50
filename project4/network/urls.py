@@ -13,5 +13,6 @@ urlpatterns = [
 
     # API routes
     path("users/<int:user_id>", views.user, name="user"),
+    path("posts", views.post, name="post"),
     path("posts/<str:filter>", views.posts, name="posts")
 ]

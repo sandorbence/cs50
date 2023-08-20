@@ -3,7 +3,13 @@
 {% load static %}
 
 {% block body %}
-    <div id="posts-container"></div>
-    <script src="{% static 'scripts/utils.js' %}"></script>
-    <script src="{% static 'scripts/index.js' %}"></script>
+<div id="new-post-container">
+    <form id="new-post">
+        <textarea id="new-post-text" cols="80" rows="5" placeholder="What's on your mind?"></textarea>
+        <button class="btn btn-primary" type="submit">Post</button>
+    </form>
+</div>
+<div id="posts-container"></div>
+<script src="{% static 'scripts/utils.js' %}"></script>
+<script src="{% static 'scripts/index.js' %}"></script>
 {% endblock %}

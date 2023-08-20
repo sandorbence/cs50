@@ -11,14 +11,7 @@ class User(AbstractUser):
             "id": self.pk,
             "username": self.username,
             "email": self.email,
-            "posts": [
-                {
-                    "id": post.id,
-                    "user": post.user.username,
-                    "text": post.text,
-                    "date": post.date
-                }
-                for post in self.posts.order_by("-date").all()],
+            "posts": [post.serialize() for post in self.posts.order_by("-date").all()],
             "followers": [follower.username for follower in self.followers.all()],
             "following": [followed.username for followed in self.following.all()]
         }
@@ -38,5 +31,5 @@ class Post(models.Model):
             "id": self.pk,
             "user": self.user.username,
             "text": self.text,
-            "date": self.date
+            "date": self.date.strftime("%a %H:%M  %y/%m/%d")
         }

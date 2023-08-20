@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import datetime
 
 from .models import User, Post
 
@@ -12,7 +14,7 @@ from .models import User, Post
 def index(request):
     posts = Post.objects.order_by("-date").all()
     return render(request, "network/index.html", {
-        'posts': posts
+        "posts": posts
     })
 
 
@@ -79,6 +81,26 @@ def user(request, user_id):
 
     if request.method == "GET":
         return JsonResponse(user.serialize())
+
+
+@csrf_exempt
+@login_required
+def post(request):
+
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    text = json.loads(request.body).get("text")
+
+    if text == "":
+        return JsonResponse({"error": "The post must have text."}, status=400)
+    post = Post(
+        user=request.user,
+        text=text,
+        date=datetime.now()
+    )
+    post.save()
+    return JsonResponse({"message": "Post created successfully."}, status=201)
 
 
 @csrf_exempt
