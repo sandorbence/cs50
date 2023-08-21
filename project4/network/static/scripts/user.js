@@ -1,13 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const user_id = document.getElementById('user-id').innerHTML;
-    const posts_container = document.getElementById('posts-container');
+    
     const follow_button = document.getElementById('follow');
-
-    fetch('/users/' + user_id)
-        .then(response => response.json())
-        .then(user => {
-            user.posts.forEach(post => createPost(post, posts_container));
-        });
+    const user_id = document.getElementById('user-id').textContent;
 
     follow_button.addEventListener('click', (event) => follow(event, user_id))
 });

@@ -2,9 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
+
 import json
 from datetime import datetime
 
@@ -12,9 +14,27 @@ from .models import User, Post
 
 
 def index(request):
+
+    if request.method == "POST":
+        text = request.POST.get("text")
+
+        if text == "":
+            return JsonResponse({"error": "The post must have text."}, status=400)
+        post = Post(
+            user=request.user,
+            text=text,
+            date=datetime.now()
+        )
+        post.save()
+        return redirect("index")
+
     posts = Post.objects.order_by("-date").all()
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/index.html", {
-        "posts": posts
+        "page_obj": page_obj
     })
 
 
@@ -133,12 +153,26 @@ def posts(request, filter):
 
 @login_required
 def user_profile(request, username):
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(user=user).order_by("-date")
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/profile.html", {
-        "user": User.objects.get(username=username),
-        "followed": request.user.following.filter(username=username).exists()
+        "user": user,
+        "followed": request.user.following.filter(username=username).exists(),
+        "page_obj": page_obj
     })
 
 
 @login_required
 def following(request):
-    return render(request, "network/following.html")
+    posts = Post.objects.filter(user__in=[user for user in request.user.following.all()]).order_by("-date")
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "network/following.html", {
+        "page_obj": page_obj
+    })

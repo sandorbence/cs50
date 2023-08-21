@@ -4,12 +4,35 @@
 
 {% block body %}
 <div id="new-post-container">
-    <form id="new-post">
-        <textarea id="new-post-text" cols="80" rows="5" placeholder="What's on your mind?"></textarea>
+    <form action method="post">
+        {% csrf_token %}
+        <textarea name="text" cols="80" rows="5"
+            placeholder="What's on your mind?"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
     </form>
 </div>
-<div id="posts-container"></div>
-<script src="{% static 'scripts/utils.js' %}"></script>
-<script src="{% static 'scripts/index.js' %}"></script>
+<div id="posts-container">
+    <ul>
+        {% for post in page_obj %}
+        <li>{{ post }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="pagination-container">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <a class="page-link" href="?page=1">&laquo; first</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </ul>
+</div>
 {% endblock %}
