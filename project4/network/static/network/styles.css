@@ -1,5 +1,13 @@
+li {
+    list-style: none;
+}
+
 textarea {
     resize: none;
+}
+
+ul {
+    padding: 0;
 }
 
 .post-container {

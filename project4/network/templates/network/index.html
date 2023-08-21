@@ -14,7 +14,22 @@
 <div id="posts-container">
     <ul>
         {% for post in page_obj %}
-        <li>{{ post }}</li>
+        <li>
+            <div class="post-container">
+                <div class="">
+                    <a href="{% url 'user_profile' post.user.username %}">{{ post.user }}</a>
+                </div>
+                <div>
+                    {{ post.text }}
+                </div>
+                <div>
+                    {{ post.date }}
+                </div>
+                {% if post.user == request.user %}
+                <button class="btn btn-primary edit">Edit</button>
+                {% endif %}
+            </div>
+        </li>
         {% endfor %}
     </ul>
 </div>

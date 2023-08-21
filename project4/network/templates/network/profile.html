@@ -25,15 +25,32 @@
 <div id="posts-container">
     <ul>
         {% for post in page_obj %}
-        <li>{{ post }}</li>
+        <li>
+            <div class="post-container">
+                <div class="">
+                    <a href="{% url 'user_profile' post.user.username %}">{{ post.user }}</a>
+                </div>
+                <div class="post-text">
+                    {{ post.text }}
+                </div>
+                <div class="post-date">
+                    {{ post.date }}
+                </div>
+                {% if post.user == request.user %}
+                <form class="edit" id="{{ post.id }}">
+                    <button class="btn btn-primary" type="submit">Edit</button>
+                </form>
+                {% endif %}
+            </div>
+        </li>
         {% endfor %}
     </ul>
 </div>
 <div class="pagination-container">
     <ul class="pagination">
         {% if page_obj.has_previous %}
-            <a class="page-link" href="?page=1">&laquo; first</a>
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <a class="page-link" href="?page=1">&laquo; first</a>
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -41,10 +58,11 @@
         </span>
 
         {% if page_obj.has_next %}
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </ul>
 </div>
 <script src="{% static 'scripts/user.js' %}"></script>
+<script src="{% static 'scripts/edit.js' %}"></script>
 {% endblock %}
