@@ -1,14 +1,16 @@
-const editablePosts = document.querySelectorAll('.edit');
+document.addEventListener('DOMContentLoaded', () => {
+    const editButtons = document.querySelectorAll('.edit');
 
-editablePosts.forEach(form => {
-    form.onsubmit = () => editPost(form);
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => editPost(button));
+    })
 })
 
-function editPost(form) {
-    const postId = form.id;
+function editPost(button) {
+    const postId = button.id;
 
     // Find parent element
-    const parent = form.parentElement;
+    const parent = button.parentElement;
 
     // Find text within parent
     const postText = parent.querySelector('.post-text');
@@ -18,9 +20,39 @@ function editPost(form) {
     postText.innerHTML = '';
 
     // Replace text into textarea
-    let textarea = document.createElement('textarea');
-    parent.append(textarea);
+    const textarea = parent.querySelector('textarea');
+    textarea.style.display = 'block';
     textarea.value = text;
 
-    return false;
+    // Hide edit button and show save button
+    button.style.display = 'none';
+    const saveButton = parent.querySelector('.save');
+    saveButton.style.display = 'inline';
+
+    saveButton.addEventListener('click', () => savePost(postId, saveButton));
+}
+
+function savePost(postId, button) {
+    const parent = button.parentElement;
+
+    // Take text from textarea then hide it
+    const textarea = parent.querySelector('textarea');
+    const text = textarea.value;
+    textarea.style.display = 'none';
+
+    // Make PUT request to save changes in DB
+    fetch('/posts/' + postId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            "text": text
+        })
+    })
+        .then(response => response.json())
+
+    // Hide save button and show edit button
+    button.style.display = 'none';
+    parent.querySelector('.edit').style.display = 'inline';
+
+    // Display text in div
+    parent.querySelector('.post-text').innerHTML = text;
 }

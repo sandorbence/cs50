@@ -17,9 +17,17 @@ ul {
     padding: 10px;
 }
 
+.post-container textarea {
+    display: none;
+}
+
 .post-date {
     display: flex;
     justify-content: flex-end;
+}
+
+.save {
+    display: none;
 }
 
 #user-id {

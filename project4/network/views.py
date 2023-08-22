@@ -118,22 +118,23 @@ def user(request, user_id):
 
 @csrf_exempt
 @login_required
-def post(request):
+def post(request, post_id):
 
-    if request.method != "POST":
-        return JsonResponse({"error": "POST request required."}, status=400)
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
 
-    text = json.loads(request.body).get("text")
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
 
-    if text == "":
-        return JsonResponse({"error": "The post must have text."}, status=400)
-    post = Post(
-        user=request.user,
-        text=text,
-        date=datetime.now()
-    )
+    if request.method == "PUT":
+        text = json.loads(request.body).get("text")
+        if text == "":
+            return JsonResponse({"error": "The post must have text."}, status=400)
+        post.text = text
     post.save()
-    return JsonResponse({"message": "Post created successfully."}, status=201)
+    return JsonResponse({"message": "Post edited successfully."}, status=201)
 
 
 @csrf_exempt
