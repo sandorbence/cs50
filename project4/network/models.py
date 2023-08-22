@@ -22,6 +22,7 @@ class Post(models.Model):
         User, on_delete=models.CASCADE, related_name="posts")
     text = models.CharField(max_length=500)
     date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="liked_posts")
 
     def __str__(self):
         return f"post by {self.user.username}: {self.text[:40]}"

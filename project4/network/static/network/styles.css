@@ -10,6 +10,18 @@ ul {
     padding: 0;
 }
 
+.btn-like {
+    padding: 0;
+}
+
+.btn-save {
+    display: none;
+}
+
+.liked {
+    fill: lightblue;
+}
+
 .post-container {
     border: 1px solid;
     border-radius: 10px;
@@ -24,10 +36,6 @@ ul {
 .post-date {
     display: flex;
     justify-content: flex-end;
-}
-
-.save {
-    display: none;
 }
 
 #user-id {

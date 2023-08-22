@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const editButtons = document.querySelectorAll('.edit');
+    const editButtons = document.querySelectorAll('.btn-edit');
 
     editButtons.forEach(button => {
         button.addEventListener('click', () => editPost(button));
@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function editPost(button) {
-    const postId = button.id;
 
     // Find parent element
     const parent = button.parentElement;
@@ -26,13 +25,13 @@ function editPost(button) {
 
     // Hide edit button and show save button
     button.style.display = 'none';
-    const saveButton = parent.querySelector('.save');
+    const saveButton = parent.querySelector('.btn-save');
     saveButton.style.display = 'inline';
 
-    saveButton.addEventListener('click', () => savePost(postId, saveButton));
+    saveButton.addEventListener('click', () => savePost(saveButton));
 }
 
-function savePost(postId, button) {
+function savePost(button) {
     const parent = button.parentElement;
 
     // Take text from textarea then hide it
@@ -41,7 +40,7 @@ function savePost(postId, button) {
     textarea.style.display = 'none';
 
     // Make PUT request to save changes in DB
-    fetch('/posts/' + postId, {
+    fetch('/posts/' + parent.id, {
         method: 'PUT',
         body: JSON.stringify({
             "text": text
@@ -51,7 +50,7 @@ function savePost(postId, button) {
 
     // Hide save button and show edit button
     button.style.display = 'none';
-    parent.querySelector('.edit').style.display = 'inline';
+    parent.querySelector('.btn-edit').style.display = 'inline';
 
     // Display text in div
     parent.querySelector('.post-text').innerHTML = text;

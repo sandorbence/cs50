@@ -129,10 +129,21 @@ def post(request, post_id):
         return JsonResponse(post.serialize())
 
     if request.method == "PUT":
-        text = json.loads(request.body).get("text")
-        if text == "":
-            return JsonResponse({"error": "The post must have text."}, status=400)
-        post.text = text
+        data = json.loads(request.body)
+        if data.get("text") is not None:
+            text = data["text"]
+            if text == "":
+                return JsonResponse({"error": "The post must have text."}, status=400)
+            post.text = text
+        if data.get("liked") is not None:
+            liked = data["liked"]
+            if liked:
+                post.likes.add(request.user)
+            else:
+                if post.likes.filter(username=request.username).exists():
+                    post.likes.remove(request.user)
+                else:
+                    return JsonResponse({"error": "You have not yet liked this post."}, status=400)
     post.save()
     return JsonResponse({"message": "Post edited successfully."}, status=201)
 
@@ -169,7 +180,8 @@ def user_profile(request, username):
 
 @login_required
 def following(request):
-    posts = Post.objects.filter(user__in=[user for user in request.user.following.all()]).order_by("-date")
+    posts = Post.objects.filter(
+        user__in=[user for user in request.user.following.all()]).order_by("-date")
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
