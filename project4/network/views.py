@@ -32,9 +32,10 @@ def index(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-
+    
     return render(request, "network/index.html", {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "liked_posts": request.user.liked_posts.all() if request.user.is_authenticated else None
     })
 
 
@@ -140,7 +141,7 @@ def post(request, post_id):
             if liked:
                 post.likes.add(request.user)
             else:
-                if post.likes.filter(username=request.username).exists():
+                if post.likes.filter(username=request.user.username).exists():
                     post.likes.remove(request.user)
                 else:
                     return JsonResponse({"error": "You have not yet liked this post."}, status=400)
