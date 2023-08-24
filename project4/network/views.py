@@ -175,7 +175,8 @@ def user_profile(request, username):
     return render(request, "network/profile.html", {
         "user": user,
         "followed": request.user.following.filter(username=username).exists(),
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "liked_posts": request.user.liked_posts.all() if request.user.is_authenticated else None
     })
 
 
@@ -188,5 +189,6 @@ def following(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, "network/following.html", {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "liked_posts": request.user.liked_posts.all() if request.user.is_authenticated else None
     })

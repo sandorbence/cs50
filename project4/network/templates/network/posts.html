@@ -5,16 +5,16 @@
         {% for post in page_obj %}
         <li>
             <div class="post-container" id="{{ post.id }}">
+                {% if post.user == request.user %}
+                <textarea></textarea>
+                <button class="btn btn-primary btn-post edit" type="submit">Edit</button>
+                <button class="btn btn-primary btn-post save" type="submit">Save</button>
+                {% endif %}
                 <div class>
                     <a href="{% url 'user_profile' post.user.username %}">{{ post.user }}</a>
                 </div>
                 <div class="post-text">{{ post.text }}</div>
                 <div class="post-date">{{ post.date }}</div>
-                {% if post.user == request.user %}
-                <textarea></textarea>
-                <button class="btn btn-primary btn-edit" type="submit">Edit</button>
-                <button class="btn btn-primary btn-save" type="submit">Save</button>
-                {% endif %}
                 {% if post in liked_posts %}
                 <input type="hidden" name="liked">
                 {% endif %}
@@ -56,15 +56,15 @@
         <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
         {% if page_obj.has_next %}
         <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
         <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last
             &raquo;</a>
         {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
     </ul>
 </div>
 <script src="{% static 'scripts/edit.js' %}"></script>

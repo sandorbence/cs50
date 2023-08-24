@@ -2,19 +2,25 @@
 
 {% load static %}
 
-{% block body %}
-<div id="user-id">{{ user.id }}</div>
+{% block title %}
+User {{ user.username }}
+{% endblock %}
+
+{% block pagetitle %}
 {% if request.user == user %}
 <h1>My Profile</h1>
 {% else %}
 <h1>User {{user.username}}</h1>
 {% endif %}
-<h2>Followers</h2>
-<div id="follower-count">
-    {{ user.followers.count }}
+<div>
+    <h4>
+        <span id="follower-count">
+            {{ user.followers.count }}
+        </span>
+        <span>Followers</span>
+    </h4>
 </div>
-<h2>Following</h2>
-{{ user.following.count }}
+<h4>{{ user.following.count }} Following</h4>
 {% if user != request.user %}
 {% if followed %}
 <button id="follow" class="btn btn-primary" type="submit">Unfollow</button>
@@ -22,6 +28,10 @@
 <button id="follow" class="btn btn-primary" type="submit">Follow</button>
 {% endif %}
 {% endif %}
+{% endblock %}
+
+{% block body %}
+<div id="user-id">{{ user.id }}</div>
 {% include 'network/posts.html' %}
 <script src="{% static 'scripts/user.js' %}"></script>
 {% endblock %}

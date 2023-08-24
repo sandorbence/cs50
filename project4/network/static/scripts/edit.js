@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const editButtons = document.querySelectorAll('.btn-edit');
+    const editButtons = document.querySelectorAll('.edit');
 
     editButtons.forEach(button => {
         button.addEventListener('click', () => editPost(button));
@@ -25,7 +25,7 @@ function editPost(button) {
 
     // Hide edit button and show save button
     button.style.display = 'none';
-    const saveButton = parent.querySelector('.btn-save');
+    const saveButton = parent.querySelector('.save');
     saveButton.style.display = 'inline';
 
     saveButton.addEventListener('click', () => savePost(saveButton));
@@ -50,7 +50,7 @@ function savePost(button) {
 
     // Hide save button and show edit button
     button.style.display = 'none';
-    parent.querySelector('.btn-edit').style.display = 'inline';
+    parent.querySelector('.edit').style.display = 'inline';
 
     // Display text in div
     parent.querySelector('.post-text').innerHTML = text;

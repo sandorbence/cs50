@@ -3,6 +3,7 @@ li {
 }
 
 textarea {
+    padding: 10px;
     resize: none;
 }
 
@@ -10,23 +11,39 @@ ul {
     padding: 0;
 }
 
+.btn-post {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .btn-like {
     padding: 0;
 }
 
-.btn-save {
-    display: none;
+.current {
+    align-items: center;
+    display: flex;
+    margin: 0 10px;
 }
 
 .liked {
     fill: blue;
 }
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
 .post-container {
     border: 1px solid;
     border-radius: 10px;
     margin: 5px;
+    min-width: 700px;
     padding: 10px;
+    position: relative;
+    width: 80%;
 }
 
 .post-container textarea {
@@ -34,8 +51,50 @@ ul {
 }
 
 .post-date {
+    bottom: 5px;
     display: flex;
     justify-content: flex-end;
+    position: absolute;
+    right: 5px;
+}
+
+.save {
+    display: none;
+}
+
+.title {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+#new-post-container {
+    display: flex;
+    justify-content: center;
+}
+
+#new-post-container div {
+    margin: 15px 15px;
+    position: relative;
+}
+
+#new-post-container button {
+    bottom: 12px;
+    left: 565px;
+    position: absolute;
+}
+
+#new-post-container textarea {
+    border-radius: 10px;
+    position: relative;
+}
+
+#posts-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 #user-id {

@@ -2,14 +2,22 @@
 
 {% load static %}
 
+{% block title %}
+All posts
+{% endblock %}
+
 {% block body %}
+<div class="title">
+    <h1>Social network</h1>
+</div>
 <div id="new-post-container">
-    <form action="" method="post">
-        {% csrf_token %}
-        <textarea name="text" cols="80" rows="5"
-            placeholder="What's on your mind?"></textarea>
-        <button class="btn btn-primary" type="submit">Post</button>
-    </form>
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <textarea name="text" cols="80" rows="5" placeholder="What's on your mind?"></textarea>
+            <button class="btn btn-primary" type="submit">Post</button>
+        </form>
+    </div>
 </div>
 {% include 'network/posts.html' %}
 {% endblock %}
