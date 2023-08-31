@@ -4,6 +4,9 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 
+from .models import User, Recipe
+
+
 # Code copied from project2
 def login_view(request):
     if request.method == "POST":
@@ -65,4 +68,10 @@ def register(request):
 
 
 def index(request):
-    return render(request, "recipes/index.html")
+    recipes = Recipe.objects.all().order_by("-upload_date")
+    return render(request, "recipes/index.html",{
+        "recipes":recipes
+    })
+
+def add_recipe(request):
+    return render(request, "recipes/new.html")
