@@ -1,6 +1,19 @@
 {% extends "recipes/layout.html" %}
 
-{% block title%}Add a new recipe{% endblock %}
+{% block title %}Add a new recipe{% endblock %}
 
 {% block body %}
+<h1>Add a new recipe</h1>
+<form>
+    <form>
+        <h4>Add an ingredient</h4>
+        <input id="ingredient-name" type="text"></input>
+        <input id="ingredient-quantity" type="number"></input>
+        <select id="ingredient-unit"></select>
+        <input type="checkbox"></input>
+        <button class="btn btn-light" type="submit">+</button>
+    </form>
+    <textarea id="preparation" cols="30" rows="10" placeholder="How do we make this?"></textarea>
+    <button type="submit">Save</button>
+</form>
 {% endblock %}
