@@ -67,6 +67,11 @@ textarea {
     padding-left: 10px;
 }
 
+#main-container {
+    display: flex;
+    justify-content: center;
+}
+
 #new-ingredient-form div {
     display: flex;
     flex: 1;
@@ -75,12 +80,24 @@ textarea {
 
 #new-recipe {
     display: flex;
-    width: 90%;
+}
+
+#new-recipe>div {
+    flex: 1;
 }
 
 #new-recipe-container {
+    align-items: center;
+    background-color: lightblue;
+    border-radius: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px 20px;
+    width: 90%;
+}
+
+#new-recipe-container div {
     width: 100%;
 }
 
@@ -98,11 +115,19 @@ textarea {
 #next {
     display: flex;
     justify-content: flex-end;
-    margin: 0 5%;
-    width: 90%;
 }
 
 #plus-button {
     margin-right: 10px;
     padding-top: 0;
+}
+
+#title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#title>div {
+    display: flex;
 }

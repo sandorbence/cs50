@@ -6,38 +6,47 @@
 
 {% block body %}
 <h1>Add a new recipe</h1>
-<div id="title">
-    
-</div>
-<div id="new-recipe-container">
-    <div id="new-recipe">
-        <div id="new-recipe-description">
-            <textarea id="preparation" placeholder="How do we make this meal?"></textarea>
-        </div>
-        <div id="ingredients-container">
-            <div class="ingredient">
-                <button id="plus-button" class="btn btn-light" type="submit">+</button>
-                <h5>Add an ingredient</h5>
-            </div>
-            <form class="ingredient" id="new-ingredient-form">
-                <label>name:<input id="ingredient-name" type="text"></input></label>
-                <label>unit:<input id="ingredient-quantity" type="number"></input></label>
-                <select id="ingredient-unit">
-                    {% for choice in choices %}
-                    <option value="{{ choice }}">{{ choice }}</option>
-                    {% endfor %}
-                </select>
-                <label><input id="metric" type="checkbox"></input>Imperial units</label>
+<div id="main-container">
+    <div id="new-recipe-container">
+        <div>
+            <div id="new-recipe">
                 <div>
-                    <button class="btn btn-secondary" type="reset">Cancel</button>
-                    <button class="btn btn-primary" type="submit">Add</button>
+                    <div id="title">
+                        <div>
+                            <h4>Recipe title:</h4>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div id="new-recipe-description">
+                        <textarea id="preparation" placeholder="How do we make this meal?"></textarea>
+                    </div>
                 </div>
-            </form>
+                <div id="ingredients-container">
+                    <div class="ingredient">
+                        <button id="plus-button" class="btn btn-light" type="submit">+</button>
+                        <h5>Add an ingredient</h5>
+                    </div>
+                    <form class="ingredient" id="new-ingredient-form">
+                        <label>name:<input id="ingredient-name" type="text"></label>
+                        <label>unit:<input id="ingredient-quantity" type="number"></label>
+                        <select id="ingredient-unit">
+                            {% for choice in choices %}
+                            <option value="{{ choice }}">{{ choice }}</option>
+                            {% endfor %}
+                        </select>
+                        <label><input id="metric" type="checkbox">Imperial units</label>
+                        <div>
+                            <button class="btn btn-secondary" type="reset">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="next">
+            <button class="btn btn-primary" type="submit">Next</button>
         </div>
     </div>
-</div>
-<div id="next">
-    <button class="btn btn-primary" type="submit">Next</button>
 </div>
 <script src="{% static 'scripts/new.js' %}"></script>
 {% endblock %}
