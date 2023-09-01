@@ -20,11 +20,4 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="ingredients")
     name = models.CharField(max_length=40)
-    quantity = models.PositiveIntegerField()
-    unit = models.CharField(max_length=10, choices=[
-        ("ml", "ml"),
-        ("l", "l"),
-        ("g", "g"),
-        ("kg", "kg"),
-        ("tsp", "tsp")
-    ])
+    quantity = models.CharField(max_length=40)

@@ -1,19 +1,43 @@
 {% extends "recipes/layout.html" %}
 
+{% load static %}
+
 {% block title %}Add a new recipe{% endblock %}
 
 {% block body %}
 <h1>Add a new recipe</h1>
-<form>
-    <form>
-        <h4>Add an ingredient</h4>
-        <input id="ingredient-name" type="text"></input>
-        <input id="ingredient-quantity" type="number"></input>
-        <select id="ingredient-unit"></select>
-        <input type="checkbox"></input>
-        <button class="btn btn-light" type="submit">+</button>
-    </form>
-    <textarea id="preparation" cols="30" rows="10" placeholder="How do we make this?"></textarea>
-    <button type="submit">Save</button>
-</form>
+<div id="title">
+    
+</div>
+<div id="new-recipe-container">
+    <div id="new-recipe">
+        <div id="new-recipe-description">
+            <textarea id="preparation" placeholder="How do we make this meal?"></textarea>
+        </div>
+        <div id="ingredients-container">
+            <div class="ingredient">
+                <button id="plus-button" class="btn btn-light" type="submit">+</button>
+                <h5>Add an ingredient</h5>
+            </div>
+            <form class="ingredient" id="new-ingredient-form">
+                <label>name:<input id="ingredient-name" type="text"></input></label>
+                <label>unit:<input id="ingredient-quantity" type="number"></input></label>
+                <select id="ingredient-unit">
+                    {% for choice in choices %}
+                    <option value="{{ choice }}">{{ choice }}</option>
+                    {% endfor %}
+                </select>
+                <label><input id="metric" type="checkbox"></input>Imperial units</label>
+                <div>
+                    <button class="btn btn-secondary" type="reset">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="next">
+    <button class="btn btn-primary" type="submit">Next</button>
+</div>
+<script src="{% static 'scripts/new.js' %}"></script>
 {% endblock %}

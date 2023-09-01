@@ -1,3 +1,102 @@
+h1 {
+    margin: 10px;
+}
+
+h5 {
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+input {
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    width: 60px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=text] {
+    width: 200px;
+}
+
+label {
+    margin-bottom: 0;
+}
+
 textarea {
+    border: 1px solid;
+    border-radius: 10px;
+    height: 400px;
+    padding: 5px 10px;
     resize: none;
+}
+
+.btn {
+    margin: 3px
+}
+
+.ingredient {
+    align-items: center;
+    background-color: bisque;
+    border-radius: 10px;
+    display: flex;
+    height: 50px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+#ingredients-container {
+    display: flex;
+    flex: 1.2;
+    flex-direction: column;
+    min-width: 600px;
+    padding-left: 10px;
+}
+
+#new-ingredient-form div {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+#new-recipe {
+    display: flex;
+    width: 90%;
+}
+
+#new-recipe-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#new-recipe-description {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+#new-recipe-description div {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#next {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 5%;
+    width: 90%;
+}
+
+#plus-button {
+    margin-right: 10px;
+    padding-top: 0;
 }

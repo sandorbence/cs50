@@ -74,4 +74,13 @@ def index(request):
     })
 
 def add_recipe(request):
-    return render(request, "recipes/new.html")
+    choices = [
+        "ml",
+        "l",
+        "g",
+        "kg",
+        "tsp"
+    ]
+    return render(request, "recipes/new.html",{
+        "choices":choices
+    })
