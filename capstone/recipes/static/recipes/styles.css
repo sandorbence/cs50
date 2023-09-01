@@ -42,6 +42,12 @@ textarea {
     margin: 3px
 }
 
+.btn-container {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+}
+
 .ingredient {
     align-items: center;
     background-color: bisque;

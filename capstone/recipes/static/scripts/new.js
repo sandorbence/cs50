@@ -46,17 +46,22 @@ function createRow(name, quantity) {
     ingQuantity.textContent = quantity;
     row.append(ingQuantity);
 
+    let btnContainer = document.createElement('div');
+    btnContainer.classList.add('btn-container');
+
     let btnEdit = document.createElement('button');
     btnEdit.classList.add('btn', 'btn-primary');
     btnEdit.textContent = 'Edit';
     btnEdit.addEventListener('click', () => editRow(row));
-    row.append(btnEdit);
+    btnContainer.append(btnEdit);
 
     let btnDel = document.createElement('button');
     btnDel.classList.add('btn', 'btn-primary');
     btnDel.textContent = 'X';
     btnDel.addEventListener('click', () => deleteRow(row));
-    row.append(btnDel);
+    btnContainer.append(btnDel);
+
+    row.append(btnContainer);
 
     container.append(row);
 }
