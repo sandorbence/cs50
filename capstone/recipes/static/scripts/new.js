@@ -110,11 +110,13 @@ function hideToast() {
 }
 
 function next() {
-    document.getElementById('new-recipe-container').style.display = 'none';
-    document.getElementById('image-container').style.display = 'flex';  
+    document.getElementById('description-container').style.display = 'none';
+    document.getElementById('next').style.display = 'none';
+    document.getElementById('image-container').style.display = 'flex';
 }
 
 function back() {
     document.getElementById('image-container').style.display = 'none';
-    document.getElementById('new-recipe-container').style.display = 'flex';
+    document.getElementById('next').style.display = 'flex';
+    document.getElementById('description-container').style.display = 'flex';
 }
