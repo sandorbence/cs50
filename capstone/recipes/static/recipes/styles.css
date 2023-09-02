@@ -53,10 +53,10 @@ textarea {
     background-color: bisque;
     border-radius: 10px;
     display: flex;
+    font-weight: bold;
     height: 50px;
     margin-bottom: 5px;
     padding: 5px 10px;
-    width: 100%;
 }
 
 #ingredients-container {

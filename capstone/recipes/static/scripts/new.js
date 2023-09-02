@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('new-ingredient-form').style.display = 'none';
+    document.getElementById('image-container').style.display = 'none';
     document.getElementById('plus-button').addEventListener('click', addRow)
+    document.getElementById('next').querySelector('button').addEventListener('click', next);
+    document.getElementById('back').querySelector('button').addEventListener('click', back);
 })
 
 function addRow() {
@@ -17,7 +20,7 @@ function addIngredient() {
     if (name === '' || quantity === '') return false;
 
     let unit = document.getElementById('ingredient-unit').value;
-    quantity = ': ' + quantity + ' ' + unit;
+    quantity = quantity + ' ' + unit;
 
     createRow(name, quantity);
 
@@ -28,6 +31,8 @@ function addIngredient() {
 }
 
 function cancel() {
+    document.getElementById('ingredient-name').value = '';
+    document.getElementById('ingredient-quantity').value = '';
     document.getElementById('new-ingredient-form').style.display = 'none';
     return false;
 }
@@ -52,7 +57,7 @@ function createRow(name, quantity) {
     let btnEdit = document.createElement('button');
     btnEdit.classList.add('btn', 'btn-primary');
     btnEdit.textContent = 'Edit';
-    btnEdit.addEventListener('click', () => editRow(row));
+    btnEdit.addEventListener('click', () => editRow(row, name, quantity));
     btnContainer.append(btnEdit);
 
     let btnDel = document.createElement('button');
@@ -70,6 +75,46 @@ function deleteRow(row) {
     row.remove();
 }
 
-function editRow(row) {
+function editRow(row, name, quantity) {
 
+    // If we are already adding an ingredient, do not interrupt with edit
+    // as we will use the same form for editing as adding
+    if (document.getElementById('new-ingredient-form').style.display !== 'none' &&
+        (document.getElementById('ingredient-name').value !== '' ||
+            document.getElementById('ingredient-quantity').value !== '')) {
+        showToast();
+    }
+    else {
+        document.getElementById('new-ingredient-form').style.display = 'flex';
+        document.getElementById('ingredient-name').value = name;
+
+        let split = quantity.split(' ')
+        document.getElementById('ingredient-quantity').value = split[0];
+        document.getElementById('ingredient-unit').value = split[1];
+
+        row.remove();
+    }
+}
+
+function showToast() {
+    let toast = document.getElementById('myToast');
+    toast.classList.add('show');
+
+    document.querySelector('.close').addEventListener('click', hideToast);
+
+    setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+    document.getElementById('myToast').classList.remove('show');
+}
+
+function next() {
+    document.getElementById('new-recipe-container').style.display = 'none';
+    document.getElementById('image-container').style.display = 'flex';  
+}
+
+function back() {
+    document.getElementById('image-container').style.display = 'none';
+    document.getElementById('new-recipe-container').style.display = 'flex';
 }
