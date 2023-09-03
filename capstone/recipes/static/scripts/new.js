@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('new-ingredient-form').style.display = 'none';
     document.getElementById('image-container').style.display = 'none';
-    document.getElementById('plus-button').addEventListener('click', addRow)
-    document.getElementById('next').querySelector('button').addEventListener('click', next);
-    document.getElementById('back').querySelector('button').addEventListener('click', back);
+    document.getElementById('unit-change').addEventListener('change', changeUnits)
+    document.getElementById('btn-plus').addEventListener('click', addRow)
+    document.getElementById('btn-next').addEventListener('click', next);
+    document.getElementById('btn-back').addEventListener('click', back);
+    document.getElementById('btn-save').addEventListener('click', save);
+    document.getElementById('image-upload').addEventListener('change', (event) => showPreview(event.target));
 })
 
 function addRow() {
@@ -17,7 +20,12 @@ function addIngredient() {
 
     let name = document.getElementById('ingredient-name').value;
     let quantity = document.getElementById('ingredient-quantity').value;
-    if (name === '' || quantity === '') return false;
+    if (name === '' || quantity === '') {
+        const toastTitle = `Can't be empty`;
+        const toastMessage = `Please fill out all of the ingredient's sections.`
+        showToast(toastTitle, toastMessage);
+        return false;
+    }
 
     let unit = document.getElementById('ingredient-unit').value;
     quantity = quantity + ' ' + unit;
@@ -82,7 +90,9 @@ function editRow(row, name, quantity) {
     if (document.getElementById('new-ingredient-form').style.display !== 'none' &&
         (document.getElementById('ingredient-name').value !== '' ||
             document.getElementById('ingredient-quantity').value !== '')) {
-        showToast();
+        const toastTitle = 'Cannot add ingredient';
+        const toastMessage = 'Please add the started ingredient before editing.';
+        showToast(toastTitle, toastMessage);
     }
     else {
         document.getElementById('new-ingredient-form').style.display = 'flex';
@@ -96,8 +106,10 @@ function editRow(row, name, quantity) {
     }
 }
 
-function showToast() {
+function showToast(title, message) {
     let toast = document.getElementById('myToast');
+    toast.querySelector('.mr-auto').textContent = title;
+    toast.querySelector('.toast-body').textContent = message;
     toast.classList.add('show');
 
     document.querySelector('.close').addEventListener('click', hideToast);
@@ -111,12 +123,80 @@ function hideToast() {
 
 function next() {
     document.getElementById('description-container').style.display = 'none';
-    document.getElementById('next').style.display = 'none';
+    document.getElementById('btn-next').style.display = 'none';
     document.getElementById('image-container').style.display = 'flex';
 }
 
 function back() {
     document.getElementById('image-container').style.display = 'none';
-    document.getElementById('next').style.display = 'flex';
+    document.getElementById('btn-next').style.display = 'flex';
     document.getElementById('description-container').style.display = 'flex';
+}
+
+function save() {
+
+}
+
+function showPreview(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.src = event.target.result;
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function changeUnits() {
+    const select = document.getElementById('ingredient-unit');
+
+    let metric = document.getElementById('metric-units').value
+        .slice(1, -1)
+        .split(', ')
+        .map((unit) => {
+            return unit.replace(/'/g, '');
+        });
+
+    let imperial = document.getElementById('imperial-units').value
+        .slice(1, -1)
+        .split(', ')
+        .map((unit) => {
+            return unit.replace(/'/g, '');
+        });
+
+    if (document.getElementById('unit-change').checked) {
+        for (unit of imperial) {
+            console.log(unit)
+            let option = document.createElement('option');
+            option.textContent = unit;
+            select.appendChild(option);
+        }
+        for (unit of metric) {
+            for (let i; i < select.length; i++) {
+                if (select.options[i].value == unit) {
+                    select.remove(i);
+                }
+            }
+        }
+    }
+    else {
+        for (unit of metric) {
+            console.log(unit)
+            let option = document.createElement('option');
+            option.textContent = unit;
+            select.appendChild(option);
+        }
+        for (unit of imperial) {
+            for (let i; i < select.length; i++) {
+                if (select.options[i].value == unit) {
+                    select.remove(i);
+                }
+            }
+        }
+    }
+
+    return false;
 }

@@ -7,6 +7,12 @@ h5 {
     margin-right: 10px;
 }
 
+img {
+    margin-top: 10px;
+    max-height: 450px;
+    object-fit: contain;
+}
+
 input {
     border-radius: 5px;
     margin: 0 5px;
@@ -59,12 +65,46 @@ textarea {
     padding: 5px 10px;
 }
 
+.new-button {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+#btn-save {
+    bottom: 10px;
+    position: absolute;
+    right: 20px;
+}
+
+#image-container {
+    height: 100%;
+}
+
+#image-container>div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#image-container>div>div {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+#image-container h2 {
+    position: absolute;
+}
+
 #ingredients-container {
     display: flex;
     flex: 1.2;
     flex-direction: column;
     min-width: 600px;
     padding-left: 10px;
+    padding-top: 50px;
 }
 
 #main-container {
@@ -95,6 +135,7 @@ textarea {
     height: 550px;
     margin-top: 10px;
     padding: 10px 20px;
+    position: relative;
     width: 90%;
 }
 
@@ -110,13 +151,6 @@ textarea {
 
 #new-recipe-description div {
     display: flex;
-    justify-content: flex-end;
-}
-
-#next {
-    align-items: flex-end;
-    display: flex;
-    flex: 1;
     justify-content: flex-end;
 }
 

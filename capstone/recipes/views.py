@@ -35,11 +35,15 @@ def login_view(request):
         return render(request, "recipes/login.html")
 
 # Code copied from project2
+
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 # Code copied from project2
+
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -69,18 +73,36 @@ def register(request):
 
 def index(request):
     recipes = Recipe.objects.all().order_by("-upload_date")
-    return render(request, "recipes/index.html",{
-        "recipes":recipes
+    return render(request, "recipes/index.html", {
+        "recipes": recipes
     })
 
+
 def add_recipe(request):
-    choices = [
+    units = [
+        "pinch",
+        "csp",
+        "tsp",
+        "tbsp",
+        "cup",
+        "mug"
+    ]
+    units_metric = [
         "ml",
+        "dl",
         "l",
         "g",
         "kg",
-        "tsp"
     ]
-    return render(request, "recipes/new.html",{
-        "choices":choices
+    units_imperial = [
+        "pt",
+        "qt",
+        "gal",
+        "oz",
+        "lb"
+    ]
+    return render(request, "recipes/new.html", {
+        "units": units,
+        "units_metric": units_metric,
+        "units_imperial": units_imperial
     })
