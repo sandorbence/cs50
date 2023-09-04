@@ -139,6 +139,20 @@ function hideToast() {
 }
 
 function next() {
+
+    console.log(document.getElementById('title').querySelector('input').value === '')
+    console.log(document.querySelector('textarea').value === '')
+    console.log(document.querySelectorAll('.ingredient').length < 3)
+
+    if (document.getElementById('title').querySelector('input').value === '' ||
+        document.querySelector('textarea').value === '' ||
+        document.querySelectorAll('.ingredient').length < 3) {
+        const toastTitle = 'Cannot be empty';
+        const toastMessage = 'The recipe must have a title, a preparation and at least one ingredient.';
+        showToast(toastTitle, toastMessage);
+        return;
+    }
+
     document.getElementById('description-container').style.display = 'none';
     document.getElementById('btn-next').style.display = 'none';
     document.getElementById('image-container').style.display = 'flex';

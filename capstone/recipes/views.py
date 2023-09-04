@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User, Recipe
 
 # Code copied from project2
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -77,16 +79,20 @@ def index(request):
         "recipes": recipes
     })
 
+
 @csrf_exempt
 def add_recipe(request):
-    if request.method=="POST":
+    if request.method == "POST":
         data = request.POST
         title = data.get("title")
         preparation = data.get("preparation")
         ingredients = data.get("ingredients")
         image = request.FILES.get("image")
-        print(data)
-        print(image)
+
+        # Validation missing
+        recipe = Recipe.objects.create(title=title, preparation=preparation,
+                        ingredients=ingredients, image=image)
+
     units = [
         "pinch",
         "csp",
