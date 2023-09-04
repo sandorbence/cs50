@@ -11,6 +11,7 @@ class User(AbstractUser):
 class Recipe(models.Model):
     uploader = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="recipes")
+    title = models.CharField(max_length=50)
     image = models.ImageField(upload_to="recipe-images", blank=True, null=True)
     preparation = models.CharField(max_length=2500)
     upload_date = models.DateTimeField(auto_now_add=True)

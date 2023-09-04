@@ -152,6 +152,18 @@ function back() {
 
 function save() {
 
+    // Read data from input fields
+    let data = new FormData();
+
+    data.append('title', document.getElementById('title').querySelector('input').value);
+    data.append('preparation', document.querySelector('textarea').value);
+    data.append('image', document.getElementById('image-upload').files[0]);
+    data.append('ingredients', Array.from(document.querySelectorAll('.ingredient')).slice(2));
+
+    fetch('/new', {
+        method: 'POST',
+        body: data
+    });
 }
 
 function showPreview(input) {
@@ -188,7 +200,7 @@ function changeUnits() {
 
         // Remove metric options
         for (let i = 0; i < metric.length; i++) {
-            select.remove(select.length-1);
+            select.remove(select.length - 1);
         }
 
         // Add imperial options
@@ -202,7 +214,7 @@ function changeUnits() {
 
         // Remove imperial options
         for (let i = 0; i < imperial.length; i++) {
-            select.remove(select.length-1);
+            select.remove(select.length - 1);
         }
 
         // Add metric options

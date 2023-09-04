@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Recipe
-
 
 # Code copied from project2
 def login_view(request):
@@ -77,8 +77,16 @@ def index(request):
         "recipes": recipes
     })
 
-
+@csrf_exempt
 def add_recipe(request):
+    if request.method=="POST":
+        data = request.POST
+        title = data.get("title")
+        preparation = data.get("preparation")
+        ingredients = data.get("ingredients")
+        image = request.FILES.get("image")
+        print(data)
+        print(image)
     units = [
         "pinch",
         "csp",
