@@ -7,6 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-back').addEventListener('click', back);
     document.getElementById('btn-save').addEventListener('click', save);
     document.getElementById('image-upload').addEventListener('change', (event) => showPreview(event.target));
+
+
+    const select = document.getElementById('ingredient-unit');
+
+    let metric = document.getElementById('metric-units').value
+        .slice(1, -1)
+        .split(', ')
+        .map((unit) => {
+            return unit.replace(/'/g, '');
+        });
+
+    // Add metric options to select
+    for (unit of metric) {
+        let option = document.createElement('option');
+        option.textContent = unit;
+        select.appendChild(option);
+    }
 })
 
 function addRow() {
@@ -168,33 +185,31 @@ function changeUnits() {
         });
 
     if (document.getElementById('unit-change').checked) {
+
+        // Remove metric options
+        for (let i = 0; i < metric.length; i++) {
+            select.remove(select.length-1);
+        }
+
+        // Add imperial options
         for (unit of imperial) {
-            console.log(unit)
             let option = document.createElement('option');
             option.textContent = unit;
             select.appendChild(option);
-        }
-        for (unit of metric) {
-            for (let i; i < select.length; i++) {
-                if (select.options[i].value == unit) {
-                    select.remove(i);
-                }
-            }
         }
     }
     else {
+
+        // Remove imperial options
+        for (let i = 0; i < imperial.length; i++) {
+            select.remove(select.length-1);
+        }
+
+        // Add metric options
         for (unit of metric) {
-            console.log(unit)
             let option = document.createElement('option');
             option.textContent = unit;
             select.appendChild(option);
-        }
-        for (unit of imperial) {
-            for (let i; i < select.length; i++) {
-                if (select.options[i].value == unit) {
-                    select.remove(i);
-                }
-            }
         }
     }
 
