@@ -16,6 +16,9 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to="recipe-images", blank=True, null=True)
     preparation = models.CharField(max_length=2500)
     upload_date = models.DateTimeField(auto_now_add=True)
+    prep_time = models.IntegerField(blank=True, null=True)
+    total_time = models.IntegerField(blank=True, null=True)
+    servings = models.IntegerField(default=0)
 
     def serialize(self):
         return {
@@ -25,11 +28,14 @@ class Recipe(models.Model):
             "image": self.image.url if self.image else None,
             "preparation": self.preparation,
             "upload_date": self.upload_date.strftime("%a %H:%M  %y/%m/%d"),
-            "ingredients": [ingredient.serialize() for ingredient in self.ingredients.all()]
+            "ingredients": [ingredient.serialize() for ingredient in self.ingredients.all()],
+            "prep_time": self.prep_time,
+            "total_time": self.total_time,
+            "servings": self.servings
         }
 
     def clean(self):
-        if not self.uploader or not self.title or not self.uploader or not self.preparation or not self.upload_date or not self.ingredients:
+        if not self.uploader or not self.title or not self.uploader or not self.preparation or not self.upload_date or not self.ingredients or self.prep_time > self.total_time:
             raise ValidationError("Recipe data is not correct.")
 
     def __str__(self):
@@ -53,4 +59,4 @@ class Ingredient(models.Model):
             raise ValidationError("Ingredient data is not correct.")
 
     def __str__(self):
-        return f"{self.name}: {self.quantity}"
+        return f"For: {self.recipe.title} - {self.name}: {self.quantity}"

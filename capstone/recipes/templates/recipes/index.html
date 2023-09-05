@@ -3,8 +3,10 @@
 {% block body %}
 <ul>
     {% for recipe in recipes %}
-    <li>{{ recipe }}</li>
-    <img src="{{ recipe.image.url }}" alt="Recipe image">
+    <li>
+        <h1>{{ recipe.title }}</h1>
+        <a href="{% url 'recipe' recipe.pk %}"><img src="{{ recipe.image.url }}" alt="Recipe image"></a>
+    </li>
     {% endfor %}
 </ul>
 {% endblock %}

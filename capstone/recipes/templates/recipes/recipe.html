@@ -1,0 +1,16 @@
+{% extends "recipes/layout.html" %}
+
+{% block body %}
+<div>
+    <h1>{{ recipe.title }}</h1>
+    <img src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
+    <ul id="recipe-ingredients">
+        {% for ingredient in recipe.ingredients.all %}
+        <li>
+            <div class="recipe-quantity">{{ ingredient.quantity }}</div>
+            <div class="recipe-ingredient-name">{{ ingredient.name }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

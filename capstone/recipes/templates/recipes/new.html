@@ -23,12 +23,12 @@
                 </div>
                 <div id="ingredients-container">
                     <div class="ingredient">
-                        <button id="btn-plus" class="btn btn-light" type="submit">+</button>
+                        <button id="btn-plus" class="btn btn-light" type="submit"><strong>+</strong></button>
                         <h5>Add an ingredient</h5>
                     </div>
                     <form class="ingredient" id="new-ingredient-form">
                         <label>Name:<input id="ingredient-name" type="text"></label>
-                        <label>Unit:<input id="ingredient-quantity" type="number"></label>
+                        <label>Quantity:<input id="ingredient-quantity" type="number" step="0.01"></label>
                         <select id="ingredient-unit">
                             {% for unit in units %}
                             <option value="{{ unit }}">{{ unit }}</option>
@@ -50,9 +50,17 @@
             <h2>Upload an image</h2>
             <div>
                 <div>
-                    <img src="{% static 'images/image.png' %}" id="image-preview"></img>
+                    <div id="image">
+                        <img src="{% static 'images/image.png' %}" id="image-preview"></img>
+                    </div>
+                    <div id="times-container">
+                        <label>Preparation time (min):<input type="number" id="prep-time"></label>
+                        <label>Total time to make (min):<input type="number" id="total-time"></label>
+                        <label>Servings:<input type="number" id="servings"></label>
+                    </div>
                 </div>
-                <input type="file" id="image-upload">
+                <label for="image-upload" class="btn btn-primary">Select Image</label>
+                <input type="file" id="image-upload" accept="image/*">
                 <button id="btn-back" class="btn btn-primary new-button">Back</button>
                 <button id="btn-save" class="btn btn-primary">Save</button>
             </div>

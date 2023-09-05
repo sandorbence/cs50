@@ -176,15 +176,18 @@ function save() {
     let title = document.getElementById('title').querySelector('input').value;
     let preparation = document.querySelector('textarea').value;
     let image = document.getElementById('image-upload').files[0];
-
-    if (image) console.log('asd')
+    let prepTime = document.getElementById('prep-time').value;
+    let totalTime = document.getElementById('total-time').value;
+    let servings = document.getElementById('servings').value;
 
     data.append('title', title);
     data.append('preparation', preparation);
-    if (image) {
-        data.append('image', image);
-    }
     data.append('ingredients', JSON.stringify(ingredients));
+
+    if (prepTime) data.append('preptime', prepTime);
+    if (totalTime) data.append('totaltime', totalTime);
+    if (servings) data.append('servings', servings);
+    if (image) data.append('image', image);
 
     fetch('/new', {
         method: 'POST',
