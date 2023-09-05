@@ -70,10 +70,12 @@ function createRow(name, quantity) {
 
     let ingName = document.createElement('div');
     ingName.textContent = name;
+    ingName.classList.add('ingredient-name');
     row.append(ingName);
 
     let ingQuantity = document.createElement('div');
     ingQuantity.textContent = quantity;
+    ingQuantity.classList.add('ingredient-quantity');
     row.append(ingQuantity);
 
     let btnContainer = document.createElement('div');
@@ -140,10 +142,6 @@ function hideToast() {
 
 function next() {
 
-    console.log(document.getElementById('title').querySelector('input').value === '')
-    console.log(document.querySelector('textarea').value === '')
-    console.log(document.querySelectorAll('.ingredient').length < 3)
-
     if (document.getElementById('title').querySelector('input').value === '' ||
         document.querySelector('textarea').value === '' ||
         document.querySelectorAll('.ingredient').length < 3) {
@@ -166,18 +164,32 @@ function back() {
 
 function save() {
 
-    // Read data from input fields
     let data = new FormData();
 
-    data.append('title', document.getElementById('title').querySelector('input').value);
-    data.append('preparation', document.querySelector('textarea').value);
-    data.append('image', document.getElementById('image-upload').files[0]);
-    data.append('ingredients', Array.from(document.querySelectorAll('.ingredient')).slice(2));
+    let ingredients = Array.from(document.querySelectorAll('.ingredient')).slice(2).map(ingredient => {
+        return {
+            "name": ingredient.querySelector('.ingredient-name').textContent,
+            "quantity": ingredient.querySelector('.ingredient-quantity').textContent
+        }
+    });
+
+    let title = document.getElementById('title').querySelector('input').value;
+    let preparation = document.querySelector('textarea').value;
+    let image = document.getElementById('image-upload').files[0];
+
+    data.append('title', title);
+    data.append('preparation', preparation);
+    data.append('image', image);
+    data.append('ingredients', JSON.stringify(ingredients));
 
     fetch('/new', {
         method: 'POST',
-        body: data
-    });
+        body: JSON.stringify({
+            'title': title,
+            'preparation': preparation,
+            'ingredients': ingredients
+        })
+    }).then(response => response.json());
 }
 
 function showPreview(input) {

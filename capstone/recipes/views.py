@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
 
-from .models import User, Recipe
+from .models import User, Recipe, Ingredient
+
+import json
 
 # Code copied from project2
 
@@ -82,16 +85,22 @@ def index(request):
 
 @csrf_exempt
 def add_recipe(request):
+
     if request.method == "POST":
-        data = request.POST
+        data = json.loads(request.body)
         title = data.get("title")
         preparation = data.get("preparation")
         ingredients = data.get("ingredients")
-        image = request.FILES.get("image")
+        #image = request.FILES.get("image")
 
-        # Validation missing
-        recipe = Recipe.objects.create(title=title, preparation=preparation,
-                        ingredients=ingredients, image=image)
+        try:
+            recipe = Recipe.objects.create(
+                uploader=request.user, title=title, preparation=preparation)
+            for ingredient in ingredients:
+                Ingredient.objects.create(
+                    recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
+        except ValidationError as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
     units = [
         "pinch",
