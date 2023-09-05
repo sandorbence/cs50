@@ -177,19 +177,26 @@ function save() {
     let preparation = document.querySelector('textarea').value;
     let image = document.getElementById('image-upload').files[0];
 
+    if (image) console.log('asd')
+
     data.append('title', title);
     data.append('preparation', preparation);
-    data.append('image', image);
+    if (image) {
+        data.append('image', image);
+    }
     data.append('ingredients', JSON.stringify(ingredients));
 
     fetch('/new', {
         method: 'POST',
-        body: JSON.stringify({
-            'title': title,
-            'preparation': preparation,
-            'ingredients': ingredients
-        })
-    }).then(response => response.json());
+        body: data
+    }).then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+        else {
+            return response.json();
+        }
+    });
 }
 
 function showPreview(input) {

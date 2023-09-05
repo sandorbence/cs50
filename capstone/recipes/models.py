@@ -32,9 +32,9 @@ class Recipe(models.Model):
         if not self.uploader or not self.title or not self.uploader or not self.preparation or not self.upload_date or not self.ingredients:
             raise ValidationError("Recipe data is not correct.")
 
-
     def __str__(self):
         return self.title
+
 
 class Ingredient(models.Model):
     recipe = models.ForeignKey(
@@ -51,6 +51,6 @@ class Ingredient(models.Model):
     def clean(self):
         if not self.recipe or not self.name or not self.quantity:
             raise ValidationError("Ingredient data is not correct.")
-        
+
     def __str__(self):
         return f"{self.name}: {self.quantity}"

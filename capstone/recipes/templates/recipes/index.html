@@ -1,7 +1,10 @@
 {% extends "recipes/layout.html" %}
 
+{% block body %}
 <ul>
     {% for recipe in recipes %}
     <li>{{ recipe }}</li>
+    <img src="{{ recipe.image.url }}" alt="Recipe image">
     {% endfor %}
 </ul>
+{% endblock %}

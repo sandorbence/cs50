@@ -87,20 +87,21 @@ def index(request):
 def add_recipe(request):
 
     if request.method == "POST":
-        data = json.loads(request.body)
+        data = request.POST
         title = data.get("title")
         preparation = data.get("preparation")
-        ingredients = data.get("ingredients")
-        #image = request.FILES.get("image")
+        ingredients = json.loads(data.get("ingredients"))
+        image = request.FILES.get("image")
 
         try:
             recipe = Recipe.objects.create(
-                uploader=request.user, title=title, preparation=preparation)
+                uploader=request.user, title=title, preparation=preparation, image=image)
             for ingredient in ingredients:
                 Ingredient.objects.create(
                     recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
         except ValidationError as e:
             return JsonResponse({"error": str(e)}, status=400)
+        return redirect('index')
 
     units = [
         "pinch",
