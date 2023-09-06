@@ -47,7 +47,7 @@ li {
 textarea {
     border: 1px solid;
     border-radius: 10px;
-    height: 400px;
+    height: 100%;
     padding: 5px 10px;
     resize: none;
 }
@@ -80,11 +80,16 @@ textarea {
 }
 
 .recipe-ingredient-name {
-   background-color: bisque; 
+    background-color: bisque;
 }
 
 .recipe-quantity {
     background-color: cadetblue;
+}
+
+.toast {
+    position: absolute;
+    top: -50px;
 }
 
 #btn-save {
@@ -129,14 +134,22 @@ textarea {
     display: flex;
     flex: 1.2;
     flex-direction: column;
+    height: 520px;
     min-width: 600px;
+    overflow-y: scroll;
     padding-left: 10px;
     padding-top: 50px;
+}
+#ingredients-container::-webkit-scrollbar{
+    background-color: blue;
+    left: 0;
+    position: absolute;
 }
 
 #main-container {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 #new-ingredient-form div {
@@ -186,7 +199,7 @@ textarea {
     padding-top: 0;
 }
 
-#recipe-ingredients li{
+#recipe-ingredients li {
     display: flex;
 }
 

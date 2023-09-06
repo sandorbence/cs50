@@ -13,4 +13,10 @@
         {% endfor %}
     </ul>
 </div>
+<div>
+    <div>Preparation time: {{ recipe.prep_time }}</div>
+    <div>Total time: {{ recipe.total_time }}</div>
+    <div>Servings: {{ recipe.servings }}</div>
+    <p>{{ recipe.preparation }}</p>
+</div>
 {% endblock %}

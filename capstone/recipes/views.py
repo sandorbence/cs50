@@ -110,12 +110,14 @@ def add_recipe(request):
         return redirect('index')
 
     units = [
+        "pcs",
         "pinch",
         "csp",
         "tsp",
         "tbsp",
         "cup",
-        "mug"
+        "mug",
+        "to taste"
     ]
     units_metric = [
         "ml",
