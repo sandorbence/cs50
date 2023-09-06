@@ -47,9 +47,9 @@ li {
 textarea {
     border: 1px solid;
     border-radius: 10px;
-    height: 100%;
     padding: 5px 10px;
     resize: none;
+    width: 100%;
 }
 
 .btn {
@@ -85,6 +85,13 @@ textarea {
 
 .recipe-quantity {
     background-color: cadetblue;
+}
+
+.step {
+    margin-bottom: 5px;
+    min-height: 100px;
+    overflow: hidden;
+    resize: none;
 }
 
 .toast {
@@ -132,7 +139,6 @@ textarea {
 
 #ingredients-container {
     display: flex;
-    flex: 1.2;
     flex-direction: column;
     height: 520px;
     min-width: 600px;
@@ -140,10 +146,9 @@ textarea {
     padding-left: 10px;
     padding-top: 50px;
 }
-#ingredients-container::-webkit-scrollbar{
-    background-color: blue;
-    left: 0;
-    position: absolute;
+
+#ingredients-container::-webkit-scrollbar {
+    background-color: transparent;
 }
 
 #main-container {
@@ -184,9 +189,15 @@ textarea {
 }
 
 #new-recipe-description {
+    align-items: flex-start;
     display: flex;
-    flex: 1;
     flex-direction: column;
+    height: 470px;
+    overflow-y: scroll;
+}
+
+#new-recipe-description::-webkit-scrollbar {
+    background-color: transparent;
 }
 
 #new-recipe-description div {

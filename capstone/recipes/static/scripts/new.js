@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-back').addEventListener('click', back);
     document.getElementById('btn-save').addEventListener('click', save);
     document.getElementById('image-upload').addEventListener('change', (event) => showPreview(event.target));
-
+    document.getElementById('btn-addstep').addEventListener('click', addStep)
 
     const select = document.getElementById('ingredient-unit');
 
@@ -262,4 +262,13 @@ function changeUnits() {
     }
 
     return false;
+}
+
+function addStep() {
+    const container = document.getElementById('new-recipe-description');
+
+    let step = document.createElement('textarea');
+    step.classList.add('step');
+
+    container.insertBefore(step, document.getElementById('btn-addstep'))
 }
