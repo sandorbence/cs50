@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('new-ingredient-form').style.display = 'none';
     document.getElementById('image-container').style.display = 'none';
+    document.getElementById('ingredient-unit').addEventListener('change', unitChanged)
     document.getElementById('unit-change').addEventListener('change', changeUnits)
     document.getElementById('btn-plus').addEventListener('click', addRow)
     document.getElementById('btn-next').addEventListener('click', next);
@@ -38,10 +39,12 @@ function addIngredient() {
     let name = document.getElementById('ingredient-name').value;
     let quantity = document.getElementById('ingredient-quantity').value;
     if (name === '' || quantity === '') {
-        const toastTitle = `Can't be empty`;
-        const toastMessage = `Please fill out all of the ingredient's sections.`
-        showToast(toastTitle, toastMessage);
-        return false;
+        if (document.getElementById('ingredient-unit').value !== 'to taste') {
+            const toastTitle = `Can't be empty`;
+            const toastMessage = `Please fill out all of the ingredient's sections.`
+            showToast(toastTitle, toastMessage);
+            return false;
+        }
     }
 
     let unit = document.getElementById('ingredient-unit').value;
@@ -324,5 +327,18 @@ function removeStep(step) {
     // Update placeholders in text areas
     for (let i = 1; i < textareas.length; i++) {
         textareas[i].placeholder = 'Step ' + (i + 1) + ':';
+    }
+}
+
+function unitChanged() {
+    const select = document.getElementById('ingredient-unit');
+    let input = document.getElementById('ingredient-quantity');
+
+    if (select.value === 'to taste') {
+        input.value = '';
+        input.disabled = true;
+    }
+    else {
+        input.disabled = false;
     }
 }

@@ -1,15 +1,20 @@
 {% extends "recipes/layout.html" %}
 
 {% block body %}
-<ul>
+<div>
     {% for recipe in recipes %}
-    <li>
-        <h1>{{ recipe.title }}</h1>
-        {% if recipe.image %}
-        <a href="{% url 'recipe' recipe.pk %}"><img src="{{ recipe.image.url }}" alt="Recipe image"></a>
-        {% else %}
-        {% endif %}
-    </li>
+    <a href="{% url 'recipe' recipe.pk %}" class="index-element">
+        <div class="card" style="width: 18rem;">
+            {% if recipe.image %}
+            <img class="card-img-top" src="{{ recipe.image.url }}" alt="Recipe image">
+            {% else %}
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ recipe.title }}</h5>
+                <p class="card-text">{{ recipe.total_time }} mins</p>
+            </div>
+        </div>
+    </a>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

@@ -7,12 +7,6 @@ h5 {
     margin-right: 10px;
 }
 
-img {
-    margin-top: 10px;
-    max-height: 400px;
-    object-fit: contain;
-}
-
 input {
     border-radius: 5px;
     margin: 0 5px;
@@ -40,6 +34,16 @@ label {
     margin-bottom: 0;
 }
 
+option {
+    font-weight: bold;
+}
+
+select {
+    border-radius: 5px;
+    font-weight: bold;
+    height: 30px;
+}
+
 textarea {
     border: 1px solid;
     border-radius: 10px;
@@ -60,6 +64,22 @@ ul li {
     display: flex;
     flex: 1;
     justify-content: flex-end;
+}
+
+.card {
+    width: 100% !important;
+}
+
+.index-element {
+    color: black;
+    display: inline-block;
+    margin: 10px;
+    width: 30%;
+}
+
+.index-element:hover {
+    color: black;
+    text-decoration: none;
 }
 
 .ingredient {
@@ -119,6 +139,12 @@ ul li {
     justify-content: center;
 }
 
+#image img {
+    margin-top: 10px;
+    max-height: 400px;
+    object-fit: contain;
+}
+
 #image-container {
     height: 100%;
 }
@@ -153,7 +179,7 @@ ul li {
     min-width: 600px;
     overflow-y: scroll;
     padding-left: 10px;
-    padding-top: 50px;
+    padding-top: 52px;
 }
 
 #ingredients-container::-webkit-scrollbar {
@@ -219,8 +245,37 @@ ul li {
     padding-top: 0;
 }
 
+#recipe-ingredients {
+    padding: 0;
+}
+
 #recipe-ingredients li {
     display: flex;
+    font-size: 1.2rem;
+    justify-content: space-between;
+}
+
+#recipe-main-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#recipe-main-container>div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+    width: 40%;
+}
+
+#recipe-top-container img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#recipe-top-container p {
+    font-size: 1.2rem;
 }
 
 #times-container {
