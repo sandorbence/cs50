@@ -89,9 +89,8 @@ def add_recipe(request):
     if request.method == "POST":
         data = request.POST
         title = data.get("title")
-        preparation = data.get("preparation")
+        preparation = json.loads(data.get("preparation"))
         ingredients = json.loads(data.get("ingredients"))
-
         prep_time = data.get("preptime")
         total_time = data.get("totaltime")
         servings = data.get("servings")
@@ -108,6 +107,8 @@ def add_recipe(request):
         except ValidationError as e:
             return JsonResponse({"error": str(e)}, status=400)
         return redirect('index')
+
+    max_characters = Recipe._meta.get_field("preparation").max_length
 
     units = [
         "pcs",
@@ -136,12 +137,15 @@ def add_recipe(request):
     return render(request, "recipes/new.html", {
         "units": units,
         "units_metric": units_metric,
-        "units_imperial": units_imperial
+        "units_imperial": units_imperial,
+        "max_characters": max_characters
     })
 
 
 def recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
+    steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
-        "recipe": recipe
+        "recipe": recipe,
+        "steps": steps
     })

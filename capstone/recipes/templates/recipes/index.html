@@ -5,7 +5,10 @@
     {% for recipe in recipes %}
     <li>
         <h1>{{ recipe.title }}</h1>
+        {% if recipe.image %}
         <a href="{% url 'recipe' recipe.pk %}"><img src="{{ recipe.image.url }}" alt="Recipe image"></a>
+        {% else %}
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

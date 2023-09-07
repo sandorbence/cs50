@@ -40,16 +40,16 @@ label {
     margin-bottom: 0;
 }
 
-li {
-    list-style: none;
-}
-
 textarea {
     border: 1px solid;
     border-radius: 10px;
     padding: 5px 10px;
     resize: none;
     width: 100%;
+}
+
+ul li {
+    list-style: none;
 }
 
 .btn {
@@ -87,9 +87,18 @@ textarea {
     background-color: cadetblue;
 }
 
+.remove {
+    margin: 5px 5px 0 0;
+    padding: 0 8px 2px 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
 .step {
     margin-bottom: 5px;
     min-height: 100px;
+    padding-right: 40px;
     overflow: hidden;
     resize: none;
 }

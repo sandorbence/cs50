@@ -142,6 +142,11 @@ function hideToast() {
 
 function next() {
 
+    let shouldContinue = true;
+
+    let maxCharacters = document.getElementById('max-characters').value;
+    let characters = 0;
+
     if (document.getElementById('title').querySelector('input').value === '' ||
         document.querySelector('textarea').value === '' ||
         document.querySelectorAll('.ingredient').length < 3) {
@@ -150,6 +155,26 @@ function next() {
         showToast(toastTitle, toastMessage);
         return;
     }
+    document.querySelectorAll('textarea').forEach(step => {
+        if (step.value === '') {
+            const toastTitle = 'Cannot be empty';
+            const toastMessage = 'There should be no empty steps.';
+            showToast(toastTitle, toastMessage);
+            shouldContinue = false;
+        }
+        // 6 is added to the characters, because we will identify steps with -step-
+        characters += step.value.length + 6;
+    });
+
+
+    if (characters > maxCharacters) {
+        const toastTitle = 'Preparation too long';
+        const toastMessage = `The maximum characters for the preparation is ${maxCharacters}. You have written ${characters} characters.`;
+        showToast(toastTitle, toastMessage)
+        return;
+    }
+
+    if (!shouldContinue) return;
 
     document.getElementById('description-container').style.display = 'none';
     document.getElementById('btn-next').style.display = 'none';
@@ -173,15 +198,20 @@ function save() {
         }
     });
 
+    let preparation = '';
+
+    Array.from(document.querySelectorAll('textarea')).forEach(step => {
+        preparation += `-step-${step.value}`;
+    });
+
     let title = document.getElementById('title').querySelector('input').value;
-    let preparation = document.querySelector('textarea').value;
     let image = document.getElementById('image-upload').files[0];
     let prepTime = document.getElementById('prep-time').value;
     let totalTime = document.getElementById('total-time').value;
     let servings = document.getElementById('servings').value;
 
     data.append('title', title);
-    data.append('preparation', preparation);
+    data.append('preparation', JSON.stringify(preparation));
     data.append('ingredients', JSON.stringify(ingredients));
 
     if (prepTime) data.append('preptime', prepTime);
@@ -267,8 +297,32 @@ function changeUnits() {
 function addStep() {
     const container = document.getElementById('new-recipe-description');
 
-    let step = document.createElement('textarea');
-    step.classList.add('step');
+    let step = document.createElement('div')
+    let text = document.createElement('textarea');
+    text.classList.add('step');
+
+    text.placeholder = 'Step ' + (document.querySelectorAll('textarea').length + 1) + ':';
+
+    let remove = document.createElement('button');
+    remove.textContent = 'x';
+    remove.classList.add('btn', 'btn-primary', 'remove');
+    remove.addEventListener('click', () => removeStep(step));
+
+    step.append(text);
+    step.append(remove);
+
+    step.style.position = 'relative';
 
     container.insertBefore(step, document.getElementById('btn-addstep'))
+}
+
+// Remove preparation step
+function removeStep(step) {
+    step.remove();
+    let textareas = document.querySelectorAll('textarea');
+
+    // Update placeholders in text areas
+    for (let i = 1; i < textareas.length; i++) {
+        textareas[i].placeholder = 'Step ' + (i + 1) + ':';
+    }
 }

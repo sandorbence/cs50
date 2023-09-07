@@ -3,7 +3,10 @@
 {% block body %}
 <div>
     <h1>{{ recipe.title }}</h1>
+    {% if recipe.image %}
     <img src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
+    {% else %}
+    {% endif %}
     <ul id="recipe-ingredients">
         {% for ingredient in recipe.ingredients.all %}
         <li>
@@ -17,6 +20,14 @@
     <div>Preparation time: {{ recipe.prep_time }}</div>
     <div>Total time: {{ recipe.total_time }}</div>
     <div>Servings: {{ recipe.servings }}</div>
-    <p>{{ recipe.preparation }}</p>
+    {% if steps|length == 0 %}
+    <p>{{recipe.preparation}}</p>
+    {% else %}
+    <ol>
+        {% for step in steps %}
+        <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+    {% endif %}
 </div>
 {% endblock %}
