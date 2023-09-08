@@ -222,7 +222,7 @@ function save() {
     if (servings) data.append('servings', servings);
     if (image) data.append('image', image);
 
-    fetch('/new', {
+    fetch('/recipes/0', {
         method: 'POST',
         body: data
     }).then(response => {

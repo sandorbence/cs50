@@ -8,6 +8,8 @@ from django.core.exceptions import ValidationError
 
 from .models import User, Recipe, Ingredient
 
+from .choices import UNITS, UNITS_METRIC, UNITS_IMPERIAL
+
 import json
 
 # Code copied from project2
@@ -78,14 +80,16 @@ def register(request):
 
 def index(request):
     recipes = Recipe.objects.all().order_by("-upload_date")
+    favorites = request.user.favorite_recipes.all(
+    ) if request.user.is_authenticated else None
     return render(request, "recipes/index.html", {
-        "recipes": recipes
+        "recipes": recipes,
+        "favorites": favorites
     })
 
 
 @csrf_exempt
-def add_recipe(request):
-
+def recipe(request, recipe_id):
     if request.method == "POST":
         data = request.POST
         title = data.get("title")
@@ -108,44 +112,53 @@ def add_recipe(request):
             return JsonResponse({"error": str(e)}, status=400)
         return redirect('index')
 
-    max_characters = Recipe._meta.get_field("preparation").max_length
+    try:
+        recipe = Recipe.objects.get(pk=recipe_id)
+    except Recipe.DoesNotExist:
+        return JsonResponse({"error": "Recipe not found."}, status=404)
 
-    units = [
-        "pcs",
-        "pinch",
-        "csp",
-        "tsp",
-        "tbsp",
-        "cup",
-        "mug",
-        "to taste"
-    ]
-    units_metric = [
-        "ml",
-        "dl",
-        "l",
-        "g",
-        "kg",
-    ]
-    units_imperial = [
-        "pt",
-        "qt",
-        "gal",
-        "oz",
-        "lb"
-    ]
+    if request.method == 'PUT':
+        favorite = json.loads(request.body).get("favorite")
+        if favorite:
+            recipe.favorites.add(request.user)
+        else:
+            if recipe.favorites.filter(username=request.user.username).exists():
+                recipe.favorites.remove(request.user)
+            else:
+                return JsonResponse({"error": "You have not yet added this recipe to favorites."}, status=400)
+        recipe.save()
+        return JsonResponse({"message": "Recipe edited successfully."}, status=201)
+
+
+@csrf_exempt
+def add_recipe(request):
     return render(request, "recipes/new.html", {
-        "units": units,
-        "units_metric": units_metric,
-        "units_imperial": units_imperial,
-        "max_characters": max_characters
+        "units": UNITS,
+        "units_metric": UNITS_METRIC,
+        "units_imperial": UNITS_IMPERIAL,
+        "max_characters": Recipe._meta.get_field("preparation").max_length
     })
 
 
-def recipe(request, recipe_id):
+def recipe_site(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
     steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
         "recipe": recipe,
         "steps": steps
+    })
+
+
+def favorites(request):
+    recipes = request.user.favorite_recipes.all().order_by("-upload_date")
+    return render(request, "recipes/favorite.html", {
+        "recipes": recipes,
+        "favorites": recipes
+    })
+
+
+def my_recipes(request):
+    recipes = Recipe.objects.filter(uploader=request.user)
+    return render(request, "recipes/my_recipes.html", {
+        "recipes": recipes
     })

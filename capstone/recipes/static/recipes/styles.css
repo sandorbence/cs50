@@ -17,13 +17,7 @@ input[type=file] {
 }
 
 input[type=number] {
-    -moz-appearance: textfield;
     width: 60px;
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
 }
 
 input[type=text] {
@@ -70,14 +64,23 @@ ul li {
     width: 100% !important;
 }
 
-.index-element {
+.card-text {
+    align-items: center;
+    display: flex;
+}
+
+.card-text img {
+    margin-right: 0.25rem;
+}
+
+.list-view-element {
     color: black;
     display: inline-block;
     margin: 10px;
-    width: 30%;
+    width: 100%;
 }
 
-.index-element:hover {
+.list-view-element:hover {
     color: black;
     text-decoration: none;
 }
@@ -172,6 +175,24 @@ ul li {
     position: absolute;
 }
 
+#list-view-main-container button {
+    background-color: transparent;
+    border: none;
+    bottom: 35px;
+    position: absolute;
+    right: 35px;
+}
+
+#list-view-main-container button:focus {
+    outline: none;
+}
+
+#list-view-main-container>div {
+    display: flex;
+    position: relative;
+    width: 30%;
+}
+
 #ingredients-container {
     display: flex;
     flex-direction: column;
@@ -186,16 +207,25 @@ ul li {
     background-color: transparent;
 }
 
-#main-container {
+#new-ingredient-form div {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+#new-main-container {
     display: flex;
     justify-content: center;
     position: relative;
 }
 
-#new-ingredient-form div {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
+#new-main-container input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#new-main-container input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
 }
 
 #new-recipe {

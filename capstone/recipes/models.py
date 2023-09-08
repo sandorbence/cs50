@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
-# Create your models here.
+from .choices import CATEGORIES, ALLERGENS
 
 
 class User(AbstractUser):
@@ -19,6 +19,7 @@ class Recipe(models.Model):
     prep_time = models.IntegerField(blank=True, null=True)
     total_time = models.IntegerField(blank=True, null=True)
     servings = models.IntegerField(blank=True, null=True)
+    favorites = models.ManyToManyField(User, related_name="favorite_recipes")
 
     def serialize(self):
         return {
@@ -60,3 +61,21 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f"For: {self.recipe.title} - {self.name}: {self.quantity}"
+
+
+class Category(models.Model):
+    name = models.CharField(
+        max_length=30, choices=CATEGORIES, default="snacks")
+    recipe = models.ManyToManyField(Recipe, related_name="categories")
+
+    def __str__(self):
+        return self.name
+
+
+class Allergen(models.Model):
+    name = models.CharField(
+        max_length=30, choices=ALLERGENS, blank=True, null=True)
+    recipe = models.ManyToManyField(Recipe, related_name="allergens")
+
+    def __str__(self):
+        return self.name

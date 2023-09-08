@@ -1,0 +1,34 @@
+{% load static %}
+
+<input type="hidden" id="star-empty" value="{% static 'images/star-empty.png' %}">
+<input type="hidden" id="star-filled" value="{% static 'images/star-filled.png' %}">
+<div id="list-view-main-container">
+    {% for recipe in recipes %}
+    <div>
+        <a href="{% url 'recipe_site' recipe.pk %}" class="list-view-element">
+            <div class="card" style="width: 18rem;">
+                {% if recipe.image %}
+                <img class="card-img-top" src="{{ recipe.image.url }}" alt="Recipe image">
+                {% else %}
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    <p class="card-text"><img src="{% static 'images/time.png' %}" alt="time">{{ recipe.total_time }} mins</p>
+                </div>
+            </div>
+        </a>
+        {% if user.is_authenticated %}
+        {% if request.user != recipe.uploader %}
+        <button id="{{ recipe.id }}">
+            {% if recipe in favorites %}
+            <img src="{% static 'images/star-filled.png' %}" alt="remove">
+            {% else %}
+            <img src="{% static 'images/star-empty.png' %}" alt="add">
+            {% endif %}
+        </button>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<script src="{% static 'scripts/list-view.js' %}"></script>
