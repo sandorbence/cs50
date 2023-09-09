@@ -65,8 +65,8 @@ class Ingredient(models.Model):
 
 class Category(models.Model):
     name = models.CharField(
-        max_length=30, choices=CATEGORIES, default="snacks")
-    recipe = models.ManyToManyField(Recipe, related_name="categories")
+        max_length=30, choices=CATEGORIES, default="snacks", unique=True)
+    recipes = models.ManyToManyField(Recipe, related_name="categories")
 
     def __str__(self):
         return self.name
@@ -74,8 +74,8 @@ class Category(models.Model):
 
 class Allergen(models.Model):
     name = models.CharField(
-        max_length=30, choices=ALLERGENS, blank=True, null=True)
-    recipe = models.ManyToManyField(Recipe, related_name="allergens")
+        max_length=30, choices=ALLERGENS, blank=True, null=True, default=None, unique=True)
+    recipes = models.ManyToManyField(Recipe, related_name="allergens")
 
     def __str__(self):
         return self.name

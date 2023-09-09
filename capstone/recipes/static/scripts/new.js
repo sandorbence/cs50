@@ -212,15 +212,21 @@ function save() {
     let prepTime = document.getElementById('prep-time').value;
     let totalTime = document.getElementById('total-time').value;
     let servings = document.getElementById('servings').value;
+    let category = document.getElementById('category').querySelector('select').value;
+
+    let allergens = document.getElementById('image-container').querySelectorAll('input[type=checkbox]');
+    let chosenAllergens = Array.from(allergens).filter(allergen => allergen.checked).map(allergen => allergen.value);
 
     data.append('title', title);
     data.append('preparation', JSON.stringify(preparation));
     data.append('ingredients', JSON.stringify(ingredients));
+    data.append('category', category);
 
     if (prepTime) data.append('preptime', prepTime);
     if (totalTime) data.append('totaltime', totalTime);
     if (servings) data.append('servings', servings);
     if (image) data.append('image', image);
+    if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
     fetch('/recipes/0', {
         method: 'POST',

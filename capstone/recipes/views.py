@@ -2,15 +2,23 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
+from django import forms
 
-from .models import User, Recipe, Ingredient
+from .models import User, Recipe, Ingredient, Category, Allergen
 
-from .choices import UNITS, UNITS_METRIC, UNITS_IMPERIAL
+from .choices import UNITS, UNITS_METRIC, UNITS_IMPERIAL, ALLERGENS
 
 import json
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = "__all__"
+
 
 # Code copied from project2
 
@@ -98,16 +106,33 @@ def recipe(request, recipe_id):
         prep_time = data.get("preptime")
         total_time = data.get("totaltime")
         servings = data.get("servings")
+        category = data.get("category")
+        try:
+            # This can be empty
+            allergens = json.loads(data.get("allergens"))
+        except:
+            allergens = None
 
         image = request.FILES.get("image")
 
         try:
-            recipe = Recipe.objects.create(
-                uploader=request.user, title=title, preparation=preparation,
-                image=image, prep_time=prep_time, total_time=total_time, servings=servings)
-            for ingredient in ingredients:
-                Ingredient.objects.create(
-                    recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
+            # Recipes won't be saved before validating other data
+            with transaction.atomic():
+                recipe = Recipe.objects.create(
+                    uploader=request.user, title=title, preparation=preparation,
+                    image=image, prep_time=prep_time, total_time=total_time, servings=servings)
+
+                for ingredient in ingredients:
+                    Ingredient.objects.create(
+                        recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
+
+                cat, _ = Category.objects.get_or_create(name=category)
+                cat.recipes.add(recipe)
+
+                if allergens is not None:
+                    for allergen_name in allergens:
+                        allergen, _ = Allergen.objects.get_or_create(name=allergen_name)
+                        allergen.recipes.add(recipe)
         except ValidationError as e:
             return JsonResponse({"error": str(e)}, status=400)
         return redirect('index')
@@ -130,13 +155,14 @@ def recipe(request, recipe_id):
         return JsonResponse({"message": "Recipe edited successfully."}, status=201)
 
 
-@csrf_exempt
 def add_recipe(request):
     return render(request, "recipes/new.html", {
         "units": UNITS,
         "units_metric": UNITS_METRIC,
         "units_imperial": UNITS_IMPERIAL,
-        "max_characters": Recipe._meta.get_field("preparation").max_length
+        "max_characters": Recipe._meta.get_field("preparation").max_length,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
     })
 
 

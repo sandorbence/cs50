@@ -18,7 +18,8 @@
                         </div>
                     </div>
                     <div id="new-recipe-description">
-                        <textarea id="preparation" class="step" placeholder="How do we make this meal? Step 1:"></textarea>
+                        <textarea id="preparation" class="step"
+                            placeholder="How do we make this meal? Step 1:"></textarea>
                         <button id="btn-addstep" class="btn btn-primary">Add step</button>
                         <input id="max-characters" type="hidden" value="{{ max_characters }}">
                     </div>
@@ -59,6 +60,13 @@
                         <label>Preparation time (min):<input type="number" id="prep-time"></label>
                         <label>Total time to make (min):<input type="number" id="total-time"></label>
                         <label>Servings:<input type="number" id="servings"></label>
+                        <div id="category"><label>Category:</label>{{ categories.name }}</div>
+                        <div id="allergens">
+                            <p>Select any allergens that this meal might contain (can be left empty).</p>
+                            {% for allergen in allergens %}
+                            <label>{{ allergen.1 }}<input type="checkbox" value="{{ allergen.0 }}"></label>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
                 <label for="image-upload" class="btn btn-primary">Select Image</label>
