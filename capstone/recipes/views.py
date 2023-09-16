@@ -196,8 +196,16 @@ def edit_recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
 
     if request.POST.get("method") == "edit":
+        steps = recipe.preparation.split("-step-")[1:]
         return render(request, "recipes/new.html", {
-            "recipe": recipe.serialize()
+            "recipe": json.dumps(recipe.serialize()),
+            "steps": json.dumps(steps),
+            "units": UNITS,
+            "units_metric": UNITS_METRIC,
+            "units_imperial": UNITS_IMPERIAL,
+            "max_characters": Recipe._meta.get_field("preparation").max_length,
+            "categories": CategoryForm(),
+            "allergens": ALLERGENS
         })
     else:
         redirect = request.POST.get("redirect")

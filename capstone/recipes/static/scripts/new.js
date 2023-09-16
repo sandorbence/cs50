@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (document.getElementById('recipe-data')) {
-        console.log(document.getElementById('recipe-data').value)
+        fillFieldsWithRecipeData();
     }
 });
 
@@ -334,6 +334,8 @@ function addStep() {
     step.style.position = 'relative';
 
     container.insertBefore(step, document.getElementById('btn-addstep'))
+
+    return step;
 }
 
 // Remove preparation step
@@ -358,4 +360,30 @@ function unitChanged() {
     else {
         input.disabled = false;
     }
+}
+
+function fillFieldsWithRecipeData() {
+
+    const recipeData = JSON.parse(document.getElementById('recipe-data').value);
+    let steps = JSON.parse(document.getElementById('steps').value);
+
+    document.getElementById('title').querySelector('input').value = recipeData.title;
+
+    // Add a new step for each one in the existing recipe
+    if (steps.length > 1) {
+        document.getElementById('new-recipe-description').querySelector('textarea').value = steps[0];
+        steps = steps.slice(1)
+
+        steps.forEach(step => {
+            let element = addStep();
+            element.querySelector('textarea').value = step;
+        });
+    }
+
+    // Add all ingredients in recipe
+    console.log(recipeData.ingredients)
+
+    recipeData.ingredients.forEach(ingredient => {
+        createRow(ingredient.name, ingredient.quantity);
+    })
 }
