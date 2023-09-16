@@ -65,7 +65,7 @@ ul li {
 }
 
 .card-img-top {
-    height: 200px;
+    height: 300px;
     object-fit: cover;
 }
 
@@ -182,6 +182,7 @@ ul li {
 
 #list-view-main-container {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #list-view-main-container button {
@@ -199,7 +200,7 @@ ul li {
 #list-view-main-container>div {
     display: flex;
     position: relative;
-    width: 30%;
+    width: 25%;
 }
 
 #ingredients-container {
@@ -308,6 +309,23 @@ input[type=number]::-webkit-outer-spin-button {
     width: 40%;
 }
 
+#recipe-top-container>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#recipe-top-container>div img {
+    position: absolute;
+    right: 20px;
+    top: 22px;
+}
+
+#recipe-top-container>div>div {
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
 #recipe-top-container img {
     max-height: 100%;
     max-width: 100%;
@@ -315,6 +333,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 #recipe-top-container p {
     font-size: 1.2rem;
+}
+
+#recipe-top-container select {
+    border: none;
+    width: 50px;
+}
+
+#recipe-top-container select:focus {
+    outline: none;
 }
 
 #times-container {

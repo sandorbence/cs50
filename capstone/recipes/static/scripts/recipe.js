@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let servings = document.getElementById('servings');
     servings.addEventListener('change', () => changePortions(originalServings, originalQuantities));
     servings.addEventListener('keyup', () => checkInput(originalServings, originalQuantities));
+
+    document.getElementById('options').querySelector('select').addEventListener('change', selectOption);
 });
 
 function changePortions(originalServings, originalQuantities) {
@@ -37,4 +39,14 @@ function checkInput(originalServings, originalQuantities) {
         document.getElementById('servings').value = 999;
         changePortions(originalServings, originalQuantities);
     }
+}
+
+function selectOption() {
+    let editForm = document.getElementById('edit');
+    let deleteForm = document.getElementById('delete');
+
+    let method = document.getElementById('options').querySelector('select').value;
+
+    if (method == 'edit') editForm.submit();
+    else deleteForm.submit();
 }

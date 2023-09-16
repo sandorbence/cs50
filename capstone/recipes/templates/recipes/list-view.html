@@ -10,6 +10,7 @@
                 {% if recipe.image %}
                 <img class="card-img-top" src="{{ recipe.image.url }}" alt="Recipe image">
                 {% else %}
+                <img class="card-img-top" src="{% static 'images/meal.png' %}" alt="Recipe image">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ recipe.title }}</h5>

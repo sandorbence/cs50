@@ -6,9 +6,33 @@
 
 {% block body %}
 <div id="recipe-main-container">
+    <input id="recipe-id" type="hidden" value="{{ recipe.id }}">
     <div>
         <div id="recipe-top-container">
-            <h1>{{ recipe.title }}</h1>
+            <div>
+                <h1>{{ recipe.title }}</h1>
+                {% if recipe.uploader == request.user %}
+                <div>
+                    <div id="options">
+                        <img src="{% static 'images/options.png' %}" alt="Options">
+                        <select name="options" id="options">
+                            <option value="" selected hidden></option>
+                            <option value="edit">Edit</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                        <form id="edit" method="post" action="{% url 'edit' recipe.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="method" value="edit">
+                        </form>
+                        <form id="delete" method="post" action="{% url 'edit' recipe.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="method" value="delete">
+                            <input type="hidden" name="redirect" value="{{ referrer_url }}">
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
             {% if recipe.image %}
             <img src="{{ recipe.image.url }}" alt="{{ recipe.image.name }}">
             {% else %}

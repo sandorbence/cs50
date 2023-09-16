@@ -131,7 +131,8 @@ def recipe(request, recipe_id):
 
                 if allergens is not None:
                     for allergen_name in allergens:
-                        allergen, _ = Allergen.objects.get_or_create(name=allergen_name)
+                        allergen, _ = Allergen.objects.get_or_create(
+                            name=allergen_name)
                         allergen.recipes.add(recipe)
         except ValidationError as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -188,3 +189,16 @@ def my_recipes(request):
     return render(request, "recipes/my_recipes.html", {
         "recipes": recipes
     })
+
+
+def edit_recipe(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+
+    if request.POST.get("method") == "edit":
+        return render(request, "recipes/new.html", {
+            "recipe": recipe
+        })
+    else:
+        redirect = request.POST.get("redirect")
+        recipe.delete()
+        return HttpResponseRedirect(redirect)
