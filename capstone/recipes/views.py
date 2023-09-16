@@ -172,7 +172,8 @@ def recipe_site(request, recipe_id):
     steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
         "recipe": recipe,
-        "steps": steps
+        "steps": steps,
+        "referrer_url": request.META.get("HTTP_REFERER")
     })
 
 
@@ -196,7 +197,7 @@ def edit_recipe(request, recipe_id):
 
     if request.POST.get("method") == "edit":
         return render(request, "recipes/new.html", {
-            "recipe": recipe
+            "recipe": recipe.serialize()
         })
     else:
         redirect = request.POST.get("redirect")

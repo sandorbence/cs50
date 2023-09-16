@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         option.textContent = unit;
         select.appendChild(option);
     }
-})
+
+    if (document.getElementById('recipe-data')) {
+        console.log(document.getElementById('recipe-data').value)
+    }
+});
 
 function addRow() {
     const form = document.getElementById('new-ingredient-form');
@@ -217,14 +221,21 @@ function save() {
     let allergens = document.getElementById('image-container').querySelectorAll('input[type=checkbox]');
     let chosenAllergens = Array.from(allergens).filter(allergen => allergen.checked).map(allergen => allergen.value);
 
+    if (!totalTime || !servings) {
+        const toastTitle = 'Cannot be empty';
+        const toastMessage = 'Please fill out servings and total time.';
+        showToast(toastTitle, toastMessage)
+        return;
+    }
+
     data.append('title', title);
     data.append('preparation', JSON.stringify(preparation));
     data.append('ingredients', JSON.stringify(ingredients));
     data.append('category', category);
+    data.append('totaltime', totalTime);
+    data.append('servings', servings);
 
     if (prepTime) data.append('preptime', prepTime);
-    if (totalTime) data.append('totaltime', totalTime);
-    if (servings) data.append('servings', servings);
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 

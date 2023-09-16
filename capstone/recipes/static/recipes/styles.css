@@ -315,6 +315,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #recipe-top-container>div img {
+    pointer-events: none;
     position: absolute;
     right: 20px;
     top: 22px;
