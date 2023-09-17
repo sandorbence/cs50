@@ -32,7 +32,9 @@ class Recipe(models.Model):
             "ingredients": [ingredient.serialize() for ingredient in self.ingredients.all()],
             "prep_time": self.prep_time,
             "total_time": self.total_time,
-            "servings": self.servings
+            "servings": self.servings,
+            "category": [category.serialize() for category in self.categories.all()],
+            "allergens": [allergen.name for allergen in self.allergens.all()]
         }
 
     def clean(self):
@@ -70,6 +72,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def serialize(self):
+        return {
+            "name": self.name,
+            "recipes": [recipe.title for recipe in self.recipes.all()]
+        }
 
 
 class Allergen(models.Model):

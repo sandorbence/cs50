@@ -239,17 +239,35 @@ function save() {
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
-    fetch('/recipes/0', {
-        method: 'POST',
-        body: data
-    }).then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-        }
-        else {
-            return response.json();
-        }
-    });
+    let recipeData = document.getElementById('recipe-data');
+
+    if (recipeData) {
+        let recipeID = JSON.parse(recipeData.value).id;
+        fetch('/recipes/' + recipeID, {
+            method: 'PUT',
+            body: data
+        }).then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+            else {
+                return response.json();
+            }
+        });
+    }
+    else {
+        fetch('/recipes/0', {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+            else {
+                return response.json();
+            }
+        });
+    }
 }
 
 function showPreview(input) {
@@ -370,8 +388,8 @@ function fillFieldsWithRecipeData() {
     document.getElementById('title').querySelector('input').value = recipeData.title;
 
     // Add a new step for each one in the existing recipe
+    document.getElementById('new-recipe-description').querySelector('textarea').value = steps[0];
     if (steps.length > 1) {
-        document.getElementById('new-recipe-description').querySelector('textarea').value = steps[0];
         steps = steps.slice(1)
 
         steps.forEach(step => {
@@ -381,9 +399,35 @@ function fillFieldsWithRecipeData() {
     }
 
     // Add all ingredients in recipe
-    console.log(recipeData.ingredients)
-
     recipeData.ingredients.forEach(ingredient => {
         createRow(ingredient.name, ingredient.quantity);
-    })
+    });
+
+    console.log(recipeData)
+
+    if (recipeData.image) {
+        document.getElementById('image-preview').src = recipeData.image;
+    }
+
+    if (recipeData.prep_time) {
+        document.getElementById('prep-time').value = recipeData.prep_time;
+    }
+
+    document.getElementById('total-time').value = recipeData.total_time;
+    document.getElementById('servings').value = recipeData.servings;
+
+    // Set category
+    document.getElementById('category').querySelector('select').value = recipeData.category[0].name;
+
+    // Check allergens
+    let boxes = document.getElementById('allergens').querySelectorAll('input[type=checkbox]');
+    if (recipeData.allergens.length > 0) {
+        recipeData.allergens.forEach(allergen => {
+            for (let i = 0; i < boxes.length; i++) {
+                if (allergen === boxes[i].value) {
+                    boxes[i].checked = true;
+                }
+            }
+        })
+    }
 }
