@@ -196,6 +196,8 @@ function back() {
 
 function save() {
 
+    let recipeData = document.getElementById('recipe-data');
+
     let data = new FormData();
 
     let ingredients = Array.from(document.querySelectorAll('.ingredient')).slice(2).map(ingredient => {
@@ -239,12 +241,10 @@ function save() {
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
-    let recipeData = document.getElementById('recipe-data');
-
     if (recipeData) {
         let recipeID = JSON.parse(recipeData.value).id;
         fetch('/recipes/' + recipeID, {
-            method: 'PUT',
+            method: 'POST',
             body: data
         }).then(response => {
             if (response.redirected) {
@@ -403,8 +403,6 @@ function fillFieldsWithRecipeData() {
         createRow(ingredient.name, ingredient.quantity);
     });
 
-    console.log(recipeData)
-
     if (recipeData.image) {
         document.getElementById('image-preview').src = recipeData.image;
     }
@@ -421,6 +419,7 @@ function fillFieldsWithRecipeData() {
 
     // Check allergens
     let boxes = document.getElementById('allergens').querySelectorAll('input[type=checkbox]');
+
     if (recipeData.allergens.length > 0) {
         recipeData.allergens.forEach(allergen => {
             for (let i = 0; i < boxes.length; i++) {

@@ -114,36 +114,73 @@ def recipe(request, recipe_id):
         except:
             allergens = None
 
+        if recipe_id == 0:
+            try:
+                # Recipes won't be saved before validating other data
+                with transaction.atomic():
+                    recipe = Recipe.objects.create(
+                        uploader=request.user, title=title, preparation=preparation,
+                        image=image, prep_time=prep_time, total_time=total_time, servings=servings)
+
+                    for ingredient in ingredients:
+                        Ingredient.objects.create(
+                            recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
+
+                    cat, _ = Category.objects.get_or_create(name=category)
+                    cat.recipes.add(recipe)
+
+                    if allergens is not None:
+                        for allergen_name in allergens:
+                            allergen, _ = Allergen.objects.get_or_create(
+                                name=allergen_name)
+                            allergen.recipes.add(recipe)
+            except ValidationError as e:
+                return JsonResponse({"error": str(e)}, status=400)
+            return redirect("index")
+
+        # If it's an edit not a new recipe
         try:
-            # Recipes won't be saved before validating other data
-            with transaction.atomic():
-                recipe = Recipe.objects.create(
-                    uploader=request.user, title=title, preparation=preparation,
-                    image=image, prep_time=prep_time, total_time=total_time, servings=servings)
+            recipe = Recipe.objects.get(pk=recipe_id)
+        except Recipe.DoesNotExist:
+            return JsonResponse({"error": "Recipe not found."}, status=404)
 
-                for ingredient in ingredients:
-                    Ingredient.objects.create(
-                        recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
+        recipe.title = title
+        recipe.preparation = preparation
+        recipe.prep_time = prep_time
+        recipe.total_time = total_time
+        recipe.servings = servings
+        ingredients = ingredients
+        category = category
+        if image:
+            recipe.image = image
 
-                cat, _ = Category.objects.get_or_create(name=category)
-                cat.recipes.add(recipe)
+        recipe.save()
 
-                if allergens is not None:
-                    for allergen_name in allergens:
-                        allergen, _ = Allergen.objects.get_or_create(
-                            name=allergen_name)
-                        allergen.recipes.add(recipe)
-        except ValidationError as e:
-            return JsonResponse({"error": str(e)}, status=400)
-        return redirect("index")
+        # Delete the ingredients for the recipe then add the new ones
+        Ingredient.objects.filter(recipe=recipe).delete()
+        for ingredient in ingredients:
+            Ingredient.objects.create(
+                recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
 
-    try:
-        recipe = Recipe.objects.get(pk=recipe_id)
-    except Recipe.DoesNotExist:
-        return JsonResponse({"error": "Recipe not found."}, status=404)
+        # Delete the recipe's category then add the new one
+        recipe.categories.clear()
+        cat, _ = Category.objects.get_or_create(name=category)
+        cat.recipes.add(recipe)
+
+        # Delete the allergens for the recipe then add the new ones
+        recipe.allergens.clear()
+        if allergens is not None:
+            for allergen_name in allergens:
+                allergen, _ = Allergen.objects.get_or_create(
+                    name=allergen_name)
+                allergen.recipes.add(recipe)
+
+        return redirect("my_recipes")
 
     if request.method == "PUT":
-        favorite = json.loads(request.body).get("favorite")
+        data = json.loads(request.body)
+        favorite = data.get("favorite")
+
         if favorite is not None:
             if favorite:
                 recipe.favorites.add(request.user)
@@ -154,44 +191,6 @@ def recipe(request, recipe_id):
                     return JsonResponse({"error": "You have not yet added this recipe to favorites."}, status=400)
             recipe.save()
             return JsonResponse({"message": "Recipe edited successfully."}, status=201)
-        else:
-            data = json.loads(request.body)
-            recipe.title = data.get("title")
-            recipe.preparation = json.loads(data.get("preparation"))
-            recipe.prep_time = data.get("preptime")
-            recipe.total_time = data.get("totaltime")
-            recipe.servings = data.get("servings")
-            ingredients = json.loads(data.get("ingredients"))
-            category = data.get("category")
-            recipe.image = request.FILES.get("image")
-
-            try:
-                allergens = json.loads(data.get("allergens"))
-            except:
-                allergens = None
-
-            recipe.save()
-
-            # Delete the ingredients for the recipe then add the new ones
-            Ingredient.objects.filter(recipe=recipe).delete()
-            for ingredient in ingredients:
-                Ingredient.objects.create(
-                    recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
-
-            # Delete the recipe's category then add the new one
-            recipe.categories.clear()
-            cat, _ = Category.objects.get_or_create(name=category)
-            cat.recipes.add(recipe)
-
-            # Delete the allergens for the recipe then add the new ones
-            recipe.allergens.clear()
-            if allergens is not None:
-                for allergen_name in allergens:
-                    allergen, _ = Allergen.objects.get_or_create(
-                        name=allergen_name)
-                    allergen.recipes.add(recipe)
-
-            return redirect("my_recipes")
 
 
 def add_recipe(request):
@@ -224,7 +223,8 @@ def favorites(request):
 
 
 def my_recipes(request):
-    recipes = Recipe.objects.filter(uploader=request.user).order_by("-upload_date")
+    recipes = Recipe.objects.filter(
+        uploader=request.user).order_by("-upload_date")
     return render(request, "recipes/my_recipes.html", {
         "recipes": recipes
     })
