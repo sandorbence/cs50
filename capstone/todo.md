@@ -9,3 +9,6 @@
 * Add more recipes
 * Style recipe page
 * Style edit page
+* Add unit tests
+* Add comments
+* Add proper error handling
