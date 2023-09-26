@@ -1,6 +1,6 @@
 # Todo for capstone project
 
-* Add remove image button for edit/new form
+* ~~Add remove image button for edit/new form~~
 * Add navbar for searching by
     - Name
     - Category
