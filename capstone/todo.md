@@ -5,10 +5,12 @@
     - Name
     - Category
     - Allergens
-* Fix options button behaviour on recipe page
+* ~~Fix options button behaviour on recipe page~~
 * Add more recipes
-* Style recipe page
-* Style edit page
+* ~~Style recipe page~~
+* ~~Style edit page~~
 * Add unit tests
 * Add comments
 * Add proper error handling
+* Add styling for mobile responziveness
+* ~~Fix new recipe form ingredient handling~~
