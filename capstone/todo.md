@@ -12,3 +12,4 @@
 * Add unit tests
 * Add comments
 * Add proper error handling
+* Add styling for mobile responziveness
