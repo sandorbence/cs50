@@ -7,7 +7,7 @@
     - Allergens
 * ~~Fix options button behaviour on recipe page~~
 * Add more recipes
-* Style recipe page
+* ~~Style recipe page~~
 * Style edit page
 * Add unit tests
 * Add comments
