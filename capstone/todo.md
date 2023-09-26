@@ -13,4 +13,4 @@
 * Add comments
 * Add proper error handling
 * Add styling for mobile responziveness
-* Fix new recipe form ingredient handling
+* ~~Fix new recipe form ingredient handling~~
