@@ -1,16 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('ingredient-unit');
+    const checkBox = document.getElementById('unit-change');
+    const imagePath = document.getElementById('image-preview').src;
+
     document.getElementById('new-ingredient-form').style.display = 'none';
     document.getElementById('image-container').style.display = 'none';
-    document.getElementById('ingredient-unit').addEventListener('change', unitChanged)
-    document.getElementById('unit-change').addEventListener('change', changeUnits)
-    document.getElementById('btn-plus').addEventListener('click', addRow)
+    select.addEventListener('change', unitChanged);
+    checkBox.addEventListener('change', () => changeUnits(select, checkBox));
+    document.getElementById('btn-plus').addEventListener('click', addRow);
     document.getElementById('btn-next').addEventListener('click', next);
     document.getElementById('btn-back').addEventListener('click', back);
+    document.getElementById('btn-clear').addEventListener('click', () => clearImage(imagePath));
     document.getElementById('btn-save').addEventListener('click', save);
     document.getElementById('image-upload').addEventListener('change', (event) => showPreview(event.target));
-    document.getElementById('btn-addstep').addEventListener('click', addStep)
+    document.getElementById('btn-addstep').addEventListener('click', addStep);
 
-    const select = document.getElementById('ingredient-unit');
+    addOptions(select);
+
+    // If document is edited
+    if (document.getElementById('recipe-data')) {
+        fillFieldsWithRecipeData();
+    }
+
+    document.getElementById('btn-clear').style.display = 'none';
+});
+
+function addOptions(select) {
+    let units = document.getElementById('units').value
+        .slice(1, -1)
+        .split(', ')
+        .map((unit) => {
+            return unit.replace(/'/g, '');
+        });
+
+    // Add basic options to select
+    for (unit of units) {
+        let option = document.createElement('option');
+        option.textContent = unit;
+        select.appendChild(option);
+    }
 
     let metric = document.getElementById('metric-units').value
         .slice(1, -1)
@@ -25,11 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         option.textContent = unit;
         select.appendChild(option);
     }
-
-    if (document.getElementById('recipe-data')) {
-        fillFieldsWithRecipeData();
-    }
-});
+}
 
 function addRow() {
     const form = document.getElementById('new-ingredient-form');
@@ -75,30 +99,72 @@ function createRow(name, quantity) {
     let row = document.createElement('div');
     row.classList.add('ingredient');
 
+    let rowEdit = document.createElement('div');
+    rowEdit.classList.add('row-edit');
+
+    let rowShow = document.createElement('div');
+    rowShow.classList.add('row-show');
+
     let ingName = document.createElement('div');
     ingName.textContent = name;
     ingName.classList.add('ingredient-name');
-    row.append(ingName);
+    rowShow.append(ingName);
 
     let ingQuantity = document.createElement('div');
     ingQuantity.textContent = quantity;
     ingQuantity.classList.add('ingredient-quantity');
-    row.append(ingQuantity);
+    rowShow.append(ingQuantity);
+
+    let nameTextInput = document.createElement('input');
+    nameTextInput.type = 'text';
+    rowEdit.append(nameTextInput);
+
+    let quantityNumberInput = document.createElement('input');
+    quantityNumberInput.type = 'number';
+    quantityNumberInput.step = 0.001;
+    rowEdit.append(quantityNumberInput);
+
+    let quantityUnitInput = document.createElement('select');
+    addOptions(quantityUnitInput);
+    rowEdit.append(quantityUnitInput);
+
+    let unitDiv = document.createElement('div');
+    let unitCheckBox = document.createElement('input');
+    unitCheckBox.type = 'checkbox';
+    unitCheckBox.addEventListener('change', () => changeUnits(quantityUnitInput, unitCheckBox));
+
+    let label = document.createElement('label');
+    label.textContent = 'Imperial units';
+
+    unitDiv.append(unitCheckBox);
+    unitDiv.append(label);
+    rowEdit.append(unitDiv);
+
+    rowEdit.style.display = 'none';
+    row.append(rowEdit);
+    row.append(rowShow);
 
     let btnContainer = document.createElement('div');
     btnContainer.classList.add('btn-container');
 
     let btnEdit = document.createElement('button');
-    btnEdit.classList.add('btn', 'btn-primary');
+    btnEdit.classList.add('btn', 'btn-primary', 'btn-edit');
     btnEdit.textContent = 'Edit';
     btnEdit.addEventListener('click', () => editRow(row, name, quantity));
     btnContainer.append(btnEdit);
 
     let btnDel = document.createElement('button');
-    btnDel.classList.add('btn', 'btn-primary');
+    btnDel.classList.add('btn', 'btn-primary', 'btn-del');
     btnDel.textContent = 'X';
     btnDel.addEventListener('click', () => deleteRow(row));
     btnContainer.append(btnDel);
+
+    let btnDone = document.createElement('button');
+    btnDone.classList.add('btn', 'btn-primary', 'btn-done');
+    btnDone.textContent = 'Done';
+    btnDone.addEventListener('click', () => editDone(row));
+    btnDone.style.display = 'none';
+    btnContainer.append(btnDone);
 
     row.append(btnContainer);
 
@@ -109,7 +175,7 @@ function deleteRow(row) {
     row.remove();
 }
 
-function editRow(row, name, quantity) {
+function editRow(row) {
 
     // If we are already adding an ingredient, do not interrupt with edit
     // as we will use the same form for editing as adding
@@ -121,15 +187,34 @@ function editRow(row, name, quantity) {
         showToast(toastTitle, toastMessage);
     }
     else {
-        document.getElementById('new-ingredient-form').style.display = 'flex';
-        document.getElementById('ingredient-name').value = name;
+        let quantity = row.querySelector('.ingredient-quantity').textContent;
 
-        let split = quantity.split(' ')
-        document.getElementById('ingredient-quantity').value = split[0];
-        document.getElementById('ingredient-unit').value = split[1];
+        row.querySelector('.row-show').style.display = 'none';
+        row.querySelector('.row-edit').style.display = 'flex';
+        row.querySelector('input[type=text]').value = row.querySelector('.ingredient-name').textContent;
+        row.querySelector('input[type=number]').value = quantity.split(' ')[0];
+        row.querySelector('select').value = quantity.split(' ')[1];
 
-        row.remove();
+        row.querySelector('.btn-edit').style.display = 'none';
+        row.querySelector('.btn-del').style.display = 'none';
+        row.querySelector('.btn-done').style.display = 'inline-block';
     }
+}
+
+function editDone(row) {
+    row.querySelector('.ingredient-name').textContent = row.querySelector('input[type=text]').value;
+
+    let quantity = row.querySelector('input[type=number]').value;
+    let unit = row.querySelector('select').value;
+
+    row.querySelector('.ingredient-quantity').textContent = quantity + ' ' + unit;
+
+    row.querySelector('.row-edit').style.display = 'none';
+    row.querySelector('.row-show').style.display = 'flex';
+
+    row.querySelector('.btn-done').style.display = 'none';
+    row.querySelector('.btn-edit').style.display = 'inline-block';
+    row.querySelector('.btn-del').style.display = 'inline-block';
 }
 
 function showToast(title, message) {
@@ -272,6 +357,8 @@ function save() {
 
 function showPreview(input) {
     if (input.files && input.files[0]) {
+        document.getElementById('btn-clear').style.display = 'inline-block';
+
         const reader = new FileReader();
 
         reader.onload = (event) => {
@@ -283,8 +370,7 @@ function showPreview(input) {
     }
 }
 
-function changeUnits() {
-    const select = document.getElementById('ingredient-unit');
+function changeUnits(select, checkBox) {
 
     let metric = document.getElementById('metric-units').value
         .slice(1, -1)
@@ -300,7 +386,7 @@ function changeUnits() {
             return unit.replace(/'/g, '');
         });
 
-    if (document.getElementById('unit-change').checked) {
+    if (checkBox.checked) {
 
         // Remove metric options
         for (let i = 0; i < metric.length; i++) {
@@ -429,4 +515,10 @@ function fillFieldsWithRecipeData() {
             }
         })
     }
+}
+
+function clearImage(path) {
+    document.getElementById('image-upload').value = '';
+    document.getElementById('image-preview').src = path;
+    document.getElementById('btn-clear').style.display = 'none';
 }

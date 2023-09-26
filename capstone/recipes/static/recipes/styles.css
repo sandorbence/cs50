@@ -2,6 +2,10 @@ h1 {
     margin: 10px;
 }
 
+h4 {
+    margin: 10px 0 10px 5px;
+}
+
 h5 {
     margin-bottom: 0;
     margin-right: 10px;
@@ -50,8 +54,12 @@ ul li {
     list-style: none;
 }
 
+.allergen-row {
+    background-color: #F9F3CC !important;
+}
+
 .btn {
-    margin: 3px
+    margin: 3px;
 }
 
 .btn-container {
@@ -78,6 +86,28 @@ ul li {
     margin-right: 0.25rem;
 }
 
+.flex-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.flex-row div {
+    font-size: 1.2rem;
+}
+
+.left-align {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 100%;
+}
+
 .list-view-element {
     color: black;
     display: inline-block;
@@ -101,6 +131,11 @@ ul li {
     padding: 5px 10px;
 }
 
+.ingredient>div {
+    align-items: center;
+    display: flex;
+}
+
 .new-button {
     position: absolute;
     right: 20px;
@@ -108,11 +143,19 @@ ul li {
 }
 
 .recipe-ingredient-name {
-    background-color: bisque;
+    max-width: 80%;
+}
+
+.recipe-list-item {
+    background-color: #D7E5CA;
+    border-radius: 10px;
+    margin: 3px;
+    padding: 2px 5px;
 }
 
 .recipe-quantity {
-    background-color: cadetblue;
+    align-items: center;
+    display: flex;
 }
 
 .remove {
@@ -136,6 +179,12 @@ ul li {
     top: -50px;
 }
 
+#btn-clear {
+    bottom: 3px;
+    position: absolute;
+    right: 3px;
+}
+
 #btn-save {
     bottom: 10px;
     position: absolute;
@@ -145,6 +194,7 @@ ul li {
 #image {
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 #image img {
@@ -285,19 +335,24 @@ input[type=number]::-webkit-outer-spin-button {
     padding-top: 0;
 }
 
+#preparation-container li {
+    text-align: justify;
+}
+
 #recipe-ingredients {
     padding: 0;
 }
 
 #recipe-ingredients li {
+    background-color: #D2E0FB;
     display: flex;
-    font-size: 1.2rem;
     justify-content: space-between;
 }
 
 #recipe-main-container {
+    align-items: center;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     width: 100%;
 }
 
@@ -307,6 +362,17 @@ input[type=number]::-webkit-outer-spin-button {
     flex-direction: column;
     min-width: 600px;
     width: 40%;
+}
+
+#recipe-main-container li {
+    font-size: 1.2rem;
+}
+
+#recipe-top-container {
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    width: 100%;
 }
 
 #recipe-top-container>div {
@@ -333,7 +399,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #recipe-top-container p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    padding-top: 10px;
 }
 
 #recipe-top-container select {

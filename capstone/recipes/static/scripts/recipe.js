@@ -45,7 +45,11 @@ function selectOption() {
     let editForm = document.getElementById('edit');
     let deleteForm = document.getElementById('delete');
 
-    let method = document.getElementById('options').querySelector('select').value;
+    let select = document.getElementById('options').querySelector('select');
+    let method = select.value;
+
+    // So that image and selected option do not overlap
+    select.style.visibility = 'hidden';
 
     if (method == 'edit') editForm.submit();
     else deleteForm.submit();
