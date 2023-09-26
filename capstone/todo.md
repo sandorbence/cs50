@@ -5,7 +5,7 @@
     - Name
     - Category
     - Allergens
-* Fix options button behaviour on recipe page
+* ~~Fix options button behaviour on recipe page~~
 * Add more recipes
 * Style recipe page
 * Style edit page
