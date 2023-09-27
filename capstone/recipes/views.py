@@ -92,7 +92,9 @@ def index(request):
     ) if request.user.is_authenticated else None
     return render(request, "recipes/index.html", {
         "recipes": recipes,
-        "favorites": favorites
+        "favorites": favorites,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
     })
 
 
@@ -218,7 +220,9 @@ def favorites(request):
     recipes = request.user.favorite_recipes.all().order_by("-upload_date")
     return render(request, "recipes/favorite.html", {
         "recipes": recipes,
-        "favorites": recipes
+        "favorites": recipes,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
     })
 
 
@@ -226,7 +230,9 @@ def my_recipes(request):
     recipes = Recipe.objects.filter(
         uploader=request.user).order_by("-upload_date")
     return render(request, "recipes/my_recipes.html", {
-        "recipes": recipes
+        "recipes": recipes,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
     })
 
 
@@ -249,3 +255,14 @@ def edit_recipe(request, recipe_id):
         redirect = request.POST.get("redirect")
         recipe.delete()
         return HttpResponseRedirect(redirect)
+
+
+def filter_recipes(request):
+    filter_criteria = request.GET
+    search_bar = filter_criteria.get("searchbar")
+    category_name = filter_criteria.get("category")
+
+    category = Category.objects.get(name=category_name)
+    recipes = Recipe.objects.filter(categories=category)
+
+    return JsonResponse({"message": recipes[0].title})

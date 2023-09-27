@@ -53,7 +53,7 @@
                 {% for ingredient in recipe.ingredients.all %}
                 <li class="recipe-list-item">
                     <div class="recipe-ingredient-name">{{ ingredient.name }}</div>
-                    <div class="flex-mid">
+                    <div class="flex-column-mid-horizontal">
                         <div class="recipe-quantity">{{ ingredient.quantity }}</div>
                     </div>
                 </li>
