@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from django import forms
 
-from .models import User, Recipe, Ingredient, Category, Allergen
+from .models import User, Recipe, Ingredient, Allergen
 
 from .choices import UNITS, UNITS_METRIC, UNITS_IMPERIAL, ALLERGENS
 
@@ -16,8 +16,8 @@ import json
 
 class CategoryForm(forms.ModelForm):
     class Meta:
-        model = Category
-        fields = "__all__"
+        model = Recipe
+        fields = ["category"]
 
 
 # Code copied from project2
@@ -260,9 +260,13 @@ def edit_recipe(request, recipe_id):
 def filter_recipes(request):
     filter_criteria = request.GET
     search_bar = filter_criteria.get("searchbar")
-    category_name = filter_criteria.get("category")
+    category = filter_criteria.get("category")
+    allergens = filter_criteria.get("allergens").split(',')[:-1]
 
-    category = Category.objects.get(name=category_name)
-    recipes = Recipe.objects.filter(categories=category)
+    recipes = Recipe.objects.filter(category=category).filter(
+        allergens__name__in=allergens)
 
-    return JsonResponse({"message": recipes[0].title})
+    if recipes:
+        return JsonResponse({"message": recipes[0].title}, status=200)
+    else:
+        return JsonResponse({"message": "No recipes found with these conditions."}, status=200)

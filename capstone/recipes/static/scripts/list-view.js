@@ -56,12 +56,16 @@ function filterRecipes() {
 
     let searchBarText = searchContainer.querySelector('input[type=text]').value;
     let category = searchContainer.querySelector('select').value;
-    let checkBoxes = searchContainer.querySelector('input[type=checkbox]');
+    let checkBoxes = searchContainer.querySelectorAll('input[type=checkbox]');
     let allergens = Array.from(checkBoxes).filter(checkbox => checkbox.checked).map(allergen => allergen.value);
 
-    let recipes = document.querySelectorAll('.recipe-card');
+    let allergensString = '';
 
-    let query = `searchbar=${searchBarText}&category=${category}`;
+    for (let i = 0; i < allergens.length; i++) {
+        allergensString += allergens[i] + ',';
+    }
+
+    let query = `searchbar=${searchBarText}&category=${category}&allergens=${allergensString}`;
 
     fetch('/filter/?' + query)
         .then(response => response.json())

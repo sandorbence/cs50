@@ -184,7 +184,7 @@ ul li {
 }
 
 .sidebar-open {
-    width: 25%;
+    width: 15%;
 }
 
 .step {
@@ -270,7 +270,10 @@ ul li {
 }
 
 #list-view-list-container {
+    align-content: flex-start;
+    align-items: flex-start;
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
 }
 
@@ -338,7 +341,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 90%;
 }
 
-#new-recipe-container div {
+#new-recipe-container>div {
     width: 100%;
 }
 
@@ -446,7 +449,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #D2E0FB;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
 }
 
 #times-container {
@@ -461,10 +464,11 @@ input[type=number]::-webkit-outer-spin-button {
 
 #title {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 15px;
 }
 
 #title>div {
+    align-items: center;
     display: flex;
 }

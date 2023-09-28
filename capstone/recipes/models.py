@@ -9,6 +9,14 @@ class User(AbstractUser):
     pass
 
 
+class Allergen(models.Model):
+    name = models.CharField(
+        max_length=30, choices=ALLERGENS, blank=True, null=True, default=None, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Recipe(models.Model):
     uploader = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="recipes")
@@ -19,7 +27,12 @@ class Recipe(models.Model):
     prep_time = models.IntegerField(blank=True, null=True)
     total_time = models.IntegerField(blank=True, null=True)
     servings = models.IntegerField(blank=True, null=True)
-    favorites = models.ManyToManyField(User, related_name="favorite_recipes")
+    favorites = models.ManyToManyField(
+        User, related_name="favorite_recipes", blank=True)
+    category = models.CharField(
+        max_length=30, choices=CATEGORIES, default="snacks")
+    allergens = models.ManyToManyField(
+        Allergen, related_name="recipes", blank=True)
 
     def serialize(self):
         return {
@@ -33,12 +46,15 @@ class Recipe(models.Model):
             "prep_time": self.prep_time,
             "total_time": self.total_time,
             "servings": self.servings,
-            "category": [category.serialize() for category in self.categories.all()],
+            "category": self.category,
             "allergens": [allergen.name for allergen in self.allergens.all()]
         }
 
     def clean(self):
-        if not self.uploader or not self.title or not self.uploader or not self.preparation or not self.upload_date or not self.ingredients or self.prep_time > self.total_time:
+        if not self.uploader or not self.title or not self.category or not self.preparation or not self.upload_date or not self.ingredients or not self.total_time or not self.servings:
+            if self.prep_time:
+                if self.prep_time > self.total_time:
+                    raise ValidationError("Preparation time cannot be more than total time.")
             raise ValidationError("Recipe data is not correct.")
 
     def __str__(self):
@@ -63,27 +79,3 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f"For: {self.recipe.title} - {self.name}: {self.quantity}"
-
-
-class Category(models.Model):
-    name = models.CharField(
-        max_length=30, choices=CATEGORIES, default="snacks", unique=True)
-    recipes = models.ManyToManyField(Recipe, related_name="categories")
-
-    def __str__(self):
-        return self.name
-
-    def serialize(self):
-        return {
-            "name": self.name,
-            "recipes": [recipe.title for recipe in self.recipes.all()]
-        }
-
-
-class Allergen(models.Model):
-    name = models.CharField(
-        max_length=30, choices=ALLERGENS, blank=True, null=True, default=None, unique=True)
-    recipes = models.ManyToManyField(Recipe, related_name="allergens")
-
-    def __str__(self):
-        return self.name

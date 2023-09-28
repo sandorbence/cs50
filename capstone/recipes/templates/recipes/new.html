@@ -18,7 +18,9 @@
                     <div id="title">
                         <div>
                             <h4>Recipe title:</h4>
-                            <input type="text">
+                            <div>
+                                <input type="text">
+                            </div>
                         </div>
                     </div>
                     <div id="new-recipe-description">
@@ -62,7 +64,7 @@
                         <label>Preparation time (min):<input type="number" id="prep-time"></label>
                         <label>Total time to make (min):<input type="number" id="total-time"></label>
                         <label>Servings:<input type="number" id="servings"></label>
-                        <div id="category"><label>Category:</label>{{ categories.name }}</div>
+                        <div id="category"><label>Category:</label>{{ categories }}</div>
                         <div id="allergens">
                             <h4>Select any allergens that this meal might contain (can be left empty).</h4>
                             {% for allergen in allergens %}
