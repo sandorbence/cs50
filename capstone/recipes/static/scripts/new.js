@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('image-upload').addEventListener('change', (event) => showPreview(event.target));
     document.getElementById('btn-addstep').addEventListener('click', addStep);
 
+    let prepTime = document.getElementById('prep-time');
+    let totalTime = document.getElementById('total-time');
+    let servings = document.getElementById('servings');
+
+    prepTime.addEventListener('keyup', () => checkInput(prepTime, 0, 999));
+    totalTime.addEventListener('keyup', () => checkInput(totalTime, 1, 999));
+    servings.addEventListener('keyup', () => checkInput(servings, 1, 999));
+
     addOptions(select);
 
     // If document is edited
@@ -298,11 +306,12 @@ function save() {
         preparation += `-step-${step.value}`;
     });
 
-    let title = document.getElementById('title').querySelector('input').value;
-    let image = document.getElementById('image-upload').files[0];
     let prepTime = document.getElementById('prep-time').value;
     let totalTime = document.getElementById('total-time').value;
     let servings = document.getElementById('servings').value;
+
+    let title = document.getElementById('title').querySelector('input').value;
+    let image = document.getElementById('image-upload').files[0];
     let category = document.getElementById('category').querySelector('select').value;
 
     let allergens = document.getElementById('image-container').querySelectorAll('input[type=checkbox]');
@@ -311,7 +320,7 @@ function save() {
     if (!totalTime || !servings) {
         const toastTitle = 'Cannot be empty';
         const toastMessage = 'Please fill out servings and total time.';
-        showToast(toastTitle, toastMessage)
+        showToast(toastTitle, toastMessage);
         return;
     }
 
@@ -322,7 +331,16 @@ function save() {
     data.append('totaltime', totalTime);
     data.append('servings', servings);
 
-    if (prepTime) data.append('preptime', prepTime);
+    if (prepTime) {
+        if (parseInt(prepTime) > parseInt(totalTime)) {
+            const toastTitle = 'Invalid time';
+            const toastMessage = 'Preparation time cannot be more than total time.';
+            showToast(toastTitle, toastMessage);
+            return;
+        }
+        data.append('preptime', prepTime);
+    }
+
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
@@ -521,4 +539,18 @@ function clearImage(path) {
     document.getElementById('image-upload').value = '';
     document.getElementById('image-preview').src = path;
     document.getElementById('btn-clear').style.display = 'none';
+}
+
+function checkInput(element, min, max) {
+    if (isNaN(parseInt(element.value))) {
+        element.value = min;
+        return;
+    }
+    if (parseInt(element.value) < min) {
+        element.value = min;
+        return;
+    }
+    if (parseInt(element.value) > max) {
+        element.value = max;
+    }
 }

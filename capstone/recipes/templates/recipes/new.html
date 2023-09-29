@@ -19,12 +19,12 @@
                         <div>
                             <h4>Recipe title:</h4>
                             <div>
-                                <input type="text">
+                                <input type="text" required>
                             </div>
                         </div>
                     </div>
                     <div id="new-recipe-description">
-                        <textarea id="preparation" class="step"
+                        <textarea id="preparation" class="step required
                             placeholder="How do we make this meal? Step 1:"></textarea>
                         <button id="btn-addstep" class="btn btn-primary">Add step</button>
                         <input id="max-characters" type="hidden" value="{{ max_characters }}">
@@ -61,10 +61,10 @@
                         <button id="btn-clear" class="btn btn-primary">Clear Image</button>
                     </div>
                     <div id="times-container">
-                        <label>Preparation time (min):<input type="number" id="prep-time"></label>
-                        <label>Total time to make (min):<input type="number" id="total-time"></label>
-                        <label>Servings:<input type="number" id="servings"></label>
-                        <div id="category"><label>Category:</label>{{ categories }}</div>
+                        <label>Preparation time (min):<input type="number" id="prep-time" pattern="\d+"></label>
+                        <label>Total time to make (min):<input type="number" id="total-time" required></label>
+                        <label>Servings:<input type="number" id="servings" required></label>
+                        <div id="category">{{ categories }}</div>
                         <div id="allergens">
                             <h4>Select any allergens that this meal might contain (can be left empty).</h4>
                             {% for allergen in allergens %}

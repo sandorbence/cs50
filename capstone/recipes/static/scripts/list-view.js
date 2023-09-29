@@ -8,7 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-sidebar').addEventListener('click', toggleSideBar);
 
     const searchContainer = document.getElementById('search-container');
+    const searchBar = searchContainer.querySelector('input[type=text]');
     const select = searchContainer.querySelector('select');
+
+    searchContainer.querySelector('label[for="id_category"]').style.display = 'none';
+
+    searchBar.value = '';
 
     let optionAll = document.createElement('option');
     optionAll.value = 'all';
@@ -16,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     select.prepend(optionAll);
     select.selectedIndex = 0;
 
-    searchContainer.querySelector('input[type=text]').addEventListener('keyup', filterRecipes);
+    searchBar.addEventListener('keyup', filterRecipes);
     select.addEventListener('change', filterRecipes);
     searchContainer.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
         checkbox.checked = false;
@@ -88,11 +93,9 @@ function displayFilteredRecipes(ids) {
     recipes.forEach(recipe => {
         if (ids.includes(recipe.id)) {
             recipe.style.display = 'flex';
-            console.log('class removed')
         }
         else {
             recipe.style.display = 'none';
-            console.log('class added')
         }
     })
 }

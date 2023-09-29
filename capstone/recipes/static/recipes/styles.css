@@ -64,7 +64,6 @@ ul li {
 
 .btn-container {
     display: flex;
-    flex: 1;
     justify-content: flex-end;
 }
 
@@ -84,6 +83,21 @@ ul li {
 
 .card-text img {
     margin-right: 0.25rem;
+}
+
+.current {
+    align-items: center;
+    display: flex;
+    margin: 0 10px;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
 }
 
 .flex-column-right-vertical {
@@ -147,6 +161,11 @@ ul li {
 .ingredient>div {
     align-items: center;
     display: flex;
+    flex: 1;
+}
+
+.ingredient-name {
+    flex: 1;
 }
 
 .new-button {
@@ -360,6 +379,11 @@ input[type=number]::-webkit-outer-spin-button {
 #new-recipe-description div {
     display: flex;
     justify-content: flex-end;
+}
+
+#pagination-container {
+    display: flex;
+    justify-content: center;
 }
 
 #plus-button {

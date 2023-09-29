@@ -6,6 +6,7 @@ from django.db import IntegrityError, transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from django import forms
+from django.core.paginator import Paginator
 
 from .models import User, Recipe, Ingredient, Allergen
 
@@ -90,8 +91,12 @@ def index(request):
     recipes = Recipe.objects.all().order_by("-upload_date")
     favorites = request.user.favorite_recipes.all(
     ) if request.user.is_authenticated else None
+    paginator = Paginator(recipes, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "recipes/index.html", {
-        "recipes": recipes,
+        "page_obj": page_obj,
         "favorites": favorites,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
@@ -121,15 +126,12 @@ def recipe(request, recipe_id):
                 # Recipes won't be saved before validating other data
                 with transaction.atomic():
                     recipe = Recipe.objects.create(
-                        uploader=request.user, title=title, preparation=preparation,
+                        uploader=request.user, title=title, preparation=preparation, category=category,
                         image=image, prep_time=prep_time, total_time=total_time, servings=servings)
 
                     for ingredient in ingredients:
                         Ingredient.objects.create(
                             recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
-
-                    cat, _ = Category.objects.get_or_create(name=category)
-                    cat.recipes.add(recipe)
 
                     if allergens is not None:
                         for allergen_name in allergens:
@@ -151,8 +153,8 @@ def recipe(request, recipe_id):
         recipe.prep_time = prep_time
         recipe.total_time = total_time
         recipe.servings = servings
+        recipe.category = category
         ingredients = ingredients
-        category = category
         if image:
             recipe.image = image
 
@@ -164,11 +166,6 @@ def recipe(request, recipe_id):
             Ingredient.objects.create(
                 recipe=recipe, name=ingredient["name"], quantity=ingredient["quantity"])
 
-        # Delete the recipe's category then add the new one
-        recipe.categories.clear()
-        cat, _ = Category.objects.get_or_create(name=category)
-        cat.recipes.add(recipe)
-
         # Delete the allergens for the recipe then add the new ones
         recipe.allergens.clear()
         if allergens is not None:
@@ -178,6 +175,11 @@ def recipe(request, recipe_id):
                 allergen.recipes.add(recipe)
 
         return redirect("my_recipes")
+
+    try:
+        recipe = Recipe.objects.get(pk=recipe_id)
+    except Recipe.DoesNotExist:
+        return JsonResponse({"error": "Recipe not found."}, status=404)
 
     if request.method == "PUT":
         data = json.loads(request.body)
@@ -218,8 +220,12 @@ def recipe_site(request, recipe_id):
 
 def favorites(request):
     recipes = request.user.favorite_recipes.all().order_by("-upload_date")
+    paginator = Paginator(recipes, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "recipes/favorite.html", {
-        "recipes": recipes,
+        "page_obj": page_obj,
         "favorites": recipes,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
@@ -229,8 +235,12 @@ def favorites(request):
 def my_recipes(request):
     recipes = Recipe.objects.filter(
         uploader=request.user).order_by("-upload_date")
+    paginator = Paginator(recipes, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "recipes/my_recipes.html", {
-        "recipes": recipes,
+        "page_obj": page_obj,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
     })
