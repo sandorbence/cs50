@@ -86,9 +86,11 @@ ul li {
 }
 
 .current {
-    align-items: center;
-    display: flex;
     margin: 0 10px;
+}
+
+.empty-div {
+    height: 50px;
 }
 
 .flex1 {
@@ -125,6 +127,11 @@ ul li {
 
 .flex-row div {
     font-size: 1.2rem;
+}
+
+.flex-row-mid-vertical {
+    align-items: center;
+    display: flex;
 }
 
 .left-align {
@@ -277,11 +284,10 @@ ul li {
 #ingredients-container {
     display: flex;
     flex-direction: column;
-    height: 520px;
+    height: calc(100% - 50px);
     min-width: 600px;
     overflow-y: scroll;
     padding-left: 10px;
-    padding-top: 52px;
 }
 
 #ingredients-container::-webkit-scrollbar {
@@ -379,6 +385,7 @@ input[type=number]::-webkit-outer-spin-button {
 #new-recipe-description div {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
 }
 
 #pagination-container {
@@ -440,7 +447,6 @@ input[type=number]::-webkit-outer-spin-button {
     pointer-events: none;
     position: absolute;
     right: 20px;
-    top: 22px;
 }
 
 #recipe-top-container>div>div {
@@ -495,4 +501,8 @@ input[type=number]::-webkit-outer-spin-button {
 #title>div {
     align-items: center;
     display: flex;
+}
+
+#title input {
+    width: 400px;
 }

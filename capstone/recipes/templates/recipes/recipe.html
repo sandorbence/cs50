@@ -13,7 +13,7 @@
                 <h1>{{ recipe.title }}</h1>
                 {% if recipe.uploader == request.user %}
                 <div>
-                    <div id="options">
+                    <div id="options" class="flex-row-mid-vertical">
                         <img src="{% static 'images/options.png' %}" alt="Options">
                         <select>
                             <option value="" selected hidden></option>
