@@ -263,10 +263,13 @@ def filter_recipes(request):
     category = filter_criteria.get("category")
     allergens = filter_criteria.get("allergens").split(',')[:-1]
 
-    recipes = Recipe.objects.filter(category=category).filter(
-        allergens__name__in=allergens)
+    recipes = Recipe.objects.filter(title__icontains=search_bar)
+    if category != "all":
+        recipes = recipes.filter(category=category)
+    recipes = recipes.exclude(allergens__name__in=allergens)
 
-    if recipes:
-        return JsonResponse({"message": recipes[0].title}, status=200)
-    else:
-        return JsonResponse({"message": "No recipes found with these conditions."}, status=200)
+    recipe_ids = ""
+    for recipe in recipes:
+        recipe_ids += f"{recipe.pk},"
+
+    return JsonResponse({"message": recipe_ids}, status=200)

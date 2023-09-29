@@ -8,10 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-sidebar').addEventListener('click', toggleSideBar);
 
     const searchContainer = document.getElementById('search-container');
+    const select = searchContainer.querySelector('select');
+
+    let optionAll = document.createElement('option');
+    optionAll.value = 'all';
+    optionAll.innerText = 'All categories';
+    select.prepend(optionAll);
+    select.selectedIndex = 0;
 
     searchContainer.querySelector('input[type=text]').addEventListener('keyup', filterRecipes);
-    searchContainer.querySelector('select').addEventListener('change', filterRecipes);
+    select.addEventListener('change', filterRecipes);
     searchContainer.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+        checkbox.checked = false;
         checkbox.addEventListener('change', filterRecipes);
     });
 });
@@ -69,5 +77,22 @@ function filterRecipes() {
 
     fetch('/filter/?' + query)
         .then(response => response.json())
-        .then(asd => console.log(asd))
+        .then(response => {
+            let ids = response.message.split(',').slice(0, -1);
+            displayFilteredRecipes(ids);
+        });
+}
+
+function displayFilteredRecipes(ids) {
+    let recipes = document.querySelectorAll('.recipe-card');
+    recipes.forEach(recipe => {
+        if (ids.includes(recipe.id)) {
+            recipe.style.display = 'flex';
+            console.log('class removed')
+        }
+        else {
+            recipe.style.display = 'none';
+            console.log('class added')
+        }
+    })
 }
