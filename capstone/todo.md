@@ -14,4 +14,4 @@
 * Add proper error handling
 * Add styling for mobile responziveness
 * ~~Fix new recipe form ingredient handling~~
-* Add pagination for list view
+* ~~Add pagination for list view~~
