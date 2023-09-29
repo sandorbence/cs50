@@ -15,3 +15,4 @@
 * Add styling for mobile responziveness
 * ~~Fix new recipe form ingredient handling~~
 * ~~Add pagination for list view~~
+* Add prompt before deletion
