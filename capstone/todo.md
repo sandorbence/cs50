@@ -17,3 +17,4 @@
 * ~~Add pagination for list view~~
 * ~~Add prompt before deletion~~
 * Replace recipe data in html with fetch
+* Add favorite button to recipe page
