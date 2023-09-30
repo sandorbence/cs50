@@ -1,3 +1,6 @@
+const STAR_EMPTY = document.getElementById('star-empty').value;
+const STAR_FILLED = document.getElementById('star-filled').value;
+
 document.addEventListener('DOMContentLoaded', () => {
 
     let originalServings = document.getElementById('servings').value;
@@ -6,11 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return quantity.textContent.split(' ');
     });
 
+    document.querySelectorAll('.star').forEach(button => {
+        button.addEventListener('click', () => favorite(button))
+    });
+
     let servings = document.getElementById('servings');
     servings.addEventListener('change', () => changePortions(originalServings, originalQuantities));
     servings.addEventListener('keyup', () => checkInput(originalServings, originalQuantities));
 
-    document.getElementById('options').querySelector('select').addEventListener('change', selectOption);
+    let selectDiv = document.getElementById('options');
+    if (selectDiv) {
+        selectDiv.querySelector('select').addEventListener('change', selectOption);
+    }
+
+    hideModal();
 });
 
 function changePortions(originalServings, originalQuantities) {
@@ -43,7 +55,10 @@ function checkInput(originalServings, originalQuantities) {
 
 function selectOption() {
     let editForm = document.getElementById('edit');
-    let deleteForm = document.getElementById('delete');
+    const modalTitle = 'Delete recipe?';
+    const modalMessage = 'Are you sure you want to delete this recipe?';
+    const closeText = 'Cancel';
+    const proceedText = 'Delete';
 
     let select = document.getElementById('options').querySelector('select');
     let method = select.value;
@@ -51,6 +66,70 @@ function selectOption() {
     // So that image and selected option do not overlap
     select.style.visibility = 'hidden';
 
-    if (method == 'edit') editForm.submit();
-    else deleteForm.submit();
+    if (method == 'edit') {
+        editForm.submit();
+    }
+    else {
+        showModal(modalTitle, modalMessage, closeText, proceedText, hideModal, deleteRecipe);
+    }
+}
+
+function deleteRecipe() {
+    let deleteForm = document.getElementById('delete');
+    deleteForm.submit();
+}
+
+function hideModal() {
+    let selectDiv = document.getElementById('options');
+    if (selectDiv) {
+        let select = selectDiv.querySelector('select');
+        select.value = '';
+        select.style.visibility = 'visible';
+    }
+    document.querySelector('.modal').style.display = 'none';
+}
+
+function showModal(title, message, closeText, proceedText, onClose, onProceed) {
+    let modal = document.querySelector('.modal');
+    let btnClose = document.getElementById('close');
+    let btnProceed = document.getElementById('proceed');
+
+    btnClose.textContent = closeText;
+    btnClose.addEventListener('click', onClose);
+
+    btnProceed.textContent = proceedText;
+    btnProceed.addEventListener('click', onProceed);
+
+    modal.querySelector('.close').addEventListener('click', onClose);
+
+    modal.querySelector('.modal-title').textContent = title;
+    modal.querySelector('.modal-body').textContent = message;
+    modal.style.display = 'block';
+}
+
+function favorite(button) {
+
+    let image = button.querySelector('img');
+
+    let favorite = false;
+
+    if (image.alt === 'add') {
+        image.src = STAR_FILLED;
+        image.alt = 'remove'
+        favorite = true;
+    }
+    else {
+        image.alt = 'add'
+        image.src = STAR_EMPTY;
+    }
+
+    fetch('/recipes/' + button.id, {
+        method: 'PUT',
+        body: JSON.stringify({
+            'favorite': favorite
+        })
+    }).then(response => response.json())
+        .then(message => console.log(message));
+
+    return false;
 }

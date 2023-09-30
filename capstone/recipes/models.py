@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxLengthValidator
 
 from .choices import CATEGORIES, ALLERGENS
 
@@ -20,9 +21,11 @@ class Allergen(models.Model):
 class Recipe(models.Model):
     uploader = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="recipes")
-    title = models.CharField(max_length=100)
+    title = models.CharField(
+        max_length=100, validators=[MaxLengthValidator(100)])
     image = models.ImageField(upload_to="recipe-images", blank=True, null=True)
-    preparation = models.CharField(max_length=5000)
+    preparation = models.CharField(
+        max_length=5000, validators=[MaxLengthValidator(5000)])
     upload_date = models.DateTimeField(auto_now_add=True)
     prep_time = models.IntegerField(blank=True, null=True)
     total_time = models.IntegerField(blank=True, null=True)
@@ -54,7 +57,8 @@ class Recipe(models.Model):
         if not self.uploader or not self.title or not self.category or not self.preparation or not self.upload_date or not self.ingredients or not self.total_time or not self.servings:
             if self.prep_time:
                 if self.prep_time > self.total_time:
-                    raise ValidationError("Preparation time cannot be more than total time.")
+                    raise ValidationError(
+                        "Preparation time cannot be more than total time.")
             raise ValidationError("Recipe data is not correct.")
 
     def __str__(self):
@@ -64,8 +68,9 @@ class Recipe(models.Model):
 class Ingredient(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="ingredients")
-    name = models.CharField(max_length=40)
-    quantity = models.CharField(max_length=40)
+    name = models.CharField(max_length=50, validators=[
+                            MaxLengthValidator(50)])
+    quantity = models.CharField(max_length=20)
 
     def serialize(self):
         return {

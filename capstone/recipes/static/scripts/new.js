@@ -26,8 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
     addOptions(select);
 
     // If document is edited
-    if (document.getElementById('recipe-data')) {
-        fillFieldsWithRecipeData();
+    if (document.getElementById('recipe-id')) {
+        const recipeID = document.getElementById('recipe-id').value;
+        fetch('/recipes/' + recipeID)
+            .then(response => response.json())
+            .then(recipe => {
+                fillFieldsWithRecipeData(recipe);
+            })
     }
 
     document.getElementById('btn-clear').style.display = 'none';
@@ -71,13 +76,18 @@ function addRow() {
 }
 
 function addIngredient() {
-
     let name = document.getElementById('ingredient-name').value;
     let quantity = document.getElementById('ingredient-quantity').value;
+
     if (name === '' || quantity === '') {
+        const toastTitle = 'Cannot be empty';
+        const toastMessage = `Please fill out all of the ingredient's sections.`;
+
         if (document.getElementById('ingredient-unit').value !== 'to taste') {
-            const toastTitle = `Can't be empty`;
-            const toastMessage = `Please fill out all of the ingredient's sections.`
+            showToast(toastTitle, toastMessage);
+            return false;
+        }
+        else if (name === '') {
             showToast(toastTitle, toastMessage);
             return false;
         }
@@ -226,7 +236,7 @@ function editDone(row) {
 }
 
 function showToast(title, message) {
-    let toast = document.getElementById('myToast');
+    let toast = document.getElementById('toast');
     toast.querySelector('.mr-auto').textContent = title;
     toast.querySelector('.toast-body').textContent = message;
     toast.classList.add('show');
@@ -237,7 +247,7 @@ function showToast(title, message) {
 }
 
 function hideToast() {
-    document.getElementById('myToast').classList.remove('show');
+    document.getElementById('toast').classList.remove('show');
 }
 
 function next() {
@@ -255,6 +265,7 @@ function next() {
         showToast(toastTitle, toastMessage);
         return;
     }
+
     document.querySelectorAll('textarea').forEach(step => {
         if (step.value === '') {
             const toastTitle = 'Cannot be empty';
@@ -284,12 +295,12 @@ function next() {
 function back() {
     document.getElementById('image-container').style.display = 'none';
     document.getElementById('btn-next').style.display = 'flex';
-    document.getElementById('description-container').style.display = 'flex';
+    document.getElementById('description-container').style.display = 'block';
 }
 
 function save() {
 
-    let recipeData = document.getElementById('recipe-data');
+    let recipeID = document.getElementById('recipe-id').value;
 
     let data = new FormData();
 
@@ -344,8 +355,7 @@ function save() {
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
-    if (recipeData) {
-        let recipeID = JSON.parse(recipeData.value).id;
+    if (recipeID) {
         fetch('/recipes/' + recipeID, {
             method: 'POST',
             body: data
@@ -455,7 +465,7 @@ function addStep() {
 
     step.style.position = 'relative';
 
-    container.insertBefore(step, document.getElementById('btn-addstep'))
+    container.append(step);
 
     return step;
 }
@@ -484,12 +494,11 @@ function unitChanged() {
     }
 }
 
-function fillFieldsWithRecipeData() {
+function fillFieldsWithRecipeData(recipe) {
+    let steps = recipe.preparation.split('-step-');
+    steps.shift();
 
-    const recipeData = JSON.parse(document.getElementById('recipe-data').value);
-    let steps = JSON.parse(document.getElementById('steps').value);
-
-    document.getElementById('title').querySelector('input').value = recipeData.title;
+    document.getElementById('title').querySelector('input').value = recipe.title;
 
     // Add a new step for each one in the existing recipe
     document.getElementById('new-recipe-description').querySelector('textarea').value = steps[0];
@@ -503,29 +512,29 @@ function fillFieldsWithRecipeData() {
     }
 
     // Add all ingredients in recipe
-    recipeData.ingredients.forEach(ingredient => {
+    recipe.ingredients.forEach(ingredient => {
         createRow(ingredient.name, ingredient.quantity);
     });
 
-    if (recipeData.image) {
-        document.getElementById('image-preview').src = recipeData.image;
+    if (recipe.image) {
+        document.getElementById('image-preview').src = recipe.image;
     }
 
-    if (recipeData.prep_time) {
-        document.getElementById('prep-time').value = recipeData.prep_time;
+    if (recipe.prep_time) {
+        document.getElementById('prep-time').value = recipe.prep_time;
     }
 
-    document.getElementById('total-time').value = recipeData.total_time;
-    document.getElementById('servings').value = recipeData.servings;
+    document.getElementById('total-time').value = recipe.total_time;
+    document.getElementById('servings').value = recipe.servings;
 
     // Set category
-    document.getElementById('category').querySelector('select').value = recipeData.category[0].name;
+    document.getElementById('category').querySelector('select').value = recipe.category;
 
     // Check allergens
     let boxes = document.getElementById('allergens').querySelectorAll('input[type=checkbox]');
 
-    if (recipeData.allergens.length > 0) {
-        recipeData.allergens.forEach(allergen => {
+    if (recipe.allergens.length > 0) {
+        recipe.allergens.forEach(allergen => {
             for (let i = 0; i < boxes.length; i++) {
                 if (allergen === boxes[i].value) {
                     boxes[i].checked = true;

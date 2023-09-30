@@ -196,6 +196,9 @@ def recipe(request, recipe_id):
             recipe.save()
             return JsonResponse({"message": "Recipe edited successfully."}, status=201)
 
+    if request.method == "GET":
+        return JsonResponse(recipe.serialize())
+
 
 def add_recipe(request):
     return render(request, "recipes/new.html", {
@@ -210,9 +213,11 @@ def add_recipe(request):
 
 def recipe_site(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
+    favorites = request.user.favorite_recipes.all()
     steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
         "recipe": recipe,
+        "favorites": favorites,
         "steps": steps,
         "referrer_url": request.META.get("HTTP_REFERER")
     })
@@ -250,10 +255,8 @@ def edit_recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
 
     if request.POST.get("method") == "edit":
-        steps = recipe.preparation.split("-step-")[1:]
         return render(request, "recipes/new.html", {
-            "recipe": json.dumps(recipe.serialize()),
-            "steps": json.dumps(steps),
+            "recipe": recipe,
             "units": UNITS,
             "units_metric": UNITS_METRIC,
             "units_imperial": UNITS_IMPERIAL,

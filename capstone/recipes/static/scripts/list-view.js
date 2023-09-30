@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.star').forEach(button => {
         button.addEventListener('click', () => favorite(button))
     });
-    document.getElementById('btn-sidebar').addEventListener('click', toggleSideBar);
+    document.getElementById('btn-sidebar').addEventListener('click', () => {
+        toggleSideBar()
+        setElementsMaxWidth()
+    });
 
     const searchContainer = document.getElementById('search-container');
     const searchBar = searchContainer.querySelector('input[type=text]');
@@ -27,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         checkbox.checked = false;
         checkbox.addEventListener('change', filterRecipes);
     });
+
+    setElementsMaxWidth();
 });
 
 function favorite(button) {
@@ -97,5 +102,17 @@ function displayFilteredRecipes(ids) {
         else {
             recipe.style.display = 'none';
         }
+    })
+}
+
+function setElementsMaxWidth() {
+    let containerWidth = document.getElementById('list-view-list-container').offsetWidth;
+    let card = document.querySelector('.list-view-element');
+    let margin = parseInt(window.getComputedStyle(card).margin.slice(0, -2));
+
+    let maxWidth = `${Math.round(containerWidth / 4 - 2 * margin)}px`
+
+    document.querySelectorAll('.list-view-element').forEach(element => {
+        element.style.maxWidth = maxWidth;
     })
 }
