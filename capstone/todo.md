@@ -15,4 +15,5 @@
 * Add styling for mobile responziveness
 * ~~Fix new recipe form ingredient handling~~
 * ~~Add pagination for list view~~
-* Add prompt before deletion
+* ~~Add prompt before deletion~~
+* Replace recipe data in html with fetch
