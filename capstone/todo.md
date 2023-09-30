@@ -17,6 +17,6 @@
 * ~~Add pagination for list view~~
 * ~~Add prompt before deletion~~
 * ~~Replace recipe data in html with fetch~~
-* Add favorite button to recipe page
+* ~~Add favorite button to recipe page~~
 * Remove duplicate functions, restructure files
 * Style login and register pages
