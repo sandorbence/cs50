@@ -20,4 +20,5 @@
 * ~~Add favorite button to recipe page~~
 * ~~Remove duplicate functions, restructure files~~
 * ~~Style login and register pages~~
-* Add command to manage.py to add all allergens to database
+* ~~Add command to manage.py to add all allergens to database~~
+* ~~Fix imperial units in ingredients edit~~

@@ -65,9 +65,18 @@ def register(request):
         username = request.POST["username"]
         email = request.POST["email"]
 
+        if not username or not email:
+            return render(request, "recipes/register.html", {
+                "message": "Please fill out email and username."
+            })
+
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        if password == "":
+            return render(request, "recipes/register.html", {
+                "message": "Please fill out password."
+            })
         if password != confirmation:
             return render(request, "recipes/register.html", {
                 "message": "Passwords must match."

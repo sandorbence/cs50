@@ -141,6 +141,26 @@ ul li {
     display: flex;
 }
 
+.form-control {
+    width: initial;
+}
+
+.ingredient {
+    align-items: center;
+    background-color: bisque;
+    border-radius: 10px;
+    display: flex;
+    font-weight: bold;
+    min-height: 50px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+}
+
+.ingredient>div {
+    align-items: center;
+    display: flex;
+}
+
 .left-align {
     align-items: flex-start;
     display: flex;
@@ -159,27 +179,6 @@ ul li {
 .list-view-element:hover {
     color: black;
     text-decoration: none;
-}
-
-.ingredient {
-    align-items: center;
-    background-color: bisque;
-    border-radius: 10px;
-    display: flex;
-    font-weight: bold;
-    height: 50px;
-    margin-bottom: 5px;
-    padding: 5px 10px;
-}
-
-.ingredient>div {
-    align-items: center;
-    display: flex;
-    flex: 1;
-}
-
-.ingredient-name {
-    flex: 1;
 }
 
 .modal {
@@ -233,6 +232,17 @@ ul li {
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.row-edit,
+.row-show {
+    flex: 1;
+}
+
+.row-show>div {
+    margin-right: 5px;
+    width: 50%;
+    word-break: break-word;
 }
 
 .sidebar-open {
@@ -376,7 +386,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #new-recipe>div {
-    flex: 1;
+    width: 50%;
 }
 
 #new-recipe-container {
@@ -465,11 +475,14 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
 }
 
-#recipe-top-container button{
+#recipe-top-container button {
     background-color: transparent;
     border: none;
 }
 
+#recipe-top-container button:focus {
+    outline: none;
+}
 
 #recipe-top-container>div {
     display: flex;

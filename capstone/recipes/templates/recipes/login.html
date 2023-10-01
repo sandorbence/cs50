@@ -5,11 +5,11 @@ Log in
 {% endblock %}
 
 {% block body %}
-
+<div class="flex-column-mid-vertical">
     <h2>Login</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+    <div>{{ message }}</div>
     {% endif %}
 
     <form action="{% url 'login' %}" method="post">
@@ -27,5 +27,5 @@ Log in
     </form>
 
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
+</div>
 {% endblock %}

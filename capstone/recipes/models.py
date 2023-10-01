@@ -68,8 +68,8 @@ class Recipe(models.Model):
 class Ingredient(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="ingredients")
-    name = models.CharField(max_length=50, validators=[
-                            MaxLengthValidator(50)])
+    name = models.CharField(max_length=100, validators=[
+                            MaxLengthValidator(100)])
     quantity = models.CharField(max_length=20)
 
     def serialize(self):

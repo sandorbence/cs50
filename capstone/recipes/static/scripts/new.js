@@ -133,13 +133,22 @@ function createRow(name, quantity) {
     ingQuantity.classList.add('ingredient-quantity');
     rowShow.append(ingQuantity);
 
+    let labelName = document.createElement('label');
+    labelName.textContent = 'Name:';
+
     let nameTextInput = document.createElement('input');
     nameTextInput.type = 'text';
+    nameTextInput.maxLength = 100;
+    rowEdit.append(labelName);
     rowEdit.append(nameTextInput);
+
+    let labelQuantity = document.createElement('label');
+    labelQuantity.textContent = 'Quantity:';
 
     let quantityNumberInput = document.createElement('input');
     quantityNumberInput.type = 'number';
     quantityNumberInput.step = 0.001;
+    rowEdit.append(labelQuantity);
     rowEdit.append(quantityNumberInput);
 
     let quantityUnitInput = document.createElement('select');
@@ -151,11 +160,11 @@ function createRow(name, quantity) {
     unitCheckBox.type = 'checkbox';
     unitCheckBox.addEventListener('change', () => changeUnits(quantityUnitInput, unitCheckBox));
 
-    let label = document.createElement('label');
-    label.textContent = 'Imperial units';
+    let labelUnit = document.createElement('label');
+    labelUnit.textContent = 'Imperial units';
 
     unitDiv.append(unitCheckBox);
-    unitDiv.append(label);
+    unitDiv.append(labelUnit);
     rowEdit.append(unitDiv);
 
     rowEdit.style.display = 'none';
@@ -194,29 +203,27 @@ function deleteRow(row) {
 }
 
 function editRow(row) {
+    let quantity = row.querySelector('.ingredient-quantity').textContent.split(' ');
+    let select = row.querySelector('select');
+    let rowEdit = row.querySelector('.row-edit');
 
-    // If we are already adding an ingredient, do not interrupt with edit
-    // as we will use the same form for editing as adding
-    if (document.getElementById('new-ingredient-form').style.display !== 'none' &&
-        (document.getElementById('ingredient-name').value !== '' ||
-            document.getElementById('ingredient-quantity').value !== '')) {
-        const toastTitle = 'Cannot add ingredient';
-        const toastMessage = 'Please add the started ingredient before editing.';
-        showToast(toastTitle, toastMessage);
+    row.querySelector('.row-show').style.display = 'none';
+    rowEdit.style.display = 'flex';
+    row.querySelector('input[type=text]').value = row.querySelector('.ingredient-name').textContent;
+
+    row.querySelector('input[type=number]').value = quantity[0];
+
+    if (!Array.from(select.options).some(option => option.value === quantity[1])) {
+        let checkbox = rowEdit.querySelector('input[type=checkbox]');
+        checkbox.checked = true;
+        changeUnits(select, checkbox);
     }
-    else {
-        let quantity = row.querySelector('.ingredient-quantity').textContent;
+    select.value = quantity[1];
 
-        row.querySelector('.row-show').style.display = 'none';
-        row.querySelector('.row-edit').style.display = 'flex';
-        row.querySelector('input[type=text]').value = row.querySelector('.ingredient-name').textContent;
-        row.querySelector('input[type=number]').value = quantity.split(' ')[0];
-        row.querySelector('select').value = quantity.split(' ')[1];
+    row.querySelector('.btn-edit').style.display = 'none';
+    row.querySelector('.btn-del').style.display = 'none';
+    row.querySelector('.btn-done').style.display = 'inline-block';
 
-        row.querySelector('.btn-edit').style.display = 'none';
-        row.querySelector('.btn-del').style.display = 'none';
-        row.querySelector('.btn-done').style.display = 'inline-block';
-    }
 }
 
 function editDone(row) {
@@ -233,21 +240,6 @@ function editDone(row) {
     row.querySelector('.btn-done').style.display = 'none';
     row.querySelector('.btn-edit').style.display = 'inline-block';
     row.querySelector('.btn-del').style.display = 'inline-block';
-}
-
-function showToast(title, message) {
-    let toast = document.getElementById('toast');
-    toast.querySelector('.mr-auto').textContent = title;
-    toast.querySelector('.toast-body').textContent = message;
-    toast.classList.add('show');
-
-    document.querySelector('.close').addEventListener('click', hideToast);
-
-    setTimeout(hideToast, 3000);
-}
-
-function hideToast() {
-    document.getElementById('toast').classList.remove('show');
 }
 
 function next() {
@@ -299,8 +291,10 @@ function back() {
 }
 
 function save() {
-
-    let recipeID = document.getElementById('recipe-id').value;
+    let recipeID = null;
+    if (document.getElementById('recipe-id')) {
+        recipeID = document.getElementById('recipe-id').value;
+    }
 
     let data = new FormData();
 
@@ -467,6 +461,8 @@ function addStep() {
 
     container.append(step);
 
+    container.scrollTop = container.scrollHeight;
+
     return step;
 }
 
@@ -562,4 +558,19 @@ function checkInput(element, min, max) {
     if (parseInt(element.value) > max) {
         element.value = max;
     }
+}
+
+function showToast(title, message) {
+    let toast = document.getElementById('toast');
+    toast.querySelector('.mr-auto').textContent = title;
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.add('show');
+
+    document.querySelector('.close').addEventListener('click', hideToast);
+
+    setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+    document.getElementById('toast').classList.remove('show');
 }

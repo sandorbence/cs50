@@ -5,11 +5,11 @@ Register
 {% endblock %}
 
 {% block body %}
-
+<div class="flex-column-mid-vertical">
     <h2>Register</h2>
 
     {% if message %}
-        <div>{{ message }}</div>
+    <div>{{ message }}</div>
     {% endif %}
 
     <form action="{% url 'register' %}" method="post">
@@ -28,7 +28,6 @@ Register
         </div>
         <input class="btn btn-primary" type="submit" value="Register">
     </form>
-
     Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
+</div>
 {% endblock %}
