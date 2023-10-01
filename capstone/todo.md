@@ -18,6 +18,6 @@
 * ~~Add prompt before deletion~~
 * ~~Replace recipe data in html with fetch~~
 * ~~Add favorite button to recipe page~~
-* Remove duplicate functions, restructure files
+* ~~Remove duplicate functions, restructure files~~
 * ~~Style login and register pages~~
 * Add command to manage.py to add all allergens to database
