@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addOptions(select);
 
-    // If document is edited
+    // If document is being edited
     if (document.getElementById('recipe-id')) {
         const recipeID = document.getElementById('recipe-id').value;
         fetch('/recipes/' + recipeID)
@@ -60,7 +60,7 @@ function addOptions(select) {
             return unit.replace(/'/g, '');
         });
 
-    // Add metric options to select
+    // Add metric options to select as default
     for (unit of metric) {
         let option = document.createElement('option');
         option.textContent = unit;
@@ -68,6 +68,7 @@ function addOptions(select) {
     }
 }
 
+// Show the new ingredient form
 function addRow() {
     const form = document.getElementById('new-ingredient-form');
     form.style.display = 'flex';
@@ -75,6 +76,8 @@ function addRow() {
     form.onreset = cancel;
 }
 
+// Add an ingredient with the user's input data
+// Callback function for  for the 'Add' button
 function addIngredient() {
     let name = document.getElementById('ingredient-name').value;
     let quantity = document.getElementById('ingredient-quantity').value;
@@ -104,6 +107,7 @@ function addIngredient() {
     return false;
 }
 
+// Hide the new ingredient form
 function cancel() {
     document.getElementById('ingredient-name').value = '';
     document.getElementById('ingredient-quantity').value = '';
@@ -111,6 +115,9 @@ function cancel() {
     return false;
 }
 
+// Create an ingredient row
+// Create both visible items and hidden ones
+// which are only visible when editing
 function createRow(name, quantity) {
     const container = document.getElementById('ingredients-container');
 
@@ -198,10 +205,12 @@ function createRow(name, quantity) {
     container.append(row);
 }
 
+// Callback function for 'X' button
 function deleteRow(row) {
     row.remove();
 }
 
+// Callback function for 'Edit' button
 function editRow(row) {
     let quantity = row.querySelector('.ingredient-quantity').textContent.split(' ');
     let select = row.querySelector('select');
@@ -213,6 +222,7 @@ function editRow(row) {
 
     row.querySelector('input[type=number]').value = quantity[0];
 
+    // If unit was imperial, change set of units
     if (!Array.from(select.options).some(option => option.value === quantity[1])) {
         let checkbox = rowEdit.querySelector('input[type=checkbox]');
         checkbox.checked = true;
@@ -226,6 +236,7 @@ function editRow(row) {
 
 }
 
+// Callback function for 'Done' button
 function editDone(row) {
     row.querySelector('.ingredient-name').textContent = row.querySelector('input[type=text]').value;
 
@@ -242,6 +253,7 @@ function editDone(row) {
     row.querySelector('.btn-del').style.display = 'inline-block';
 }
 
+// Step to next page
 function next() {
 
     let shouldContinue = true;
@@ -265,11 +277,11 @@ function next() {
             showToast(toastTitle, toastMessage);
             shouldContinue = false;
         }
-        // 6 is added to the characters, because we will identify steps with -step-
+        // 6 is added to the characters, because we will identify steps with '-step-'
         characters += step.value.length + 6;
     });
 
-
+    // Check for maximum characters in preparation
     if (characters > maxCharacters) {
         const toastTitle = 'Preparation too long';
         const toastMessage = `The maximum characters for the preparation is ${maxCharacters}. You have written ${characters} characters.`;
@@ -284,18 +296,21 @@ function next() {
     document.getElementById('image-container').style.display = 'flex';
 }
 
+// Step back to previous page
 function back() {
     document.getElementById('image-container').style.display = 'none';
     document.getElementById('btn-next').style.display = 'flex';
     document.getElementById('description-container').style.display = 'block';
 }
 
+// Send recipe data to API endpoint
 function save() {
     let recipeID = null;
     if (document.getElementById('recipe-id')) {
         recipeID = document.getElementById('recipe-id').value;
     }
 
+    // FormData can contain image files
     let data = new FormData();
 
     let ingredients = Array.from(document.querySelectorAll('.ingredient')).slice(2).map(ingredient => {
@@ -322,6 +337,7 @@ function save() {
     let allergens = document.getElementById('image-container').querySelectorAll('input[type=checkbox]');
     let chosenAllergens = Array.from(allergens).filter(allergen => allergen.checked).map(allergen => allergen.value);
 
+    // Show message to user if required fields are empty
     if (!totalTime || !servings) {
         const toastTitle = 'Cannot be empty';
         const toastMessage = 'Please fill out servings and total time.';
@@ -336,6 +352,8 @@ function save() {
     data.append('totaltime', totalTime);
     data.append('servings', servings);
 
+    // Check if preparation time is less or equal
+    // to total time if it's given
     if (prepTime) {
         if (parseInt(prepTime) > parseInt(totalTime)) {
             const toastTitle = 'Invalid time';
@@ -349,6 +367,7 @@ function save() {
     if (image) data.append('image', image);
     if (chosenAllergens.length > 0) data.append('allergens', JSON.stringify(chosenAllergens));
 
+    // If it's an edit post with the corresponding ID
     if (recipeID) {
         fetch('/recipes/' + recipeID, {
             method: 'POST',
@@ -362,6 +381,7 @@ function save() {
             }
         });
     }
+    // If a new recipe was created, post with a fake ID
     else {
         fetch('/recipes/0', {
             method: 'POST',
@@ -377,6 +397,7 @@ function save() {
     }
 }
 
+// Display a preview of the selected image
 function showPreview(input) {
     if (input.files && input.files[0]) {
         document.getElementById('btn-clear').style.display = 'inline-block';
@@ -392,8 +413,10 @@ function showPreview(input) {
     }
 }
 
+// Callback for ticking the unit changing checkbox
 function changeUnits(select, checkBox) {
 
+    // Metric unit choices
     let metric = document.getElementById('metric-units').value
         .slice(1, -1)
         .split(', ')
@@ -401,6 +424,7 @@ function changeUnits(select, checkBox) {
             return unit.replace(/'/g, '');
         });
 
+    // Imperial unit choices
     let imperial = document.getElementById('imperial-units').value
         .slice(1, -1)
         .split(', ')
@@ -440,6 +464,7 @@ function changeUnits(select, checkBox) {
     return false;
 }
 
+// Add a new step for preparation
 function addStep() {
     const container = document.getElementById('new-recipe-description');
 
@@ -461,6 +486,8 @@ function addStep() {
 
     container.append(step);
 
+    // Scroll the div to the bottom, 
+    // so that newly added step is fully visible
     container.scrollTop = container.scrollHeight;
 
     return step;
@@ -469,14 +496,16 @@ function addStep() {
 // Remove preparation step
 function removeStep(step) {
     step.remove();
-    let textareas = document.querySelectorAll('textarea');
+    let textareaAll = document.querySelectorAll('textarea');
 
     // Update placeholders in text areas
-    for (let i = 1; i < textareas.length; i++) {
-        textareas[i].placeholder = 'Step ' + (i + 1) + ':';
+    for (let i = 1; i < textareaAll.length; i++) {
+        textareaAll[i].placeholder = 'Step ' + (i + 1) + ':';
     }
 }
 
+// Disable quantity for unit 'to taste' as it makes
+// no sense to quantify it
 function unitChanged() {
     const select = document.getElementById('ingredient-unit');
     let input = document.getElementById('ingredient-quantity');
@@ -490,6 +519,7 @@ function unitChanged() {
     }
 }
 
+// Populate input fields with existing data of recipe being edited
 function fillFieldsWithRecipeData(recipe) {
     let steps = recipe.preparation.split('-step-');
     steps.shift();
@@ -529,6 +559,7 @@ function fillFieldsWithRecipeData(recipe) {
     // Check allergens
     let boxes = document.getElementById('allergens').querySelectorAll('input[type=checkbox]');
 
+    // Check all previously added allergens' boxes
     if (recipe.allergens.length > 0) {
         recipe.allergens.forEach(allergen => {
             for (let i = 0; i < boxes.length; i++) {
@@ -540,12 +571,14 @@ function fillFieldsWithRecipeData(recipe) {
     }
 }
 
+// Remove preview image and content of file input
 function clearImage(path) {
     document.getElementById('image-upload').value = '';
     document.getElementById('image-preview').src = path;
     document.getElementById('btn-clear').style.display = 'none';
 }
 
+// Check if user input matches criteria
 function checkInput(element, min, max) {
     if (isNaN(parseInt(element.value))) {
         element.value = min;
@@ -560,6 +593,7 @@ function checkInput(element, min, max) {
     }
 }
 
+// Show custom messages to the user
 function showToast(title, message) {
     let toast = document.getElementById('toast');
     toast.querySelector('.mr-auto').textContent = title;
@@ -571,6 +605,7 @@ function showToast(title, message) {
     setTimeout(hideToast, 3000);
 }
 
+// Hide the toast
 function hideToast() {
     document.getElementById('toast').classList.remove('show');
 }

@@ -1,3 +1,4 @@
+# Units for cooking
 UNITS = [
     "pcs",
     "pinch",
@@ -9,6 +10,7 @@ UNITS = [
     "to taste"
 ]
 
+# Metric units for cooking
 UNITS_METRIC = [
     "ml",
     "dl",
@@ -17,6 +19,7 @@ UNITS_METRIC = [
     "kg",
 ]
 
+# Imperial units for cooking
 UNITS_IMPERIAL = [
     "pt",
     "qt",
@@ -25,6 +28,7 @@ UNITS_IMPERIAL = [
     "lb"
 ]
 
+# Categories for recipes
 CATEGORIES = [
     ("breakfast", "Breakfast"),
     ("lunch", "Lunch"),
@@ -40,6 +44,7 @@ CATEGORIES = [
     ("paleo", "Paleo")
 ]
 
+# All of the existing allergens
 ALLERGENS = [
     ("celery", "Celery"),
     ("gluten", "Cereals containing gluten"),

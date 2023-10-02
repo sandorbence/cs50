@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideModal();
 });
 
+// Scale all ingredients' quantity according to desired servings
 function changePortions(originalServings, originalQuantities) {
     let servings = document.getElementById('servings').value;
 
@@ -39,6 +40,8 @@ function changePortions(originalServings, originalQuantities) {
     }
 }
 
+
+// Do not let the user enter negative or unreasonably big numbers
 function checkInput(originalServings, originalQuantities) {
     if (document.getElementById('servings').value < 1) {
         document.getElementById('servings').value = 1;
@@ -50,6 +53,7 @@ function checkInput(originalServings, originalQuantities) {
     }
 }
 
+// Handle for options select
 function selectOption() {
     let editForm = document.getElementById('edit');
     const modalTitle = 'Delete recipe?';
@@ -63,43 +67,18 @@ function selectOption() {
     // So that image and selected option do not overlap
     select.style.visibility = 'hidden';
 
+    // Post to editing endpoint
     if (method == 'edit') {
         editForm.submit();
     }
+    // Show prompt to confirm deleting
     else {
         showModal(modalTitle, modalMessage, closeText, proceedText, hideModal, deleteRecipe);
     }
 }
 
+// Delete recipe from database
 function deleteRecipe() {
     let deleteForm = document.getElementById('delete');
     deleteForm.submit();
-}
-
-function hideModal() {
-    let selectDiv = document.getElementById('options');
-    if (selectDiv) {
-        let select = selectDiv.querySelector('select');
-        select.value = '';
-        select.style.visibility = 'visible';
-    }
-    document.querySelector('.modal').style.display = 'none';
-}
-
-function showModal(title, message, closeText, proceedText, onClose, onProceed) {
-    let modal = document.querySelector('.modal');
-    let btnClose = document.getElementById('close');
-    let btnProceed = document.getElementById('proceed');
-
-    btnClose.textContent = closeText;
-    btnClose.addEventListener('click', onClose);
-
-    btnProceed.textContent = proceedText;
-    btnProceed.addEventListener('click', onProceed);
-
-    modal.querySelector('.close').addEventListener('click', onClose);
-
-    modal.querySelector('.modal-title').textContent = title;
-    modal.querySelector('.modal-body').textContent = message;
-    modal.style.display = 'block';
 }

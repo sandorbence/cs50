@@ -7,6 +7,7 @@ function favorite(button) {
 
     let favorite = false;
 
+    // Change graphics for specific recipe
     if (image.alt === 'add') {
         image.src = STAR_FILLED;
         image.alt = 'remove'
@@ -17,6 +18,7 @@ function favorite(button) {
         image.src = STAR_EMPTY;
     }
 
+    // Favorite/unfavorite recipes
     fetch('/recipes/' + button.id, {
         method: 'PUT',
         body: JSON.stringify({
@@ -26,4 +28,34 @@ function favorite(button) {
         .then(message => console.log(message));
 
     return false;
+}
+
+// Hide he confirmation prompt
+function hideModal() {
+    let selectDiv = document.getElementById('options');
+    if (selectDiv) {
+        let select = selectDiv.querySelector('select');
+        select.value = '';
+        select.style.visibility = 'visible';
+    }
+    document.querySelector('.modal').style.display = 'none';
+}
+
+// Display confirmation prompt
+function showModal(title, message, closeText, proceedText, onClose, onProceed) {
+    let modal = document.querySelector('.modal');
+    let btnClose = document.getElementById('close');
+    let btnProceed = document.getElementById('proceed');
+
+    btnClose.textContent = closeText;
+    btnClose.addEventListener('click', onClose);
+
+    btnProceed.textContent = proceedText;
+    btnProceed.addEventListener('click', onProceed);
+
+    modal.querySelector('.close').addEventListener('click', onClose);
+
+    modal.querySelector('.modal-title').textContent = title;
+    modal.querySelector('.modal-body').textContent = message;
+    modal.style.display = 'block';
 }

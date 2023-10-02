@@ -22,8 +22,6 @@ class CategoryForm(forms.ModelForm):
 
 
 # Code copied from project2
-
-
 def login_view(request):
     if request.method == "POST":
 
@@ -50,33 +48,34 @@ def login_view(request):
             })
         return render(request, "recipes/login.html")
 
+
 # Code copied from project2
-
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+
 # Code copied from project2
-
-
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
 
+        # If user tries to register without filling all data
         if not username or not email:
             return render(request, "recipes/register.html", {
                 "message": "Please fill out email and username."
             })
 
-        # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
+        # Ensure password is not an empty string
         if password == "":
             return render(request, "recipes/register.html", {
                 "message": "Please fill out password."
             })
+        # Ensure password matches confirmation
         if password != confirmation:
             return render(request, "recipes/register.html", {
                 "message": "Passwords must match."
@@ -96,10 +95,13 @@ def register(request):
         return render(request, "recipes/register.html")
 
 
+# Home page
 def index(request):
     recipes = Recipe.objects.all().order_by("-upload_date")
     favorites = request.user.favorite_recipes.all(
     ) if request.user.is_authenticated else None
+
+    # Create paginator object
     paginator = Paginator(recipes, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -112,6 +114,83 @@ def index(request):
     })
 
 
+# View for creating a new recipe
+def add_recipe(request):
+    return render(request, "recipes/new.html", {
+        "units": UNITS,
+        "units_metric": UNITS_METRIC,
+        "units_imperial": UNITS_IMPERIAL,
+        "max_characters": Recipe._meta.get_field("preparation").max_length,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
+    })
+
+
+# View for displaying a specific recipe
+def recipe_site(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+    favorites = request.user.favorite_recipes.all()
+    steps = recipe.preparation.split("-step-")[1:]
+    return render(request, "recipes/recipe.html", {
+        "recipe": recipe,
+        "favorites": favorites,
+        "steps": steps,
+        "referrer_url": request.META.get("HTTP_REFERER")
+    })
+
+
+# View dor displaying favorite recipes
+def favorites(request):
+    recipes = request.user.favorite_recipes.all().order_by("-upload_date")
+    paginator = Paginator(recipes, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "recipes/favorite.html", {
+        "page_obj": page_obj,
+        "favorites": recipes,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
+    })
+
+
+# View for displaying the user's own recipes
+def my_recipes(request):
+    recipes = Recipe.objects.filter(
+        uploader=request.user).order_by("-upload_date")
+    paginator = Paginator(recipes, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "recipes/my_recipes.html", {
+        "page_obj": page_obj,
+        "categories": CategoryForm(),
+        "allergens": ALLERGENS
+    })
+
+
+# View for editing a recipe
+# Renders the same html as when creating one
+def edit_recipe(request, recipe_id):
+    recipe = Recipe.objects.get(pk=recipe_id)
+
+    if request.POST.get("method") == "edit":
+        return render(request, "recipes/new.html", {
+            "recipe": recipe,
+            "units": UNITS,
+            "units_metric": UNITS_METRIC,
+            "units_imperial": UNITS_IMPERIAL,
+            "max_characters": Recipe._meta.get_field("preparation").max_length,
+            "categories": CategoryForm(),
+            "allergens": ALLERGENS
+        })
+    else:
+        redirect = request.POST.get("redirect")
+        recipe.delete()
+        return HttpResponseRedirect(redirect)
+
+
+# API endpoint for creating and editing recipes
 @csrf_exempt
 def recipe(request, recipe_id):
     if request.method == "POST":
@@ -125,11 +204,13 @@ def recipe(request, recipe_id):
         category = data.get("category")
         image = request.FILES.get("image")
 
+        # Allergens can be left empty
         try:
             allergens = json.loads(data.get("allergens"))
         except:
             allergens = None
 
+        # ID = 0 means we are creating a new recipe
         if recipe_id == 0:
             try:
                 # Recipes won't be saved before validating other data
@@ -144,6 +225,8 @@ def recipe(request, recipe_id):
 
                     if allergens is not None:
                         for allergen_name in allergens:
+                            # At this point all allergens should have been already created
+                            # by running the necessary command, so this is only for safety
                             allergen, _ = Allergen.objects.get_or_create(
                                 name=allergen_name)
                             allergen.recipes.add(recipe)
@@ -151,7 +234,7 @@ def recipe(request, recipe_id):
                 return JsonResponse({"error": str(e)}, status=400)
             return redirect("index")
 
-        # If it's an edit not a new recipe
+        # If it's an edit and not a new recipe
         try:
             recipe = Recipe.objects.get(pk=recipe_id)
         except Recipe.DoesNotExist:
@@ -190,6 +273,7 @@ def recipe(request, recipe_id):
     except Recipe.DoesNotExist:
         return JsonResponse({"error": "Recipe not found."}, status=404)
 
+    # Edit only the favorite field of a recipe
     if request.method == "PUT":
         data = json.loads(request.body)
         favorite = data.get("favorite")
@@ -209,76 +293,8 @@ def recipe(request, recipe_id):
         return JsonResponse(recipe.serialize())
 
 
-def add_recipe(request):
-    return render(request, "recipes/new.html", {
-        "units": UNITS,
-        "units_metric": UNITS_METRIC,
-        "units_imperial": UNITS_IMPERIAL,
-        "max_characters": Recipe._meta.get_field("preparation").max_length,
-        "categories": CategoryForm(),
-        "allergens": ALLERGENS
-    })
-
-
-def recipe_site(request, recipe_id):
-    recipe = Recipe.objects.get(pk=recipe_id)
-    favorites = request.user.favorite_recipes.all()
-    steps = recipe.preparation.split("-step-")[1:]
-    return render(request, "recipes/recipe.html", {
-        "recipe": recipe,
-        "favorites": favorites,
-        "steps": steps,
-        "referrer_url": request.META.get("HTTP_REFERER")
-    })
-
-
-def favorites(request):
-    recipes = request.user.favorite_recipes.all().order_by("-upload_date")
-    paginator = Paginator(recipes, 8)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "recipes/favorite.html", {
-        "page_obj": page_obj,
-        "favorites": recipes,
-        "categories": CategoryForm(),
-        "allergens": ALLERGENS
-    })
-
-
-def my_recipes(request):
-    recipes = Recipe.objects.filter(
-        uploader=request.user).order_by("-upload_date")
-    paginator = Paginator(recipes, 8)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "recipes/my_recipes.html", {
-        "page_obj": page_obj,
-        "categories": CategoryForm(),
-        "allergens": ALLERGENS
-    })
-
-
-def edit_recipe(request, recipe_id):
-    recipe = Recipe.objects.get(pk=recipe_id)
-
-    if request.POST.get("method") == "edit":
-        return render(request, "recipes/new.html", {
-            "recipe": recipe,
-            "units": UNITS,
-            "units_metric": UNITS_METRIC,
-            "units_imperial": UNITS_IMPERIAL,
-            "max_characters": Recipe._meta.get_field("preparation").max_length,
-            "categories": CategoryForm(),
-            "allergens": ALLERGENS
-        })
-    else:
-        redirect = request.POST.get("redirect")
-        recipe.delete()
-        return HttpResponseRedirect(redirect)
-
-
+# API endpoint for filtering recipes
+# Returns IDs of recipes that match the criteria
 def filter_recipes(request):
     filter_criteria = request.GET
     search_bar = filter_criteria.get("searchbar")

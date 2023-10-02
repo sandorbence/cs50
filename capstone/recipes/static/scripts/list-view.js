@@ -13,17 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchContainer.querySelector('label[for="id_category"]').style.display = 'none';
 
+    // Needed if page is refreshed
     searchBar.value = '';
 
+    // Add option to category filter to include all categories as default
     let optionAll = document.createElement('option');
     optionAll.value = 'all';
     optionAll.innerText = 'All categories';
     select.prepend(optionAll);
     select.selectedIndex = 0;
 
+    // Add event listeners for searching recipes
     searchBar.addEventListener('keyup', filterRecipes);
     select.addEventListener('change', filterRecipes);
     searchContainer.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+        // Needed if page is refreshed
         checkbox.checked = false;
         checkbox.addEventListener('change', filterRecipes);
     });
@@ -31,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setElementsMaxWidth();
 });
 
+// Open/close sidebar for searching
 function toggleSideBar() {
     const sidebar = document.getElementById('sidebar');
     const searchContainer = document.getElementById('search-container');
@@ -39,6 +44,7 @@ function toggleSideBar() {
     searchContainer.classList.toggle('no-display');
 }
 
+// Callback for changing any of the filtering inputs
 function filterRecipes() {
     const searchContainer = document.getElementById('search-container');
 
@@ -55,6 +61,7 @@ function filterRecipes() {
 
     let query = `searchbar=${searchBarText}&category=${category}&allergens=${allergensString}`;
 
+    // API call for filtering recipes
     fetch('/filter/?' + query)
         .then(response => response.json())
         .then(response => {
@@ -63,6 +70,8 @@ function filterRecipes() {
         });
 }
 
+// Display all recipes that match filters,
+// hide ones that don't
 function displayFilteredRecipes(ids) {
     let recipes = document.querySelectorAll('.recipe-card');
     recipes.forEach(recipe => {
@@ -75,6 +84,7 @@ function displayFilteredRecipes(ids) {
     })
 }
 
+// Resize elements dynamically, otherwise ones with longer title overflow
 function setElementsMaxWidth() {
     let containerWidth = document.getElementById('list-view-list-container').offsetWidth;
     let card = document.querySelector('.list-view-element');

@@ -14,6 +14,12 @@ class Allergen(models.Model):
     name = models.CharField(
         max_length=30, choices=ALLERGENS, blank=True, null=True, default=None, unique=True)
 
+    def serialize(self):
+        return {
+            "name": self.name(),
+            "recipes": [recipe.title for recipe in self.recipes.all()]
+        }
+
     def __str__(self):
         return self.name
 
