@@ -2,10 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.star').forEach(button => {
         button.addEventListener('click', () => favorite(button))
     });
-    document.getElementById('btn-sidebar').addEventListener('click', () => {
-        toggleSideBar()
-        setElementsMaxWidth()
-    });
+    document.getElementById('btn-sidebar').addEventListener('click', toggleSideBar);
 
     const searchContainer = document.getElementById('search-container');
     const searchBar = searchContainer.querySelector('input[type=text]');
@@ -33,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     setElementsMaxWidth();
+
+    window.addEventListener('resize', setElementsMaxWidth);
 });
 
 // Open/close sidebar for searching
@@ -86,13 +85,21 @@ function displayFilteredRecipes(ids) {
 
 // Resize elements dynamically, otherwise ones with longer title overflow
 function setElementsMaxWidth() {
+    let windowWidth = window.innerWidth;
     let containerWidth = document.getElementById('list-view-list-container').offsetWidth;
     let card = document.querySelector('.list-view-element');
     let margin = parseInt(window.getComputedStyle(card).margin.slice(0, -2));
 
-    let maxWidth = `${Math.round(containerWidth / 4 - 2 * margin)}px`
+    if (windowWidth > 600) {
+        let maxWidth = `${Math.round(containerWidth / 4 - 2 * margin)}px`;
 
-    document.querySelectorAll('.list-view-element').forEach(element => {
-        element.style.maxWidth = maxWidth;
-    })
+        document.querySelectorAll('.list-view-element').forEach(element => {
+            element.style.maxWidth = maxWidth;
+        })
+    }
+    else {
+        document.querySelectorAll('.list-view-element').forEach(element => {
+            element.style.maxWidth = `${containerWidth}px`;
+        })
+    }
 }
