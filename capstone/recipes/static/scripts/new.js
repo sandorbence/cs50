@@ -146,33 +146,33 @@ function createRow(name, quantity) {
     let nameTextInput = document.createElement('input');
     nameTextInput.type = 'text';
     nameTextInput.maxLength = 100;
+    labelName.append(nameTextInput);
     rowEdit.append(labelName);
-    rowEdit.append(nameTextInput);
 
     let labelQuantity = document.createElement('label');
     labelQuantity.textContent = 'Quantity:';
 
+    let divQuantity = document.createElement('div');
     let quantityNumberInput = document.createElement('input');
     quantityNumberInput.type = 'number';
     quantityNumberInput.step = 0.001;
-    rowEdit.append(labelQuantity);
-    rowEdit.append(quantityNumberInput);
+    labelQuantity.append(quantityNumberInput);
+    divQuantity.append(labelQuantity);
 
     let quantityUnitInput = document.createElement('select');
     addOptions(quantityUnitInput);
-    rowEdit.append(quantityUnitInput);
+    divQuantity.append(quantityUnitInput);
+    rowEdit.append(divQuantity);
 
-    let unitDiv = document.createElement('div');
     let unitCheckBox = document.createElement('input');
     unitCheckBox.type = 'checkbox';
     unitCheckBox.addEventListener('change', () => changeUnits(quantityUnitInput, unitCheckBox));
 
     let labelUnit = document.createElement('label');
-    labelUnit.textContent = 'Imperial units';
-
-    unitDiv.append(unitCheckBox);
-    unitDiv.append(labelUnit);
-    rowEdit.append(unitDiv);
+    labelUnit.append(unitCheckBox);
+    let checkBoxText = document.createTextNode('Imperial units');
+    labelUnit.appendChild(checkBoxText);
+    rowEdit.append(labelUnit);
 
     rowEdit.style.display = 'none';
     row.append(rowEdit);
@@ -188,9 +188,10 @@ function createRow(name, quantity) {
     btnContainer.append(btnEdit);
 
     let btnDel = document.createElement('button');
-    btnDel.classList.add('btn', 'btn-primary', 'btn-del');
-    btnDel.textContent = 'X';
+    btnDel.classList.add('btn', 'btn-secondary', 'btn-del');
+    btnDel.textContent = 'Delete';
     btnDel.addEventListener('click', () => deleteRow(row));
+    btnDel.style.display = 'none';
     btnContainer.append(btnDel);
 
     let btnDone = document.createElement('button');
@@ -216,6 +217,9 @@ function editRow(row) {
     let select = row.querySelector('select');
     let rowEdit = row.querySelector('.row-edit');
 
+    row.style.flexDirection = 'column';
+    row.querySelector('.btn-container').style.width = '100%';
+
     row.querySelector('.row-show').style.display = 'none';
     rowEdit.style.display = 'flex';
     row.querySelector('input[type=text]').value = row.querySelector('.ingredient-name').textContent;
@@ -231,7 +235,7 @@ function editRow(row) {
     select.value = quantity[1];
 
     row.querySelector('.btn-edit').style.display = 'none';
-    row.querySelector('.btn-del').style.display = 'none';
+    row.querySelector('.btn-del').style.display = 'inline-block';
     row.querySelector('.btn-done').style.display = 'inline-block';
 
 }
@@ -243,14 +247,17 @@ function editDone(row) {
     let quantity = row.querySelector('input[type=number]').value;
     let unit = row.querySelector('select').value;
 
+    row.style.flexDirection = 'row';
+    row.querySelector('.btn-container').style.width = 'initial';
+
     row.querySelector('.ingredient-quantity').textContent = quantity + ' ' + unit;
 
     row.querySelector('.row-edit').style.display = 'none';
     row.querySelector('.row-show').style.display = 'flex';
 
     row.querySelector('.btn-done').style.display = 'none';
+    row.querySelector('.btn-del').style.display = 'none';
     row.querySelector('.btn-edit').style.display = 'inline-block';
-    row.querySelector('.btn-del').style.display = 'inline-block';
 }
 
 // Step to next page
@@ -476,7 +483,7 @@ function addStep() {
 
     let remove = document.createElement('button');
     remove.textContent = 'x';
-    remove.classList.add('btn', 'btn-primary', 'remove');
+    remove.classList.add('btn', 'btn-secondary', 'remove');
     remove.addEventListener('click', () => removeStep(step));
 
     step.append(text);

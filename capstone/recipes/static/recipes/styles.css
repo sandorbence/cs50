@@ -176,9 +176,9 @@ ul li {
 }
 
 .new-button {
-    position: absolute;
+    position: fixed;
     right: 20px;
-    top: 10px;
+    bottom: 10px;
 }
 
 .no-display {
@@ -230,7 +230,6 @@ ul li {
 
 .row-show>div {
     margin-right: 5px;
-    width: 50%;
     word-break: break-word;
 }
 
@@ -242,9 +241,14 @@ ul li {
     resize: none;
 }
 
+.toast.show {
+    z-index: 100;
+}
+
 .toast {
-    position: absolute;
-    top: -50px;
+    position: fixed;
+    top: 50px;
+    z-index: -1;
 }
 
 #btn-clear {
@@ -258,7 +262,7 @@ ul li {
 }
 
 #btn-save {
-    bottom: 10px;
+    top: 10px;
     position: absolute;
     right: 20px;
 }
@@ -302,32 +306,86 @@ ul li {
     position: absolute;
 }
 
-#ingredients-container {
-    display: flex;
-    flex-direction: column;
-    height: 400px;
-    min-width: 600px;
-    overflow-y: scroll;
-}
-
 #ingredients-container::-webkit-scrollbar {
     background-color: transparent;
     width: 0.1rem;
 }
 
 @media(max-width: 600px) {
-    .empty-div {
-       display: none;
-    }
-
     h1 {
         font-size: 2rem;
+    }
+
+    .btn-container {
+        justify-content: space-between;
+    }
+
+    .empty-div {
+        display: none;
+    }
+
+    .ingredient-name {
+        max-height: 50px;
+        overflow-y: scroll;
+        width: 60%;
     }
 
     .list-view-element {
         color: black;
         display: inline-block;
         width: 100%;
+    }
+
+    .padding-left,
+    .padding-right {
+        padding: initial;
+    }
+
+    .row-edit {
+        flex-direction: column;
+    }
+
+    .row-edit>div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .row-edit>div>label {
+        display: flex;
+        flex: 1;
+        margin-bottom: 5px;
+    }
+
+    .row-edit>div>label>input {
+        flex: 1;
+    }
+
+    .row-edit>label {
+        display: flex;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    .row-edit>label>input {
+        margin-right: 3px;
+        padding-right: 0;
+    }
+
+    #ingredients-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 400px;
+    }
+
+    #ingredients-container select {
+        margin-right: 3px;
+    }
+
+    #ingredient-name {
+        flex: 1;
+        margin-right: 3px;
+        padding-right: 0;
     }
 
     #list-view-list-container {
@@ -352,6 +410,32 @@ ul li {
     #list-view-list-container>div {
         display: flex;
         position: relative;
+        width: 100%;
+    }
+
+    #new-ingredient-form {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #new-ingredient-form>div {
+        justify-content: space-between;
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    #new-ingredient-form>div>label {
+        display: flex;
+        flex: 1;
+    }
+
+    #new-ingredient-form>div>label>input {
+        flex: 1;
+    }
+
+    #new-ingredient-form>label {
+        display: flex;
+        margin-bottom: 5px;
         width: 100%;
     }
 
@@ -382,9 +466,14 @@ ul li {
         flex-direction: column;
     }
 
+    #title>div {
+        width: 100%;
+    }
+
     #title input {
+        margin-left: 0;
         margin-top: 10px;
-        width: 200px;
+        width: 100%;
     }
 }
 
@@ -400,8 +489,20 @@ ul li {
         width: 100%;
     }
 
+    .row-show>div {
+        width: 50%;
+    }
+
     .sidebar-open {
         width: 15%;
+    }
+
+    #ingredients-container {
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+        min-width: 600px;
+        overflow-y: scroll;
     }
 
     #list-view-list-container {
@@ -434,10 +535,14 @@ ul li {
         display: flex;
     }
 
+    #new-ingredient-form div {
+        justify-content: flex-end;
+    }
+
     #new-recipe {
         display: flex;
     }
-    
+
     #new-recipe>div {
         width: 50%;
     }
@@ -463,7 +568,7 @@ ul li {
         overflow-y: scroll;
     }
 
-    #preparation-title{
+    #preparation-title {
         display: flex;
         justify-content: space-between;
     }
@@ -489,7 +594,6 @@ ul li {
 #new-ingredient-form div {
     display: flex;
     flex: 1;
-    justify-content: flex-end;
 }
 
 #new-main-container {
