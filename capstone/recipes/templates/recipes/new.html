@@ -70,6 +70,8 @@
                 <div>
                     <div id="image">
                         <img src="{% static 'images/meal_small.png' %}" id="image-preview"></img>
+                        <label for="image-upload" class="btn btn-primary">Select Image</label>
+                        <input type="file" id="image-upload" accept="image/*">
                         <button id="btn-clear" class="btn btn-primary">Clear Image</button>
                     </div>
                     <div id="times-container">
@@ -85,8 +87,6 @@
                         </div>
                     </div>
                 </div>
-                <label for="image-upload" class="btn btn-primary">Select Image</label>
-                <input type="file" id="image-upload" accept="image/*">
                 <button id="btn-back" class="btn btn-primary new-button">Back</button>
                 <button id="btn-save" class="btn btn-primary">Save</button>
             </div>

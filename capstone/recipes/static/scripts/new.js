@@ -70,6 +70,7 @@ function addOptions(select) {
 
 // Show the new ingredient form
 function addRow() {
+    document.getElementById('btn-plus').parentElement.style.display = 'none';
     const form = document.getElementById('new-ingredient-form');
     form.style.display = 'flex';
     form.onsubmit = addIngredient;
@@ -112,6 +113,7 @@ function cancel() {
     document.getElementById('ingredient-name').value = '';
     document.getElementById('ingredient-quantity').value = '';
     document.getElementById('new-ingredient-form').style.display = 'none';
+    document.getElementById('btn-plus').parentElement.style.display = 'flex';
     return false;
 }
 
