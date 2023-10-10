@@ -1,3 +1,8 @@
+body::-webkit-scrollbar {
+    background-color: transparent;
+    width: 0.01rem;
+}
+
 h1 {
     margin: 10px;
 }
@@ -305,7 +310,7 @@ ul li {
 
 #ingredients-container::-webkit-scrollbar {
     background-color: transparent;
-    width: 0.1rem;
+    width: 0.01rem;
 }
 
 @media(max-width: 600px) {
@@ -328,8 +333,13 @@ ul li {
 
     .ingredient-name {
         max-height: 50px;
-        overflow-y: scroll;
+        overflow-y: auto;
         width: 60%;
+    }
+
+    .ingredient-name::-webkit-scrollbar {
+        background-color: transparent;
+        width: 0.01rem;
     }
 
     .list-view-element {
@@ -345,6 +355,7 @@ ul li {
 
     .row-edit {
         flex-direction: column;
+        width: 100%;
     }
 
     .row-edit>div {
@@ -359,7 +370,8 @@ ul li {
         margin-bottom: 5px;
     }
 
-    .row-edit>div>label>input {
+    .row-edit input[type=text],
+    input[type=number] {
         flex: 1;
     }
 
@@ -372,6 +384,18 @@ ul li {
     .row-edit>label>input {
         margin-right: 3px;
         padding-right: 0;
+    }
+
+    #allergens {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #allergens>label {
+        align-items: center;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
     }
 
     #image {
