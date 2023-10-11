@@ -52,14 +52,14 @@
             {% else %}
             <img src="{% static 'images/meal_big.png' %}" alt="Recipe image placeholder">
             {% endif %}
-            <div>
+            <div class="recipe-mobile">
                 {% if recipe.prep_time %}
                 <p>Preparation time: {{ recipe.prep_time }} minutes</p>
                 {% endif %}
                 <p>Total time: {{ recipe.total_time }} minutes</p>
             </div>
-            <div>
-                <p>Servings: <input id="servings" type="number" min="1" max="999" value="{{ recipe.servings }}"></p>
+            <div class="recipe-mobile">
+                <p>Servings: <input id="servings" type="number" min="1" max="999" autocomplete="off" value="{{ recipe.servings }}"></p>
                 <p class="recipe-list-item">{{ recipe.get_category_display }}</p>
             </div>
             <h2>Ingredients</h2>
@@ -67,8 +67,8 @@
                 {% for ingredient in recipe.ingredients.all %}
                 <li class="recipe-list-item">
                     <div class="recipe-ingredient-name">{{ ingredient.name }}</div>
-                    <div class="flex-column-mid-horizontal">
-                        <div class="recipe-quantity">{{ ingredient.quantity }}</div>
+                    <div class="recipe-quantity flex-column-mid-horizontal">
+                        <div>{{ ingredient.quantity }}</div>
                     </div>
                 </li>
                 {% endfor %}

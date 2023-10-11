@@ -190,12 +190,6 @@ ul li {
     display: none;
 }
 
-.options {
-    pointer-events: none;
-    position: absolute;
-    right: 20px;
-}
-
 .padding-left {
     padding-left: 5px;
 }
@@ -205,19 +199,24 @@ ul li {
 }
 
 .recipe-ingredient-name {
-    max-width: 80%;
+    flex: 1;
 }
 
 .recipe-list-item {
     background-color: #D7E5CA;
     border-radius: 10px;
-    margin: 3px;
+    margin: 3px 10px;
     padding: 2px 5px;
 }
 
 .recipe-quantity {
+    width: 30%;
+}
+
+.recipe-quantity>div {
     align-items: center;
     display: flex;
+    justify-content: flex-end;
 }
 
 .remove {
@@ -318,9 +317,17 @@ ul li {
         font-size: 2rem;
     }
 
+    h2 {
+        margin-left: 10px;
+    }
+
     h4 {
         margin-right: 5px;
         text-align: justify;
+    }
+
+    .allergen-row {
+        margin: 3px !important;
     }
 
     .btn-container {
@@ -342,6 +349,10 @@ ul li {
         width: 0.01rem;
     }
 
+    .left-align>div {
+        padding: 0 10px;
+    }
+
     .list-view-element {
         color: black;
         display: inline-block;
@@ -351,6 +362,10 @@ ul li {
     .padding-left,
     .padding-right {
         padding: initial;
+    }
+
+    .recipe-mobile {
+        flex-direction: column;
     }
 
     .row-edit {
@@ -384,6 +399,12 @@ ul li {
     .row-edit>label>input {
         margin-right: 3px;
         padding-right: 0;
+    }
+
+    .options {
+        pointer-events: none;
+        position: absolute;
+        right: 30px;
     }
 
     #allergens {
@@ -505,6 +526,30 @@ ul li {
         overflow-y: scroll;
     }
 
+    #preparation-container ol {
+        padding-right: 30px;
+    }
+
+    #preparation-container ol>li {
+        font-size: 1rem;
+    }
+
+    #recipe-main-container>div {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #recipe-top-container p {
+        font-size: 1.2rem;
+        margin: 10px 10px 0 10px;
+    }
+
+    #options>select {
+        margin-right: 10px;
+    }
+
     #sidebar {
         align-content: center;
         background-color: #D2E0FB;
@@ -537,6 +582,12 @@ ul li {
 
     .row-show>div {
         width: 50%;
+    }
+
+    .options {
+        pointer-events: none;
+        position: absolute;
+        right: 20px;
     }
 
     .sidebar-open {
@@ -631,6 +682,19 @@ ul li {
         justify-content: space-between;
     }
 
+    #recipe-main-container>div {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        min-width: 600px;
+        width: 40%;
+    }
+
+    #recipe-top-container p {
+        font-size: 1.5rem;
+        padding-top: 10px;
+    }
+
     #sidebar {
         align-content: center;
         background-color: #D2E0FB;
@@ -715,14 +779,6 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
 }
 
-#recipe-main-container>div {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    min-width: 600px;
-    width: 40%;
-}
-
 #recipe-main-container li {
     font-size: 1.2rem;
 }
@@ -754,11 +810,6 @@ input[type=number]::-webkit-outer-spin-button {
     position: relative;
 }
 
-#recipe-top-container p {
-    font-size: 1.5rem;
-    padding-top: 10px;
-}
-
 #recipe-top-container select {
     border: none;
     width: 50px;
@@ -766,6 +817,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 #recipe-top-container select:focus {
     outline: none;
+}
+
+#recipe-top-container .star {
+    margin-right: 10px;
 }
 
 #times-container {

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let originalServings = document.getElementById('servings').value;
 
-    let originalQuantities = Array.from(document.querySelectorAll('.recipe-quantity')).map(quantity => {
+    let originalQuantities = Array.from(document.querySelectorAll('.recipe-quantity>div')).map(quantity => {
         return quantity.textContent.split(' ');
     });
 
@@ -36,7 +36,7 @@ function changePortions(originalServings, originalQuantities) {
 
     // Set the new quantities
     for (let i = 0; i < newQuantities.length; i++) {
-        document.querySelectorAll('.recipe-quantity')[i].textContent = newQuantities[i];
+        document.querySelectorAll('.recipe-quantity>div')[i].textContent = newQuantities[i];
     }
 }
 
