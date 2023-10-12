@@ -43,22 +43,22 @@
                         <button id="btn-plus" class="btn btn-light" type="submit"><strong>+</strong></button>
                         <h5>Add an ingredient</h5>
                     </div>
-                    <div id="ingredients-container">
-                        <form class="ingredient" id="new-ingredient-form">
-                            <label>Name:<input id="ingredient-name" type="text" maxlength="100"></label>
-                            <div>
-                                <label>Quantity:<input id="ingredient-quantity" type="number" step="0.001" max="999" min="1"></label>
-                                <select id="ingredient-unit"></select>
-                            </div>
-                            <input id="units" type="hidden" value="{{ units }}">
-                            <input id="metric-units" type="hidden" value="{{ units_metric }}">
-                            <input id="imperial-units" type="hidden" value="{{ units_imperial }}">
-                            <label><input id="unit-change" type="checkbox">Imperial units</label>
-                            <div>
-                                <button class="btn btn-secondary" type="reset">Cancel</button>
-                                <button class="btn btn-primary" type="submit">Add</button>
-                            </div>
-                        </form>
+                    <form class="ingredient" id="new-ingredient-form">
+                        <label>Name:<input id="ingredient-name" type="text" maxlength="100"></label>
+                        <div>
+                            <label>Quantity:<input id="ingredient-quantity" type="number" step="0.001" max="999" min="1"></label>
+                            <select id="ingredient-unit"></select>
+                        </div>
+                        <input id="units" type="hidden" value="{{ units }}">
+                        <input id="metric-units" type="hidden" value="{{ units_metric }}">
+                        <input id="imperial-units" type="hidden" value="{{ units_imperial }}">
+                        <label><input id="unit-change" type="checkbox">Imperial units</label>
+                        <div>
+                            <button class="btn btn-secondary" type="reset">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Add</button>
+                        </div>
+                    </form>
+                    <div id="ingredients-container">     
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                         <label>Servings:<input type="number" id="servings" required></label>
                         <div id="category">{{ categories }}</div>
                         <div id="allergens">
-                            <h4>Select any allergens that this meal might contain (can be left empty).</h4>
+                            <h4>Select any allergens that this meal might contain (can be left empty)</h4>
                             {% for allergen in allergens %}
                             <label>{{ allergen.1 }}<input type="checkbox" value="{{ allergen.0 }}"></label>
                             {% endfor %}

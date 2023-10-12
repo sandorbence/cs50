@@ -180,12 +180,6 @@ ul li {
     top: initial;
 }
 
-.new-button {
-    position: fixed;
-    right: 20px;
-    bottom: 10px;
-}
-
 .no-display {
     display: none;
 }
@@ -255,20 +249,8 @@ ul li {
     z-index: -1;
 }
 
-#btn-clear {
-    bottom: 3px;
-    position: absolute;
-    right: 3px;
-}
-
 #btn-sidebar:focus {
     box-shadow: none;
-}
-
-#btn-save {
-    top: 10px;
-    position: absolute;
-    right: 20px;
 }
 
 #image {
@@ -310,6 +292,10 @@ ul li {
 #ingredients-container::-webkit-scrollbar {
     background-color: transparent;
     width: 0.01rem;
+}
+
+#preparation-container ol {
+    padding-right: 30px;
 }
 
 @media(max-width: 600px) {
@@ -359,6 +345,18 @@ ul li {
         width: 100%;
     }
 
+    .new-button {
+        position: fixed;
+        right: 20px;
+        bottom: 10px;
+    }
+
+    .options {
+        pointer-events: none;
+        position: absolute;
+        right: 30px;
+    }
+
     .padding-left,
     .padding-right {
         padding: initial;
@@ -401,12 +399,6 @@ ul li {
         padding-right: 0;
     }
 
-    .options {
-        pointer-events: none;
-        position: absolute;
-        right: 30px;
-    }
-
     #allergens {
         display: flex;
         flex-direction: column;
@@ -417,6 +409,18 @@ ul li {
         display: flex;
         flex-direction: row-reverse;
         justify-content: flex-end;
+    }
+
+    #btn-clear {
+        bottom: 3px;
+        position: absolute;
+        right: 3px;
+    }
+
+    #btn-save {
+        position: absolute;
+        right: 20px;
+        top: 10px;
     }
 
     #image {
@@ -526,10 +530,6 @@ ul li {
         overflow-y: scroll;
     }
 
-    #preparation-container ol {
-        padding-right: 30px;
-    }
-
     #preparation-container ol>li {
         font-size: 1rem;
     }
@@ -580,8 +580,10 @@ ul li {
         width: 100%;
     }
 
-    .row-show>div {
-        width: 50%;
+    .new-button {
+        position: absolute;
+        right: 20px;
+        top: 10px;
     }
 
     .options {
@@ -590,12 +592,39 @@ ul li {
         right: 20px;
     }
 
+    .row-show>div {
+        width: 50%;
+    }
+
     .sidebar-open {
         width: 15%;
     }
 
+    #allergens {
+        text-align: justify;
+    }
+
+    #btn-clear {
+        bottom: -45px;
+        position: absolute;
+        right: 3px;
+    }
+
+    #btn-save {
+        bottom: 10px;
+        position: absolute;
+        right: 20px;
+    }
+
     #image img {
-        max-height: 400px;
+        margin-top: 40px;
+        max-height: 350px;
+    }
+
+    #image>label {
+        bottom: -45px;
+        left: 3px;
+        position: absolute;
     }
 
     #image-container>div>div>div {
@@ -648,6 +677,10 @@ ul li {
         justify-content: flex-end;
     }
 
+    #new-ingredient-form>div>label {
+        display: contents;
+    }
+
     #new-recipe {
         display: flex;
     }
@@ -673,7 +706,7 @@ ul li {
         align-items: flex-start;
         display: flex;
         flex-direction: column;
-        height: 450px;
+        height: 410px;
         overflow-y: scroll;
     }
 
