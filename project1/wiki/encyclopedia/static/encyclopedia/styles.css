@@ -1,0 +1,87 @@
+body {
+    background-color: white;
+    margin: 0;
+}
+
+button {
+    border-radius: 4px;
+    font-family: arial, sans-serif;
+    font-size: 16px;
+    height: 30px;
+    padding: 0 3px;
+}
+
+button:hover {
+    background-color: #C5DFF8;
+}
+
+button img {
+    margin: 0 3px 3px 0;
+    width: 20px;
+}
+
+code {
+    white-space: pre;
+}
+
+h1 {
+    margin-top: 0px;
+    padding-top: 20px;
+}
+
+textarea {
+    height: 90vh;
+    width: 80%;
+}
+
+.main {
+    padding: 10px;
+}
+
+.search {
+    font-size: 15px;
+    line-height: 15px;
+    width: 100%;
+}
+
+.sidebar {
+    background-color: #f0f0f0;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-top: 5px;
+}
+
+#edit {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 150px;
+    padding: 10px;
+}
+
+#entry-container {
+    display: flex;
+}
+
+#entry.container form {
+    display: flex;
+}
+
+#pnf-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pnf-container img {
+    height: 75vh;
+}
+
+#save-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
