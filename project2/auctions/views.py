@@ -84,7 +84,7 @@ def index(request):
             return render(request, "auctions/new-listing.html", {
                 "form": form
             })
-    
+
     # Show all active listings
     return render(request, "auctions/index.html", {
         "listings": Listing.objects.filter(active=True).all()
@@ -160,7 +160,7 @@ def listing(request, listing_id):
             highest_bid = listing.bids.all().order_by("-value").first().value
         else:
             highest_bid = None
-        
+
         # Only let user perform actions if they are logged in
         if not request.user.is_authenticated:
             message = "Please sign in."
@@ -171,7 +171,7 @@ def listing(request, listing_id):
                 "message": message,
                 "highest_bid": highest_bid
             })
-        
+
         match request.POST.get("type"):
             case "bid":
                 form = BidForm(request.POST)
@@ -188,7 +188,7 @@ def listing(request, listing_id):
                             # Bid was too low
                             if validate == "bid":
                                 message = "Bid must be higher than existing highest bid."
-                            
+
                             # Bid step was not reached
                             else:
                                 message = "Bid step not reached. The minimum bid must be $" + \
@@ -199,16 +199,16 @@ def listing(request, listing_id):
                                 "comment_form": CommentForm(),
                                 "message": message
                             })
-                        
+
                     form.save()
 
                     # Check if bid has reached price, and if so, close auction
-                    if form.cleaned_data["value"]>= listing.price:
-                        return redirect("close",listing_id=listing_id)
+                    if form.cleaned_data["value"] >= listing.price:
+                        return redirect("close", listing_id=listing_id)
                 else:
                     raise Exception("Your bid was invalid.")
                 return redirect("listing", listing_id=listing_id)
-            
+
             case "comment":
                 form = CommentForm(request.POST)
                 form.date = datetime.now()
@@ -218,7 +218,7 @@ def listing(request, listing_id):
                 else:
                     raise Exception("Something went wrong writing a comment.")
                 return redirect("listing", listing_id=listing_id)
-            
+
             # Add or remove item from watchlist
             case "watchlist":
                 watchlist = Watchlist.objects.get(user=request.user)
@@ -228,9 +228,14 @@ def listing(request, listing_id):
                 else:
                     watchlist.listings.add(listing)
                 return redirect("listing", listing_id=listing_id)
-    
+
     # Get request
-    listing = Listing.objects.get(pk=listing_id)
+    try:
+        listing = Listing.objects.get(pk=listing_id)
+    except Listing.DoesNotExist:
+        return render(request, "auctions/404.html", {
+            "id": listing_id
+        })
     if listing.bids.all().exists():
         highest_bid = listing.bids.all().order_by("-value").first().value
     else:
@@ -238,10 +243,10 @@ def listing(request, listing_id):
 
     bid_form = BidForm(
         initial={"user": request.user, "date": datetime.now(), "listing": listing})
-    
+
     comment_form = CommentForm(
         initial={"user": request.user, "date": datetime.now(), "listing": listing})
-    
+
     # Create watchlist if user's first login
     if request.user.is_authenticated:
         if not Watchlist.objects.filter(user=request.user).exists():
@@ -325,16 +330,16 @@ def close_listing(request, listing_id):
         elif request.POST.get("buy") != None:
             listing.winner = request.user
         else:
-        # If a bid on the item reached the buy price,
-        # the user who made the bid, wins the auction
+            # If a bid on the item reached the buy price,
+            # the user who made the bid, wins the auction
             highest_bid = listing.bids.all().order_by("-value").first()
             user = highest_bid.user
             listing.winner = user
-        
+
         # Deactivate listing
         listing.active = False
         listing.save()
-    
+
     # Reopen listing
     else:
         listing.active = True

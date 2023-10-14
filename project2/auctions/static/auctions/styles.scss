@@ -251,7 +251,7 @@ textarea {
 #dollar {
     left: 55px;
     position: absolute;
-    top: 48px;
+    top: 53px;
 }
 
 #empty-space {
@@ -408,6 +408,16 @@ textarea {
 
 #placeholder {
     width: 340px;
+}
+
+#pnf-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pnf-container img {
+    height: 60vh;
 }
 
 #upload-container {

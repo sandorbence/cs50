@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+Page not found
+{% endblock %}
+
+{% block body %}
+<div id="pnf-container">
+  <h1>Page not found</h1>
+  <p>Listing with id "{{ id }}" does not exist.</p>
+  <img src="{% static 'images/404.svg' %}" alt="404.svg">
+  <a href="https://storyset.com/web">Web illustrations by Storyset</a>
+</div>
+{% endblock %}
