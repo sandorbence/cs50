@@ -1,0 +1,82 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+Create new listing
+{% endblock %}
+
+{% block body %}
+<div class="flex-column-mid">
+    <h1>Create a new listing</h1>
+    <div id="new-listing-container">
+        <div>
+            <img id="image-preview" src="{% static 'images/image.png' %}" alt="preview">
+        </div>
+        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+            <div>
+                {% csrf_token %}
+                {{ form.user.as_hidden }}
+                {{ form.pub_date.as_hidden }}
+                {{ form.active.as_hidden }}
+                <div id="new-description">
+                    <div id="new-title">
+                        Title of listing:
+                        <div>
+                            {{ form.title }}
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            Item description:
+                        </div>
+                        {{ form.description }}
+                    </div>
+                </div>
+                <div id="new-category">
+                    <div>
+                        Category:
+                        <div>
+                            {{ form.category }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="new-photo-container">
+                <div id="bids-container">
+                    <div>
+                        <div>
+                            <div>
+                                $
+                            </div>
+                            Price: {{ form.price }}
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <div>
+                                $
+                            </div>
+                            Bid step: {{ form.bid_step }}
+                        </div>
+                    </div>
+                </div>
+                <div id="empty-space">
+                </div>
+                <div id="buttons-container">
+                    <div id="upload-container">
+                        Upload an image:
+                        <label for="listing-image" class="btn btn-secondary">Select Image</label>
+                        {{ form.photo }}
+                    </div>
+                    <div id="add-button">
+                        <button type="submit" class="btn btn-secondary">Add new
+                            listing</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'scripts/new-listing.js' %}"></script>
+{% endblock %}
