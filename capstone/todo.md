@@ -24,3 +24,4 @@
 * ~~Fix imperial units in ingredients edit~~
 * ~~For mobile remove 'x' for ingredients and add delete for edit~~
 * Check for login redirect
+* Clear up API requests
