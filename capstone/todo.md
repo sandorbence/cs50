@@ -23,3 +23,4 @@
 * ~~Add command to manage.py to add all allergens to database~~
 * ~~Fix imperial units in ingredients edit~~
 * ~~For mobile remove 'x' for ingredients and add delete for edit~~
+* Check for login redirect
