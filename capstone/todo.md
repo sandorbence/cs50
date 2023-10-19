@@ -6,12 +6,11 @@
     - ~~Category~~
     - ~~Allergens~~
 * ~~Fix options button behaviour on recipe page~~
-* Add more recipes
+* ~~Add more recipes~~
 * ~~Style recipe page~~
 * ~~Style edit page~~
-* Add unit tests
 * ~~Add comments~~
-* Add proper error handling
+* ~~Add proper error handling~~
 * ~~Add styling for mobile responsiveness~~
 * ~~Fix new recipe form ingredient handling~~
 * ~~Add pagination for list view~~
@@ -25,3 +24,4 @@
 * ~~For mobile remove 'x' for ingredients and add delete for edit~~
 * ~~Check for login redirect~~
 * ~~Clear up API requests~~
+* Add final styling
