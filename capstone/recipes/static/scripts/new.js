@@ -206,6 +206,10 @@ function createRow(name, quantity) {
     row.append(btnContainer);
 
     container.append(row);
+
+    // Scroll the div to the bottom, so that
+    // newly added ingredient is fully visible
+    container.scrollTop = container.scrollHeight;
 }
 
 // Callback function for 'X' button
@@ -219,8 +223,10 @@ function editRow(row) {
     let select = row.querySelector('select');
     let rowEdit = row.querySelector('.row-edit');
 
-    row.style.flexDirection = 'column';
-    row.querySelector('.btn-container').style.width = '100%';
+    if (window.innerWidth < 600) {
+        row.style.flexDirection = 'column';
+        row.querySelector('.btn-container').style.width = '100%';
+    }
 
     row.querySelector('.row-show').style.display = 'none';
     rowEdit.style.display = 'flex';
@@ -392,7 +398,7 @@ function save() {
     }
     // If a new recipe was created, post with a fake ID
     else {
-        fetch('/recipes/0', {
+        fetch('/recipes', {
             method: 'POST',
             body: data
         }).then(response => {

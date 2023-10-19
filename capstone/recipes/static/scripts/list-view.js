@@ -31,7 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setElementsMaxWidth();
 
+    // Resize recipe cards in list view if size of window changes
     window.addEventListener('resize', setElementsMaxWidth);
+
+    const listDiv = document.getElementById('list-view-list-container');
+
+    // Resize recipe cards in list view if size of container changes
+    const resizeObserver = new ResizeObserver(entries => {
+        for (let entry of entries) {
+            const newWidth = entry.contentRect.width;
+            console.log(`Div width changed to ${newWidth}px`);
+            setElementsMaxWidth();
+        }
+    });
+
+    resizeObserver.observe(listDiv);
 });
 
 // Open/close sidebar for searching

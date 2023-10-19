@@ -14,6 +14,7 @@ urlpatterns = [
     path("my_recipes", views.my_recipes, name="my_recipes"),
 
     # API paths
-    path("recipes/<int:recipe_id>", views.recipe, name="recipe"),
+    path("recipes", views.recipe, name="recipe"),
+    path("recipes/<int:recipe_id>", views.recipe, name="recipe_put"),
     path("filter/", views.filter_recipes, name="filter")
 ]

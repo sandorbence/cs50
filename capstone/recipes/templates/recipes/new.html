@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Add a new recipe{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 {% if recipe %}
@@ -46,7 +46,7 @@
                     <form class="ingredient" id="new-ingredient-form">
                         <label>Name:<input id="ingredient-name" type="text" maxlength="100"></label>
                         <div>
-                            <label>Quantity:<input id="ingredient-quantity" type="number" step="0.001" max="999" min="1"></label>
+                            <label>Quantity:<input id="ingredient-quantity" type="number" step="0.001" max="999" min="0.001"></label>
                             <select id="ingredient-unit"></select>
                         </div>
                         <input id="units" type="hidden" value="{{ units }}">

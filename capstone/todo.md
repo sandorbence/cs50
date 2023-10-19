@@ -12,7 +12,7 @@
 * Add unit tests
 * ~~Add comments~~
 * Add proper error handling
-* Add styling for mobile responsiveness
+* ~~Add styling for mobile responsiveness~~
 * ~~Fix new recipe form ingredient handling~~
 * ~~Add pagination for list view~~
 * ~~Add prompt before deletion~~
@@ -23,5 +23,5 @@
 * ~~Add command to manage.py to add all allergens to database~~
 * ~~Fix imperial units in ingredients edit~~
 * ~~For mobile remove 'x' for ingredients and add delete for edit~~
-* Check for login redirect
-* Clear up API requests
+* ~~Check for login redirect~~
+* ~~Clear up API requests~~

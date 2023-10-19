@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError, transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
@@ -115,8 +116,10 @@ def index(request):
 
 
 # View for creating a new recipe
+@login_required
 def add_recipe(request):
     return render(request, "recipes/new.html", {
+        "title": "Add a new recipe",
         "units": UNITS,
         "units_metric": UNITS_METRIC,
         "units_imperial": UNITS_IMPERIAL,
@@ -128,7 +131,12 @@ def add_recipe(request):
 
 # View for displaying a specific recipe
 def recipe_site(request, recipe_id):
-    recipe = Recipe.objects.get(pk=recipe_id)
+    try:
+        recipe = Recipe.objects.get(pk=recipe_id)
+    except Recipe.DoesNotExist:
+        return render(request, "recipes/404.html", {
+            "id": recipe_id
+        })
     favorites = request.user.favorite_recipes.all()
     steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
@@ -140,6 +148,7 @@ def recipe_site(request, recipe_id):
 
 
 # View dor displaying favorite recipes
+@login_required
 def favorites(request):
     recipes = request.user.favorite_recipes.all().order_by("-upload_date")
     paginator = Paginator(recipes, 8)
@@ -155,6 +164,7 @@ def favorites(request):
 
 
 # View for displaying the user's own recipes
+@login_required
 def my_recipes(request):
     recipes = Recipe.objects.filter(
         uploader=request.user).order_by("-upload_date")
@@ -171,11 +181,13 @@ def my_recipes(request):
 
 # View for editing a recipe
 # Renders the same html as when creating one
+@login_required
 def edit_recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
 
     if request.POST.get("method") == "edit":
         return render(request, "recipes/new.html", {
+            "title": "Edit recipe",
             "recipe": recipe,
             "units": UNITS,
             "units_metric": UNITS_METRIC,
@@ -192,7 +204,7 @@ def edit_recipe(request, recipe_id):
 
 # API endpoint for creating and editing recipes
 @csrf_exempt
-def recipe(request, recipe_id):
+def recipe(request, recipe_id=None):
     if request.method == "POST":
         data = request.POST
         title = data.get("title")
@@ -210,8 +222,8 @@ def recipe(request, recipe_id):
         except:
             allergens = None
 
-        # ID = 0 means we are creating a new recipe
-        if recipe_id == 0:
+        # No ID means we are creating a new recipe
+        if recipe_id == None:
             try:
                 # Recipes won't be saved before validating other data
                 with transaction.atomic():
