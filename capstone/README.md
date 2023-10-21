@@ -1,6 +1,6 @@
-# Recipes capstone project
+# RecipesCapstone Project
 
-## About the application
+## About the Application
 
 The recipes project is a recipe sharing web application. Users can
 * Access all uploaded recipes that contain ingredients, listed allergens and the preparation of the meal
@@ -12,14 +12,14 @@ Signed in users can
 * Add recipes to their favorites, making it faster to look for previously liked meals
 * Look at their own recipes on a separate page, so that they can find the recipes they want to edit or delete
 
-## Running the application
+## Running the Application
 
 1. Clone the repository
 2. Install packages listed in the requirements.txt
 3. Run the addallergens command by running "python manage.py addallergens" to populate database with all allergen model instances (only if you start with an empty database)
 4. Run "python manage.py runserver" to start the application
 
-## Content of each file I created
+## Content of Each File Created
 
 * choices.py: A file containing python lists that define choices for model fields and model instances
 * requirements.txt: File containing all the required packages used by the application
@@ -55,7 +55,7 @@ Signed in users can
 
 The recipes capstone project utilizes everything learnt throughout the course. Compared to previous projects I added a more complex searching for the recipe model instances, for which I used the API that I created. As there are way more model fields for the recipe model than any of the previous ones, it makes it harder to keep validation error-free. Besides server side validation I used JavaScript for client side validation for most of the input fields when creating a new model instance. Making the website mobile responsive was a requirement, however that also added to the complexity, as I had to restyle all of the html code as well as add extra behaviour based on screen width to my JavaScript code. It is possible to edit all of the recipe model instances created by the same user. I made it possible for the user to edit the image for a recipe, which required the usage of FormData, not just simple JSON data. My web pages contain more complex JS code compared to any of the previous projects, which makes the application responsive and user friendly. When creating a new recipe I used DOM manipulation just like in the mail project, but on a higher level. For filtering the recipes that appear after a search query was sent I also used JS, so that the user immediatly sees the result of the query (just like in the wiki project, but extended).
 
-## Ideas to improve the application
+## Ideas to Improve
 
 * List nutrients for each recipe so that users can pick meals for their diet
 * Add fractional numbers to the ingredient adding form, 1/3 looks better than 0.33
