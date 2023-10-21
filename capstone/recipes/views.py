@@ -101,14 +101,12 @@ def index(request):
     recipes = Recipe.objects.all().order_by("-upload_date")
     favorites = request.user.favorite_recipes.all(
     ) if request.user.is_authenticated else None
+    pages = max(1, (recipes.count()/8).__ceil__())
 
-    # Create paginator object
-    paginator = Paginator(recipes, 8)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, "recipes/index.html", {
-        "page_obj": page_obj,
+    return render(request, "recipes/list-view.html", {
+        "title": "All recipes",
+        "recipes": recipes,
+        "pages": pages,
         "favorites": favorites,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
@@ -151,12 +149,12 @@ def recipe_site(request, recipe_id):
 @login_required
 def favorites(request):
     recipes = request.user.favorite_recipes.all().order_by("-upload_date")
-    paginator = Paginator(recipes, 8)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    pages = max(1, (recipes.count()/8).__ceil__())
 
-    return render(request, "recipes/favorite.html", {
-        "page_obj": page_obj,
+    return render(request, "recipes/list-view.html", {
+        "title": "Favorite recipes",
+        "recipes": recipes,
+        "pages": pages,
         "favorites": recipes,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
@@ -168,12 +166,12 @@ def favorites(request):
 def my_recipes(request):
     recipes = Recipe.objects.filter(
         uploader=request.user).order_by("-upload_date")
-    paginator = Paginator(recipes, 8)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    pages = max(1, (recipes.count()/8).__ceil__())
 
-    return render(request, "recipes/my-recipes.html", {
-        "page_obj": page_obj,
+    return render(request, "recipes/list-view.html", {
+        "title": "My recipes",
+        "recipes": recipes,
+        "pages": pages,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
     })

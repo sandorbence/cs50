@@ -1,7 +1,30 @@
+const itemsPerPage = 8;
+let currentPage = 1;
+let maxPages = document.getElementById('pages').value;
+let ids;
+
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.star').forEach(button => {
         button.addEventListener('click', () => favorite(button))
     });
+
+    ids = Array.from(document.querySelectorAll('.recipe-card')).map(recipe => recipe.id);
+
+    displayRecipes();
+
+    document.getElementById('page-prev').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayRecipes();
+        }
+    })
+    document.getElementById('page-next').addEventListener('click', () => {
+        if (currentPage < maxPages) {
+            currentPage++;
+            displayRecipes();
+        }
+    })
+
     document.getElementById('btn-sidebar').addEventListener('click', toggleSideBar);
 
     const searchContainer = document.getElementById('search-container');
@@ -40,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resizeObserver = new ResizeObserver(entries => {
         for (let entry of entries) {
             const newWidth = entry.contentRect.width;
-            console.log(`Div width changed to ${newWidth}px`);
             setElementsMaxWidth();
         }
     });
@@ -78,23 +100,11 @@ function filterRecipes() {
     fetch('/filter/?' + query)
         .then(response => response.json())
         .then(response => {
-            let ids = response.message.split(',').slice(0, -1);
-            displayFilteredRecipes(ids);
+            ids = response.message.split(',').slice(0, -1);
+            currentPage = 1;
+            maxPages = Math.ceil(ids.length / 8);
+            displayRecipes();
         });
-}
-
-// Display all recipes that match filters,
-// hide ones that don't
-function displayFilteredRecipes(ids) {
-    let recipes = document.querySelectorAll('.recipe-card');
-    recipes.forEach(recipe => {
-        if (ids.includes(recipe.id)) {
-            recipe.style.display = 'flex';
-        }
-        else {
-            recipe.style.display = 'none';
-        }
-    })
 }
 
 // Resize elements dynamically, otherwise ones with longer title overflow
@@ -116,4 +126,36 @@ function setElementsMaxWidth() {
             element.style.maxWidth = `${containerWidth}px`;
         })
     }
+}
+
+// Display all recipes that match filters,
+// hide ones that don't
+function displayRecipes() {
+    let recipes = document.querySelectorAll('.recipe-card');
+    let filteredRecipes = [];
+
+    // All recipes that match the criteria
+    recipes.forEach(recipe => {
+        recipe.style.display = 'none';
+        if (ids.includes(recipe.id)) filteredRecipes.push(recipe);
+    })
+
+    let startIdx = (currentPage - 1) * itemsPerPage;
+    let endIdx = startIdx + itemsPerPage;
+
+    let btnPrev = document.getElementById('page-prev');
+    let btnNext = document.getElementById('page-next');
+
+    if (currentPage === 1) btnPrev.style.visibility = 'hidden';
+    else btnPrev.style.visibility = 'visible';
+
+    if (currentPage == maxPages) btnNext.style.visibility = 'hidden';
+    else btnNext.style.visibility = 'visible';
+
+    // Display recipes on current page
+    for (let i = startIdx; i < endIdx && i < filteredRecipes.length; i++) {
+        filteredRecipes[i].style.display = 'flex';
+    }
+
+    document.getElementById('page-number').innerText = `Page ${currentPage} of ${maxPages}`
 }

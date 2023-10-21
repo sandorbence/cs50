@@ -41,6 +41,7 @@ select {
     border-radius: 5px;
     font-weight: bold;
     height: 30px;
+    text-align: center;
 }
 
 textarea {
@@ -667,7 +668,6 @@ ul li {
         display: flex;
         flex-direction: column;
         height: 400px;
-        min-width: 600px;
         overflow-y: scroll;
     }
 
@@ -737,16 +737,16 @@ ul li {
         height: 410px;
         overflow-y: scroll;
     }
-    
+
     #pnf-container {
         display: flex;
         align-items: center;
         flex-direction: column;
-      }
-      
-      #pnf-container img {
+    }
+
+    #pnf-container img {
         height: 60vh;
-      }
+    }
 
     #preparation-title {
         display: flex;
@@ -822,6 +822,12 @@ input[type=number]::-webkit-outer-spin-button {
 #pagination-container {
     display: flex;
     justify-content: center;
+}
+
+#pagination-container>span {
+    align-items: center;
+    display: flex;
+    margin: 0 5px;
 }
 
 #plus-button {

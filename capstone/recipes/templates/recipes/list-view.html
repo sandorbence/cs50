@@ -1,13 +1,16 @@
+{% extends "recipes/layout.html" %}
+
 {% load static %}
 
-<input type="hidden" id="star-empty"
-    value="{% static 'images/star-empty.png' %}">
-<input type="hidden" id="star-filled"
-    value="{% static 'images/star-filled.png' %}">
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<input type="hidden" id="star-empty" value="{% static 'images/star-empty.png' %}">
+<input type="hidden" id="star-filled" value="{% static 'images/star-filled.png' %}">
+<input type="hidden" id="pages" value="{{ pages }}">
 <div id="list-view-main-container">
     <div id="sidebar">
-        <button id="btn-sidebar" class="btn"><img
-                src="{% static 'images/search.png' %}" alt="Search"></button>
+        <button id="btn-sidebar" class="btn"><img src="{% static 'images/search.png' %}" alt="Search"></button>
         <div id="search-container" class="flex-column-mid-vertical no-display">
             <input type="text" id="searchbar" placeholder="Search by name">
             <h4>Category</h4>
@@ -16,8 +19,7 @@
             <div class="flex-column-right-vertical">
                 {% for allergen in allergens %}
                 <div>
-                    <input id="{{ allergen.0 }}" type="checkbox"
-                        value="{{ allergen.0 }}">
+                    <input id="{{ allergen.0 }}" type="checkbox" value="{{ allergen.0 }}">
                     <label for="{{ allergen.0 }}">{{ allergen.1 }}</label>
                 </div>
                 {% endfor %}
@@ -26,24 +28,18 @@
     </div>
     <div class="flex-column flex1">
         <div id="list-view-list-container">
-            {% for recipe in page_obj %}
+            {% for recipe in recipes %}
             <div class="recipe-card" id="{{ recipe.id }}">
-                <a href="{% url 'recipe_site' recipe.pk %}"
-                    class="list-view-element">
+                <a href="{% url 'recipe_site' recipe.pk %}" class="list-view-element">
                     <div class="card">
                         {% if recipe.image %}
-                        <img class="card-img-top" src="{{ recipe.image.url }}"
-                            alt="Recipe image">
+                        <img class="card-img-top" src="{{ recipe.image.url }}" alt="Recipe image">
                         {% else %}
-                        <img class="card-img-top"
-                            src="{% static 'images/meal_big.png' %}"
-                            alt="Recipe image">
+                        <img class="card-img-top" src="{% static 'images/meal_big.png' %}" alt="Recipe image">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ recipe.title }}</h5>
-                            <p class="card-text"><img
-                                    src="{% static 'images/time.png' %}"
-                                    alt="time">{{ recipe.total_time }} mins</p>
+                            <p class="card-text"><img src="{% static 'images/time.png' %}" alt="time">{{ recipe.total_time }} mins</p>
                         </div>
                     </div>
                 </a>
@@ -51,8 +47,7 @@
                 {% if request.user != recipe.uploader %}
                 <button id="{{ recipe.id }}" class="star">
                     {% if recipe in favorites %}
-                    <img src="{% static 'images/star-filled.png' %}"
-                        alt="remove">
+                    <img src="{% static 'images/star-filled.png' %}" alt="remove">
                     {% else %}
                     <img src="{% static 'images/star-empty.png' %}" alt="add">
                     {% endif %}
@@ -63,27 +58,12 @@
             {% endfor %}
         </div>
         <div id="pagination-container">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                <a class="page-link" href="?page=1">&laquo; first</a>
-                <a class="page-link"
-                    href="?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-
-                {% if page_obj.has_next %}
-                <a class="page-link"
-                    href="?page={{ page_obj.next_page_number }}">next</a>
-                <a class="page-link"
-                    href="?page={{ page_obj.paginator.num_pages }}">last
-                    &raquo;</a>
-                {% endif %}
-
-                <span class="current flex-row-mid-vertical">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-            </ul>
+            <button id="page-prev" class="btn btn-primary">Previous</button>
+            <span id="page-number">Page 1 of {{ pages }}</span>
+            <button id="page-next" class="btn btn-primary">Next</button>
         </div>
     </div>
 </div>
 <script src="{% static 'scripts/utils.js' %}"></script>
 <script src="{% static 'scripts/list-view.js' %}"></script>
+{% endblock %}

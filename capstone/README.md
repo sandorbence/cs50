@@ -37,12 +37,9 @@ Signed in users can
 ### templates/recipes folder
 
 * 404.html: Page that is displayed when a user wants to access a non-existing recipe id
-* favorite.html: Page that displays the recipes that were "favorited" by the user
-* index.html: The home page of the application
 * layout.html: The base html file that contains the main layout and is extended by the other html files
-* list-view.html: The page that displays recipes, other pages include it
+* list-view.html: The page that displays recipes, it is shared by 3 views
 * login.html: Login page
-* my-recipes.html: Page that displays the recipes created by the user
 * new.html: Page used for creating and editing a recipe
 * recipe.html: Page displaying a specific recipe
 * register.html: Register page
