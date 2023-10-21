@@ -172,7 +172,7 @@ def my_recipes(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "recipes/my_recipes.html", {
+    return render(request, "recipes/my-recipes.html", {
         "page_obj": page_obj,
         "categories": CategoryForm(),
         "allergens": ALLERGENS
@@ -286,7 +286,7 @@ def recipe(request, recipe_id=None):
         return JsonResponse({"error": "Recipe not found."}, status=404)
 
     # Edit only the favorite field of a recipe
-    if request.method == "PUT":
+    if request.method == "PATCH":
         data = json.loads(request.body)
         favorite = data.get("favorite")
 

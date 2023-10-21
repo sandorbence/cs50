@@ -20,7 +20,7 @@ function favorite(button) {
 
     // Favorite/unfavorite recipes
     fetch('/recipes/' + button.id, {
-        method: 'PUT',
+        method: 'PATCH',
         body: JSON.stringify({
             'favorite': favorite
         })
