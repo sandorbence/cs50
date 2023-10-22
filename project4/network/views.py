@@ -32,7 +32,7 @@ def index(request):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    
+
     return render(request, "network/index.html", {
         "page_obj": page_obj,
         "liked_posts": request.user.liked_posts.all() if request.user.is_authenticated else None
@@ -50,12 +50,19 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            if request.POST.get("next"):
+                return redirect(request.POST.get("next"))
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "network/login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
+        # Redirect user to previously requested page
+        if request.GET.get("next"):
+            return render(request, "network/login.html", {
+                "next": request.GET.get("next")
+            })
         return render(request, "network/login.html")
 
 
@@ -166,7 +173,12 @@ def posts(request, filter):
 
 @login_required
 def user_profile(request, username):
-    user = User.objects.get(username=username)
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return render(request, "network/404.html", {
+            "username": username
+        })
     posts = Post.objects.filter(user=user).order_by("-date")
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")

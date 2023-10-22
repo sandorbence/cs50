@@ -135,7 +135,8 @@ def recipe_site(request, recipe_id):
         return render(request, "recipes/404.html", {
             "id": recipe_id
         })
-    favorites = request.user.favorite_recipes.all()
+    favorites = request.user.favorite_recipes.all(
+    ) if request.user.is_authenticated else None
     steps = recipe.preparation.split("-step-")[1:]
     return render(request, "recipes/recipe.html", {
         "recipe": recipe,
@@ -259,6 +260,8 @@ def recipe(request, recipe_id=None):
         ingredients = ingredients
         if image:
             recipe.image = image
+        else:
+            recipe.image.delete(save=True)
 
         recipe.save()
 

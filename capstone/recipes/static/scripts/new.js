@@ -567,6 +567,7 @@ function fillFieldsWithRecipeData(recipe) {
 
     if (recipe.image) {
         document.getElementById('image-preview').src = recipe.image;
+        document.getElementById('btn-clear').style.display = 'inline-block';
     }
 
     if (recipe.prep_time) {

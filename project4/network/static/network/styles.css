@@ -90,6 +90,16 @@ ul {
     position: relative;
 }
 
+#pnf-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  #pnf-container img {
+    height: 60vh;
+  }
+
 #posts-container {
     align-items: center;
     display: flex;

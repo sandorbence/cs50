@@ -35,7 +35,7 @@
                         </form>
                     </div>
                 </div>
-                {% else %}
+                {% elif request.user.is_authenticated %}
                 <div>
                     <button id="{{ recipe.id }}" class="star">
                         {% if recipe in favorites %}
