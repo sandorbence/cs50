@@ -11,12 +11,12 @@
 <div id="list-view-main-container">
     <div id="sidebar">
         <button id="btn-sidebar" class="btn"><img src="{% static 'images/search.png' %}" alt="Search"></button>
-        <div id="search-container" class="flex-column-mid-vertical no-display">
+        <div id="search-container" class="flex column mid-align no-display">
             <input type="text" id="searchbar" placeholder="Search by name">
             <h4>Category</h4>
             {{ categories }}
             <h4>Allergens</h4>
-            <div class="flex-column-right-vertical">
+            <div class="flex column start-align">
                 {% for allergen in allergens %}
                 <div>
                     <input id="{{ allergen.0 }}" type="checkbox" value="{{ allergen.0 }}">
@@ -26,10 +26,10 @@
             </div>
         </div>
     </div>
-    <div class="flex-column flex1">
-        <div id="list-view-list-container">
+    <div class="flex column flex1">
+        <div id="list-view-list-container" class="flex flex1">
             {% for recipe in recipes %}
-            <div class="recipe-card" id="{{ recipe.id }}">
+            <div class="recipe-card flex" id="{{ recipe.id }}">
                 <a href="{% url 'recipe_site' recipe.pk %}" class="list-view-element">
                     <div class="card">
                         {% if recipe.image %}
@@ -57,9 +57,9 @@
             </div>
             {% endfor %}
         </div>
-        <div id="pagination-container">
+        <div class="flex mid-justify">
             <button id="page-prev" class="btn btn-primary">Previous</button>
-            <span id="page-number">Page 1 of {{ pages }}</span>
+            <span id="page-number" class="flex mid-align">Page 1 of {{ pages }}</span>
             <button id="page-next" class="btn btn-primary">Next</button>
         </div>
     </div>

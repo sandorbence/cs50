@@ -15,11 +15,11 @@
     <input id="recipe-id" type="hidden" value="{{ recipe.id }}">
     <input id="steps" type="hidden" value="{{ steps }}">
     {% endif %}
-    <div id="new-recipe-container">
+    <div id="new-recipe-container" class="flex column">
         <div id="description-container">
-            <div id="new-recipe">
-                <div class="padding-right">
-                    <div id="title">
+            <div>
+                <div class="padding-right width50">
+                    <div id="title" class="flex">
                         <div>
                             <h4>Recipe title</h4>
                             <div>
@@ -31,19 +31,19 @@
                         <h4>Preparation</h4>
                         <button id="btn-addstep" class="btn btn-secondary">Add step</button>
                     </div>
-                    <div id="new-recipe-description">
+                    <div id="new-recipe-description" class="flex column start-align">
                         <textarea id="preparation" class="step" required
                             placeholder=" How do we make this meal? Step 1:"></textarea>
                         <input id="max-characters" type="hidden" value="{{ max_characters }}">
                     </div>
                 </div>
-                <div class="padding-left">
+                <div class="padding-left width50">
                     <div class="empty-div"></div>
                     <div class="ingredient">
                         <button id="btn-plus" class="btn btn-dark" type="submit"><strong>+</strong></button>
                         <h5>Add an ingredient</h5>
                     </div>
-                    <form class="ingredient" id="new-ingredient-form">
+                    <form id="new-ingredient-form" class="ingredient">
                         <label>Name:<input id="ingredient-name" type="text" maxlength="100"></label>
                         <div>
                             <label>Quantity:<input id="ingredient-quantity" type="number" step="0.001" max="999" min="0.001"></label>
@@ -58,7 +58,7 @@
                             <button class="btn btn-primary" type="submit">Add</button>
                         </div>
                     </form>
-                    <div id="ingredients-container">     
+                    <div id="ingredients-container" class="flex column">     
                     </div>
                 </div>
             </div>
@@ -66,15 +66,15 @@
         <button id="btn-next" class="btn btn-primary new-button">Next</button>
         <div id="image-container">
             <h2>Upload an image</h2>
-            <div>
-                <div>
-                    <div id="image">
+            <div class="flex column start-align">
+                <div class="flex">
+                    <div id="image" class="width50">
                         <img src="{% static 'images/meal_small.png' %}" id="image-preview"></img>
                         <label for="image-upload" class="btn btn-secondary">Select Image</label>
                         <input type="file" id="image-upload" accept="image/*">
                         <button id="btn-clear" class="btn btn-primary">Clear Image</button>
                     </div>
-                    <div id="times-container">
+                    <div id="times-container" class="width50">
                         <label>Preparation time (min):<input type="number" id="prep-time" pattern="\d+"></label>
                         <label>Total time to make (min):<input type="number" id="total-time" required></label>
                         <label>Servings:<input type="number" id="servings" required></label>

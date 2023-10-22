@@ -9,15 +9,15 @@
     value="{% static 'images/star-empty.png' %}">
 <input type="hidden" id="star-filled"
     value="{% static 'images/star-filled.png' %}">
-<div id="recipe-main-container">
+<div id="recipe-main-container" class="flex column mid-align">
     <input id="recipe-id" type="hidden" value="{{ recipe.id }}">
-    <div>
-        <div id="recipe-top-container">
+    <div class="flex column mid-align">
+        <div id="recipe-top-container" class="flex column mid-justify">
             <div>
                 <h1>{{ recipe.title }}</h1>
                 {% if recipe.uploader == request.user %}
                 <div>
-                    <div id="options" class="flex-row-mid-vertical">
+                    <div id="options" class="flex mid-align">
                         <img src="{% static 'images/options.png' %}" class="options" alt="Options">
                         <select>
                             <option value="" selected hidden></option>
@@ -67,7 +67,7 @@
                 {% for ingredient in recipe.ingredients.all %}
                 <li class="recipe-list-item">
                     <div class="recipe-ingredient-name">{{ ingredient.name }}</div>
-                    <div class="recipe-quantity flex-column-mid-horizontal">
+                    <div class="recipe-quantity flex column mid-justify">
                         <div>{{ ingredient.quantity }}</div>
                     </div>
                 </li>
@@ -77,7 +77,7 @@
         <div class="left-align">
             <h2>Allergens</h2>
             {% if recipe.allergens.all|length > 0 %}
-            <div class="flex-row">
+            <div class="flex wrap">
                 {% for allergen in recipe.allergens.all %}
                 <div class="allergen-row recipe-list-item">{{ allergen.get_name_display }}</div>
                 {% endfor %}

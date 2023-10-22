@@ -7,10 +7,10 @@ Page not found
 {% endblock %}
 
 {% block body %}
-<div id="pnf-container">
+<div class="flex-column-mid-vertical">
   <h1>Page not found</h1>
   <p>Recipe with id "{{ id }}" does not exist.</p>
-  <img src="{% static 'images/404.svg' %}" alt="404.svg">
+  <img id="pnf-image" src="{% static 'images/404.svg' %}" alt="404.svg">
   <a href="https://storyset.com/web">Web illustrations by Storyset</a>
 </div>
 {% endblock %}
