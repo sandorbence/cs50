@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkBox = document.getElementById('unit-change');
     const imagePath = document.getElementById('image-preview').src;
 
+    // Add bold font weight to selected nav item
+    document.querySelectorAll('.nav-link').forEach(navlink => {
+        navlink.classList.remove('selected');
+        if (navlink.href == window.location.href) navlink.classList.add('selected');
+    })
+
+    // Add event listeners
     document.getElementById('new-ingredient-form').style.display = 'none';
     document.getElementById('image-container').style.display = 'none';
     select.addEventListener('change', unitChanged);
@@ -19,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalTime = document.getElementById('total-time');
     let servings = document.getElementById('servings');
 
+    // Add event listeners for searching
     prepTime.addEventListener('keyup', () => checkInput(prepTime, 0, 999));
     totalTime.addEventListener('keyup', () => checkInput(totalTime, 1, 999));
     servings.addEventListener('keyup', () => checkInput(servings, 1, 999));

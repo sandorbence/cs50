@@ -1,6 +1,14 @@
 const STAR_EMPTY = document.getElementById('star-empty').value;
 const STAR_FILLED = document.getElementById('star-filled').value;
 
+// Add bold font weight to selected nav item
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.nav-link').forEach(navlink => {
+        navlink.classList.remove('selected');
+        if (navlink.href == window.location.href) navlink.classList.add('selected');
+    })
+})
+
 function favorite(button) {
 
     let image = button.querySelector('img');

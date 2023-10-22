@@ -2,50 +2,53 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{% block title %}Recipes{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'recipes/styles.css' %}" rel="stylesheet">
-    </head>
 
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{% url 'index' %}">Recipes</a>
-            <div>
-              <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'my_recipes' %}">My recipes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'favorites' %}">Favorites</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'new' %}">Add New Recipe</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% endif %}
-              </ul>
-            </div>
-          </nav>
-        
-        <div class="title">
-            {% block pagetitle %}
-            {% endblock %}
-        </div>
+<head>
+    <title>{% block title %}Recipes{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'recipes/styles.css' %}" rel="stylesheet">
+</head>
 
-        <div class="body">
-            {% block body %}
-            {% endblock %}
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">Recipes</a>
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my_recipes' %}">My recipes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'favorites' %}">Favorites</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'new' %}">Add New Recipe</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div>
+            {% if user.is_authenticated %}
+            Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+            Not signed in.
+            {% endif %}
         </div>
-    </body>
+    </nav>
+
+    <div class="body">
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+
 </html>
